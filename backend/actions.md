@@ -3,7 +3,7 @@
 An action is one unit of server logic: a name, the input it accepts, who may call it, and a function. Define it with `NEWACTION` in a `schemas/` file.
 
 ```js
-NEWACTION('Redirects/save', {
+NEWACTION('Redirects|save', {
 	name: 'Save redirect',
 	input: 'id,*url,*target,permanent:Boolean',
 	permissions: 'redirects,admin',
@@ -31,7 +31,11 @@ NEWACTION('Redirects/save', {
 
 ## Naming
 
-`Collection/verb`, collection in plural and capitalized: `Tickets/list`, `Groups/create`, `Users/remove`. The usual verbs:
+`Collection|verb`, collection in plural and capitalized: `Tickets|list`, `Groups|create`, `Users|remove`. Separate the two parts with a pipe `|`.
+
+The pipe is the convention because of MCP: the MCP router of Total.js 5 documents actions as `Notes|create` and exposes them as the tool `Notes_create` (tool names allow only letters, digits, `_` and `-`). The apps used as source for these pages (CMS, OpenPlatform, Todomator) write `Tickets/list` with a slash; their examples are shown here with a pipe. Use the pipe in new code, so the name an MCP client sees matches the action.
+
+The usual verbs:
 
 | Verb | Does | Input |
 |---|---|---|
@@ -53,7 +57,7 @@ Always give the action a human `name:` ("Save redirect"): it is used in logs and
 ```js
 NEWSCHEMA('@Group', '*name,color:Color,icon:Icon,reference,permissions:[String]');
 
-NEWACTION('Groups/create', {
+NEWACTION('Groups|create', {
 	name: 'Create group',
 	input: '@Group',
 	action: async function($, model) { /* ... */ }
@@ -94,7 +98,7 @@ See [queries](../database/queries.md) for `DATA`.
 
 ## Calling one action from another
 
-`$.action('Items/types').promise()` (or `ACTION('Items/types', model).promise()` outside a request). Keep shared pieces in an action instead of copying code.
+`$.action('Items|types').promise()` (or `ACTION('Items|types', model).promise()` outside a request). Keep shared pieces in an action instead of copying code.
 
 ## Keep an action small
 

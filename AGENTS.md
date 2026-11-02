@@ -12,8 +12,8 @@ This repository is a reference of conventions for Total.js 5 applications. Read 
 
 - Total.js 5 only. Do not use Total.js 4 APIs.
 - Tabs, semicolons, `'` for short strings, lowercase file names with `-`.
-- Actions are `NEWACTION('Collection/verb', { name, input, params, permissions, action })`.
-- Routes live in `controllers/` or in the plugin's `index.js`: `ROUTE('+API ? -name --> Collection/verb')`.
+- Actions are `NEWACTION('Collection|verb', { name, input, params, permissions, action })`.
+- Routes live in `controllers/` or in the plugin's `index.js`: `ROUTE('+API ? -name --> Collection|verb')`.
 - Data goes through `DATA` with `.promise($)`; ids are `UID()`, dates are `NOW`.
 - Every text for people is `@(Text)`.
 - After editing JavaScript run `node --check file.js`; start the app and call the route you changed.

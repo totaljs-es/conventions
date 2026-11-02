@@ -20,8 +20,8 @@ exports.permissions = [{ id: 'redirects', name: 'Redirects' }];
 exports.visible = user => user.sa || user.permissions.includes('redirects') || user.permissions.includes('admin');
 
 exports.install = function() {
-	ROUTE('+API    ?    -redirects_list               --> Redirects/list');
-	ROUTE('+API    ?    +redirects_save               --> Redirects/save');
+	ROUTE('+API    ?    -redirects_list               --> Redirects|list');
+	ROUTE('+API    ?    +redirects_save               --> Redirects|save');
 };
 ```
 

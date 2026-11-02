@@ -8,11 +8,11 @@ In `exports.install` of a file in `controllers/` or of a plugin's `index.js`. On
 exports.install = function() {
 
 	// Tickets
-	ROUTE('+API    ?       -tickets                   --> Tickets/list');
-	ROUTE('+API    ?       -tickets_detail/{id}       --> Tickets/read');
-	ROUTE('+API    ?       +tickets_create            --> Tickets/create', 1024 * 10);
-	ROUTE('+API    ?       +tickets_update/{id}       --> Tickets/update', 1024 * 10);
-	ROUTE('+API    ?       -tickets_remove/{id}       --> Tickets/remove');
+	ROUTE('+API    ?       -tickets                   --> Tickets|list');
+	ROUTE('+API    ?       -tickets_detail/{id}       --> Tickets|read');
+	ROUTE('+API    ?       +tickets_create            --> Tickets|create', 1024 * 10);
+	ROUTE('+API    ?       +tickets_update/{id}       --> Tickets|update', 1024 * 10);
+	ROUTE('+API    ?       -tickets_remove/{id}       --> Tickets|remove');
 
 };
 ```
@@ -22,7 +22,7 @@ Group the lines with a short comment per collection.
 ## Reading an API route
 
 ```
-ROUTE('+API    ?    +tickets_create    --> Tickets/create', 1024 * 10);
+ROUTE('+API    ?    +tickets_create    --> Tickets|create', 1024 * 10);
         |      |     |                     |                |
         |      |     |                     |                max body size in bytes
         |      |     |                     the action
@@ -33,7 +33,7 @@ ROUTE('+API    ?    +tickets_create    --> Tickets/create', 1024 * 10);
 
 - Endpoint names are lowercase with `_`: `tickets_create`, `users_remove/{id}`. `{id}` fills `$.params.id`.
 - Use `-` for reads and removals, `+` for creates and updates.
-- A plugin may bind the endpoint to its own base: `ROUTE('+API /setup/ -users --> Users/list')`.
+- A plugin may bind the endpoint to its own base: `ROUTE('+API /setup/ -users --> Users|list')`.
 - Without a size, the default body limit applies. Give a limit to routes that take larger bodies.
 
 ## Other routes

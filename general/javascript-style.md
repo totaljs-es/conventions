@@ -38,7 +38,7 @@ const ADMIN = { id: 'admin', sa: true, name: 'Admin', permissions: [] };
 | Thing | Convention | Example |
 |---|---|---|
 | Files, folders | lowercase, `-` | `form-offer.html` |
-| Actions | `Collection/verb` | `Redirects/save` |
+| Actions | `Collection\|verb`, a pipe (published to MCP as `Collection_verb`) | `Redirects\|save` |
 | Schemas | plural, first letter upper case; `@Name` for a reusable input | `NEWSCHEMA('Tickets', ...)`, `'@Group'` |
 | API routes | lowercase, `_` between collection and verb | `tickets_create` |
 | Plugins, components, `FUNC.`, `MAIN.`, `REPO.` keys | lowercase | `FUNC.refreshtags` |

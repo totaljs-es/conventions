@@ -26,7 +26,7 @@ var apps = await DATA.find('op.tbl_app_permission').fields('id,appid').in('id', 
 `autoquery` reads the query string (`?q=`, `sort`, `page`, `limit`) and builds the query. Name the allowed fields and their types, a default sort and a maximum page size:
 
 ```js
-NEWACTION('Groups/list', {
+NEWACTION('Groups|list', {
 	name: 'List of groups',
 	action: function($) {
 		DATA.find('op.view_group').autoquery($.query, 'id:UID,name,color,icon,users:Number,dtcreated:Date,dtupdated:Date', 'dtcreated_desc', 100).callback($);
