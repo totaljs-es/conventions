@@ -11,6 +11,9 @@ This repository is a reference of conventions for Total.js 5 applications. Read 
 ## Rules that apply to every change
 
 - Total.js 5 only. Do not use Total.js 4 APIs.
+- ES5 over ES6: `var`, `function`, classic loops, `'{0}'.format()` instead of template literals. ES6 only when there is no ES5 way.
+- Use Total.js prototypes (`findItem`, `format`, `parseJSON`, `slug`, `isEmail`...) in the backend and Tangular templates in the frontend before any other function.
+- Do not `require()` Node.js modules: use `Total.Fs`, `Total.Path`, `Total.Crypto`, `Total.OS`, `Total.Zlib`, etc.
 - Tabs, semicolons, `'` for short strings, lowercase file names with `-`.
 - Actions are `NEWACTION('Collection|verb', { name, input, params, permissions, action })`.
 - Routes live in `controllers/` or in the plugin's `index.js`: `ROUTE('+API ? -name --> Collection|verb')`.

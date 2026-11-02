@@ -25,9 +25,9 @@ The start script is the same in every app and has almost no logic:
 ```js
 require('total5');
 
-const options = {};
-options.release = process.argv.includes('--release');
-options.servicemode = process.argv.includes('--service') || process.argv.includes('--servicemode');
+var options = {};
+options.release = process.argv.indexOf('--release') !== -1;
+options.servicemode = process.argv.indexOf('--service') !== -1 || process.argv.indexOf('--servicemode') !== -1;
 
 F.run(options);
 ```

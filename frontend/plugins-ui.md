@@ -17,7 +17,9 @@ exports.icon = 'ti ti-exchange';
 exports.name = '@(Redirects)';
 exports.position = 3;
 exports.permissions = [{ id: 'redirects', name: 'Redirects' }];
-exports.visible = user => user.sa || user.permissions.includes('redirects') || user.permissions.includes('admin');
+exports.visible = function(user) {
+	return user.sa || user.permissions.indexOf('redirects') !== -1 || user.permissions.indexOf('admin') !== -1;
+};
 
 exports.install = function() {
 	ROUTE('+API    ?    -redirects_list               --> Redirects|list');
@@ -115,7 +117,7 @@ exports.create = function() {
 
 ```js
 SETTER('approve/show', '@(Are you sure you want to remove it?)', ':ti ti-trash: @(Remove)', function() {
-	exports.tapi('redirects_remove/ ERROR', { id: id }, () => exports.refresh());
+	exports.tapi('redirects_remove/ ERROR', { id: id }, function() { exports.refresh(); });
 });
 SETTER('menu/show', opt);
 ```

@@ -56,7 +56,7 @@ await DATA.remove('tbl_notification').where('ticketid', params.id).where('typeid
 
 ## Conditions
 
-`where(field, value)`, `in(field, array)`, `notin(field, array)`, `search(field, keyword)`, `or(b => b.search('name', m).search('email', m))`.
+`where(field, value)`, `in(field, array)`, `notin(field, array)`, `search(field, keyword)`, `or(function(b) { b.search('name', m); b.search('email', m); })`.
 
 ```js
 var keywords = text.toKeywords(true, true);
