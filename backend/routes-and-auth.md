@@ -41,6 +41,7 @@ ROUTE('+API    ?    +tickets_create    --> Tickets|create', 1024 * 10);
 ```js
 ROUTE('+GET    /setup/', setup);         // a page, only for logged-in users
 ROUTE('POST    /notify/', notify);       // a public route with a handler function
+ROUTE('+POST    ?/upload/    @upload <10MB    --> Files|insert');   // an upload: @upload for multipart, <10MB for the size
 ```
 
 A handler function is `function($)`. Prefer an API route plus an action; use a plain handler for pages, files and webhooks.
@@ -72,6 +73,6 @@ AUTH(function($) {
 ```
 
 - The user object is small: `{ id, name, sa, permissions }`. `sa` marks a super administrator.
-- Use `BLOCKED($, count)` to rate-limit failed logins.
+- Use `BLOCKED($, limit)` to rate-limit failed logins: it counts tries per `$.ip` and returns `true` once the limit is passed (`BLOCKED($, -1)` clears the count). Because it keys on `$.ip`, it inherits the `X-Forwarded-For` caveat below.
 - `+` routes call `AUTH` first; actions then check `permissions`.
 - `$.ip` takes the first value of `X-Forwarded-For`, which a client can forge. For security limits use `$.req.socket.remoteAddress`, or trust the header only behind your own proxy.

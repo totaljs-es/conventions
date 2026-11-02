@@ -72,7 +72,7 @@ NEWACTION('Groups|create', {
 | Call | Use |
 |---|---|
 | `$.callback(data)` | return data (a record, a list, an id) |
-| `$.success()` / `$.success(id)` | return `{ success: true }` (with a value) |
+| `$.success()` / `$.success(id)` | the success answer of the app (`DEF.onSuccess`: by default `{ success: true }`, with the value if you pass one) |
 | `$.invalid(404)` | not found; the number is the HTTP status |
 | `$.invalid('@(Text for the user)')` | validation or business error; `@(...)` marks it for translation |
 

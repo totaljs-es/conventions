@@ -60,8 +60,8 @@ await DATA.remove('tbl_notification').where('ticketid', params.id).where('typeid
 
 ```js
 var keywords = text.toKeywords(true, true);
-for (var keyword of keywords)
-	builder.search('a.search', keyword);
+for (var i = 0; i < keywords.length; i++)
+	builder.search('a.search', keywords[i]);
 ```
 
 ## Raw SQL

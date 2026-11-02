@@ -5,8 +5,8 @@ Things that behave differently from what you would guess. Each one is a rule.
 ## Answers
 
 - In an **action**, `$.callback(data)` returns data. In a plain **route handler** (`function($)`), `$.callback(err, value)` takes the error first: answer with `$.json(data)` instead.
-- A status code on a handler: `$.status = 401; $.invalid('...')`, or `$.response.status = 401; $.json(...)`.
-- With `promise()` an action loses the HTTP code of the error. Put the code in `$.invalid('@(msg)', code)`.
+- `$.invalid(404)`: a number above 399 sets the HTTP status (`$.invalid()` without an argument is 401). `$.invalid('@(text)')` answers with the message; its second argument is the `path` of the field the error belongs to, not a status code.
+- On a handler you can also set the status yourself: `$.response.status = 401; $.json(...)`.
 
 ## Request data
 
@@ -21,7 +21,7 @@ Things that behave differently from what you would guess. Each one is a rule.
 - A `Boolean` that is absent is `false`. Use `partial: true` when absence must mean "unchanged".
 - With `partial`, a `null` number is ignored; use `0` for "none".
 - `*field:[String]` rejects an empty list; drop the `*` if empty is allowed.
-- Never `for...in` over an array. Use `for...of`.
+- Never `for...in` over an array. Use a classic `for` loop.
 
 ## Served JavaScript and static files
 

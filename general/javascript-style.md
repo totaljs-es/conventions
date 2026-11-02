@@ -14,7 +14,7 @@ Write `var`, `function`, classic loops and string helpers. Use an ES6 feature on
 |---|---|
 | `var item = ...;` | `let` / `const` in a function |
 | `function(item) { ... }` | `item => ...` |
-| `for (var i = 0; i < arr.length; i++)` or `for (var m of arr)` | `forEach`, `map`, `filter`, `reduce` chains |
+| `for (var i = 0; i < arr.length; i++)` | `for...of`, `forEach`, `map`, `filter`, `reduce` chains |
 | `'Hello {0}'.format(name)` | template literal `` `Hello ${name}` `` |
 | `var a = obj.a;` | destructuring, spread, optional chaining |
 | `arr.findItem('id', id)` | `arr.find(x => x.id === id)` |
@@ -36,7 +36,7 @@ Notes:
 - `async` / `await` stays where the framework's own code uses it (`await DATA.find(...).promise($)`): there the ES5 alternative is a callback chain (`.callback($)`), which is also valid when it reads better.
 - Some source apps use `let`, arrows and template literals. Do not copy those from them: write the ES5 form.
 - `const` is for module-level constants only: `const ADMIN = { id: 'admin', sa: true };`.
-- **Never `for...in` over an array**: Total.js adds enumerable methods to `Array.prototype`. Use a classic `for` or `for...of`.
+- **Never `for...in` over an array**: Total.js adds enumerable methods to `Array.prototype`. Use a classic `for` loop.
 
 ## 2. Total.js first
 
