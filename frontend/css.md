@@ -28,6 +28,10 @@ Style that belongs to a screen goes at the top of its HTML file, scoped with `CL
 
 `CLASS` becomes a class unique to the plugin, so the rule cannot leak to other screens.
 
+## Predefined classes
+
+The `intranetcss` component provides the common design (panels, toolbars, badges, messages, listings, tabs, dark mode). Use its classes before writing new CSS: see [components](components.md).
+
 ## Global style
 
 `public/default.css` holds what is shared. Colors that change per user or theme are CSS variables (`:root { --color: ... }`), set once in the layout.

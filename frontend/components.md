@@ -23,6 +23,45 @@ Machine-readable forms of the same catalogue (use these from code or an agent):
 
 Each page carries its framework version (`jcomponent@20`) and a content hash, so you can tell which version a rule refers to.
 
+## Preferred components
+
+When several components could do the job, use these:
+
+| For | Use | Notes |
+|---|---|---|
+| Form fields (text, email, phone, password, multiline, checkbox, select, date...) | `input` (j-Input) | One component for every field: `type` chooses the kind. It replaces j-Textbox and j-Dropdown. |
+| A box with a fixed height and scroll | `viewbox` | `height` is a percentage, `parent` is the container (or `window`), `scroll` / `scrollbar` control scrolling. |
+| Loaders | `loading` | Reacts to the `@showloading` and `@hideloading` flags; `style` picks the look (1 = spinner, 2 = line at the top). |
+| Tables and data grids | `datagrid` | For single page and enterprise apps: filters, sorting, pages, `height` modes (`auto`, `fluid`, `parent`). |
+| Buttons and calls to functions | `exec` | See below. |
+| Predefined design (panels, toolbars, badges, messages, listings, tabs, dark mode) | `intranetcss` | Ready-made CSS classes; see below. |
+
+### exec: buttons and function calls
+
+`exec` is a singleton that works for the whole page: any element with the class `exec` calls a function when it is clicked. Do not add `onclick` handlers or `addEventListener` for buttons.
+
+```html
+<button class="exec" data-exec="?/create"><i class="ti ti-plus-circle"></i>@(Create)</button>
+<span class="exec" data-exec="?/options" data-prevent="true">...</span>
+<a class="exec" data-href="/offers/">@(Offers)</a>
+```
+
+- `data-exec="NAME"`: the function to call, with the form `function(element, event)`. A `?` calls a method of the current plugin (`?/create` is `exports.create`).
+- `data-prevent="true"`: stops the click from going further (for a button inside a clickable row).
+- `data-href="URL"`: redirects instead of calling a function.
+- Double click and context menu use the same attributes with a suffix: `data-exec2` (class `exec2`) and `data-exec3` (class `exec3`).
+
+### intranetcss: predefined design
+
+`intranetcss` is a component made only of CSS. It brings the shared look of the intranet apps, with a dark mode, so a screen does not need its own style for the common pieces:
+
+- containers: `.panel` (with `label` and `.toolbar`), `.padding`, `.divider`, `.bg-smoke`
+- lists and menus: `.listing`, `.listing2`, `.nav`, `.tabmenu`, `.tabmenu2`, `.iconmenu`, `.keyvalue`
+- messages and badges: `.message`, `.message-success`, `.message-error`, `.message-alert`, `.badge` (with colors and sizes)
+- sizes: `.small`, `.medium`, `.large`
+
+Use these classes before writing new CSS (see [css](css.md)). The component is not in the Forge catalogue; its source (version 5) is served by the component download service.
+
 ## 2. If it does not exist, create a component
 
 A piece of UI that has behaviour is a component, not a block of script inside a page.
@@ -45,7 +84,7 @@ Never link a component file by hand. List the components the app uses in `defini
 
 ```js
 ON('ready', function() {
-	COMPONENTATOR('ui', 'exec,locale,page,input,form,validate,loading,message,menu,approve,notify,errorhandler', true);
+	COMPONENTATOR('ui', 'exec,locale,page,viewbox,input,form,validate,loading,datagrid,intranetcss,message,menu,approve,notify,errorhandler', true);
 });
 ```
 
