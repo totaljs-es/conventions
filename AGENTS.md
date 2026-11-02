@@ -22,6 +22,28 @@ This repository is a reference of conventions for Total.js 5 applications. Read 
 - Every text for people is `@(Text)`.
 - After editing JavaScript run `node --check file.js`; start the app and call the route you changed.
 
+## Layout
+
+- `general/`, `backend/`, `database/`, `frontend/`: the pages, one folder per zone.
+- `llms.txt` (index) and `llms-full.txt` (every page in one file): for models. They are generated, do not edit them by hand.
+- `scripts/llms.js`: builds the two files above and lists the pages in order.
+- `.claude/skills/` and `.agents/skills/`: the skills to write and to review Total.js 5 code with these conventions.
+- `tests/`: tests of the files for agents and of the links of the pages.
+
+## Using these conventions from another project
+
+Point your agent at `llms.txt` (an index with a link to every page) or at `llms-full.txt` (all the pages at once):
+
+- https://raw.githubusercontent.com/totaljs-es/conventions/main/llms.txt
+- https://raw.githubusercontent.com/totaljs-es/conventions/main/llms-full.txt
+
+A project can add a line to its own `AGENTS.md`: "Follow the Total.js 5 conventions of https://github.com/totaljs-es/conventions".
+
+## Checking this repository
+
+- `npm test` checks that the pointers and skills exist, that every page is listed in `llms.txt`, that `llms.txt` and `llms-full.txt` match the pages, and that every link works.
+- After you change or add a page, run `npm run llms` and `npm test`. A new page is also added to the list in `scripts/llms.js`.
+
 ## Keeping these pages true
 
 Every rule here comes from code that exists. When you add a rule, add an example from a real file or from the framework source, and say which.

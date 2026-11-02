@@ -1,0 +1,1131 @@
+# Total.js conventions: every page
+
+> How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, actions named Collection|verb, routes in controllers, DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR(). Learned from production Total.js 5 apps and the official style guide.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/README.md
+
+# Total.js conventions
+
+How Total.js 5 applications are written, learned from real production apps and from the official style guide. It is a reference for people and for AI agents: read the zone you are working in, copy the pattern, keep the names.
+
+Every rule comes with an example taken from the code of the Total.js apps (CMS, Dashboard, OpenPlatform, Todomator) or from the [official guidelines](https://github.com/totaljs-es/guidelines). Where the two differ, the page says so.
+
+## Zones
+
+Each zone is a folder. Read only the one you need.
+
+| Zone | What it covers |
+|---|---|
+| [`general/`](general) | Project layout, JavaScript style, naming. Applies everywhere. |
+| [`backend/`](backend) | Actions, routes, authentication, definitions, modules, gotchas of the server. |
+| [`database/`](database) | PostgreSQL scripts and how the code queries them with `DATA`. |
+| [`frontend/`](frontend) | jComponent components (use the existing ones, `COMPONENTATOR()`), plugins with UI, views and layouts, CSS. |
+
+## Pages
+
+- general: [project-structure](general/project-structure.md), [javascript-style](general/javascript-style.md)
+- backend: [actions](backend/actions.md), [routes-and-auth](backend/routes-and-auth.md), [definitions-and-modules](backend/definitions-and-modules.md), [gotchas](backend/gotchas.md)
+- database: [sql-scripts](database/sql-scripts.md), [queries](database/queries.md)
+- frontend: [components](frontend/components.md), [plugins-ui](frontend/plugins-ui.md), [views-and-layout](frontend/views-and-layout.md), [css](frontend/css.md)
+
+## For AI agents
+
+- [`AGENTS.md`](AGENTS.md): how to use these pages and the rules for every change (also `CLAUDE.md`, `GEMINI.md` and `.github/copilot-instructions.md`, which point to it).
+- [`llms.txt`](llms.txt): an index with a link to every page; [`llms-full.txt`](llms-full.txt): every page in one file.
+- Skills to write and to review code with these conventions: `.claude/skills/` and `.agents/skills/`.
+
+## Principles
+
+1. **ES5 over ES6**: `var`, `function`, classic loops. ES6 only when there is no ES5 way.
+2. **Total.js first**: prototypes (`'{0}'.format()`, `findItem()`, `parseJSON()`...) in the backend and Tangular in the frontend, before any other function.
+3. **No imports from Node.js**: use `Total.Fs`, `Total.Path`, `Total.Crypto`... instead of `require()`.
+4. Follow the code that is already next to yours. A new file looks like its neighbours.
+5. Keep names short, lowercase and the same across projects: `id`, `name`, `body`, `dtcreated`, `items`.
+6. Declare input once (`input:` / `params:`) and let the framework validate it. The action body trusts what it receives.
+7. Keep routes in one place (`controllers/` or the plugin's `index.js`), logic in actions, data access in `DATA`.
+8. Add no dependency that the framework already covers.
+9. Check what you changed: `node --check file.js`, then run the app and call the route.
+
+## Versions
+
+Written for **Total.js 5** (`total5` on npm). The official guidelines were written for Total.js 4 (`NEWSCHEMA`, `var`); the pages mark the places where Total.js 5 code differs. Do not assume a Total.js 4 API exists in version 5: check the framework source or an existing app.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/AGENTS.md
+
+# AGENTS.md
+
+This repository is a reference of conventions for Total.js 5 applications. Read it before writing or changing Total.js code.
+
+## How to use it
+
+1. Open [README.md](README.md) and pick the zone you work in: `general/`, `backend/`, `database/` or `frontend/`.
+2. Read only the pages of that zone. Each page has rules with examples taken from real apps.
+3. Copy the pattern of the nearest existing file in the project you are editing; use these pages to decide what is idiomatic.
+
+## Rules that apply to every change
+
+- Total.js 5 only. Do not use Total.js 4 APIs.
+- ES5 over ES6: `var`, `function`, classic loops, `'{0}'.format()` instead of template literals. ES6 only when there is no ES5 way.
+- Use Total.js prototypes (`findItem`, `format`, `parseJSON`, `slug`, `isEmail`...) in the backend and Tangular templates in the frontend before any other function.
+- Do not `require()` Node.js modules: use `Total.Fs`, `Total.Path`, `Total.Crypto`, `Total.OS`, `Total.Zlib`, etc.
+- Tabs, semicolons, `'` for short strings, lowercase file names with `-`.
+- Actions are `NEWACTION('Collection|verb', { name, input, params, permissions, action })`.
+- Routes live in `controllers/` or in the plugin's `index.js`: `ROUTE('+API ? -name --> Collection|verb')`.
+- Data goes through `DATA` with `.promise($)`; ids are `UID()`, dates are `NOW`.
+- Frontend: use an existing jComponent component (catalogue: https://forge.totaljs.es/es/components/, markdown at `https://forge.totaljs.es/en/components/<name>.md`); if none exists, create a reusable `COMPONENT('name', ...)`. Load components only with `COMPONENTATOR()`.
+- Every text for people is `@(Text)`.
+- After editing JavaScript run `node --check file.js`; start the app and call the route you changed.
+
+## Layout
+
+- `general/`, `backend/`, `database/`, `frontend/`: the pages, one folder per zone.
+- `llms.txt` (index) and `llms-full.txt` (every page in one file): for models. They are generated, do not edit them by hand.
+- `scripts/llms.js`: builds the two files above and lists the pages in order.
+- `.claude/skills/` and `.agents/skills/`: the skills to write and to review Total.js 5 code with these conventions.
+- `tests/`: tests of the files for agents and of the links of the pages.
+
+## Using these conventions from another project
+
+Point your agent at `llms.txt` (an index with a link to every page) or at `llms-full.txt` (all the pages at once):
+
+- https://raw.githubusercontent.com/totaljs-es/conventions/main/llms.txt
+- https://raw.githubusercontent.com/totaljs-es/conventions/main/llms-full.txt
+
+A project can add a line to its own `AGENTS.md`: "Follow the Total.js 5 conventions of https://github.com/totaljs-es/conventions".
+
+## Checking this repository
+
+- `npm test` checks that the pointers and skills exist, that every page is listed in `llms.txt`, that `llms.txt` and `llms-full.txt` match the pages, and that every link works.
+- After you change or add a page, run `npm run llms` and `npm test`. A new page is also added to the list in `scripts/llms.js`.
+
+## Keeping these pages true
+
+Every rule here comes from code that exists. When you add a rule, add an example from a real file or from the framework source, and say which.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/general/project-structure.md
+
+# Project structure
+
+A Total.js 5 app is a folder that the framework loads by convention. Put each kind of file where the framework (and the next reader) expects it.
+
+```
+index.js            starts the app: require('total5'); F.run(options)
+config              settings, one "key : value" per line
+package.json        "total5" is the runtime dependency
+controllers/        routes: exports.install = function() { ROUTE(...) }
+definitions/        auth.js, init.js, func.js, db.js: loaded at start, no exports
+modules/            integrations with other systems (cdn, openplatform, tapi...)
+plugins/<name>/     a feature: index.js (server), index.html (UI), schemas/, public/
+schemas/            actions that are not part of a plugin
+views/              layout and pages (HTML with @{...} directives)
+public/             static files: default.css, default.js, img/, fonts/
+database.sql        the full schema; changes go to dated files next to it
+```
+
+Optional, when the app is shipped: `Dockerfile`, `docker-compose.yaml`, `bundle.sh` (writes `--bundles--/app.bundle`), `license.txt`, `readme.md`.
+
+## index.js
+
+The start script is the same in every app and has almost no logic:
+
+```js
+require('total5');
+
+var options = {};
+options.release = process.argv.indexOf('--release') !== -1;
+options.servicemode = process.argv.indexOf('--service') !== -1 || process.argv.indexOf('--servicemode') !== -1;
+
+F.run(options);
+```
+
+Run it with `node index.js 8000` (add `--release` for release mode).
+
+## Where things go
+
+- **A route** goes in `controllers/*.js` or in `plugins/<name>/index.js`, never inside an action file.
+- **Business logic** is a `NEWACTION` in `schemas/` (or `plugins/<name>/schemas/`).
+- **Shared helpers** hang from `FUNC` (`FUNC.notify`, `FUNC.save`) and live in `definitions/func.js`.
+- **Shared state in memory** hangs from `MAIN` (the app) or `REPO` (cached lookups, e.g. `REPO.tags`).
+- **Startup work** (config defaults, loading caches, registering UI components) goes in `ON('ready', ...)` in `definitions/init.js`.
+- **Authentication** is one `AUTH(...)` in `definitions/auth.js`.
+
+## Files and folders
+
+- All lowercase, words separated by `-`, never `_`: `search-results.html`.
+- Static files by type: `/img/`, `/js/`, `/css/`, `/fonts/`, `/videos/`.
+- One plugin per feature, named after the feature: `plugins/redirects`, `plugins/users`.
+- Generated output (`--bundles--/`, `tmp/`, `databases/`) is not edited by hand.
+
+## Checks
+
+- `node --check path/to/file.js` for every JavaScript file you change.
+- Start the app and call the route you touched. If the project has no test script, do not say tests passed.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/general/javascript-style.md
+
+# JavaScript style
+
+Source: the [official guidelines](https://github.com/totaljs-es/guidelines) plus what the Total.js 5 apps do. Three rules come first, because they decide most of the code you write:
+
+1. **ES5 over ES6.** Always prefer the ES5 way.
+2. **Total.js first.** Use the framework's prototypes (backend) and Tangular (frontend) before any other function.
+3. **No imports from Node.js.** Use the modules Total.js already exposes.
+
+## 1. ES5 over ES6
+
+Write `var`, `function`, classic loops and string helpers. Use an ES6 feature only when there is no ES5 way to do the same.
+
+| Prefer | Instead of |
+|---|---|
+| `var item = ...;` | `let` / `const` in a function |
+| `function(item) { ... }` | `item => ...` |
+| `for (var i = 0; i < arr.length; i++)` or `for (var m of arr)` | `forEach`, `map`, `filter`, `reduce` chains |
+| `'Hello {0}'.format(name)` | template literal `` `Hello ${name}` `` |
+| `var a = obj.a;` | destructuring, spread, optional chaining |
+| `arr.findItem('id', id)` | `arr.find(x => x.id === id)` |
+
+```js
+// good
+var item = db.redirects.findItem('id', model.id);
+if (!item) {
+	$.invalid(404);
+	return;
+}
+
+// avoid
+const item = db.redirects.find(m => m.id === model.id);
+```
+
+Notes:
+
+- `async` / `await` stays where the framework's own code uses it (`await DATA.find(...).promise($)`): there the ES5 alternative is a callback chain (`.callback($)`), which is also valid when it reads better.
+- Some source apps use `let`, arrows and template literals. Do not copy those from them: write the ES5 form.
+- `const` is for module-level constants only: `const ADMIN = { id: 'admin', sa: true };`.
+- **Never `for...in` over an array**: Total.js adds enumerable methods to `Array.prototype`. Use a classic `for` or `for...of`.
+
+## 2. Total.js first
+
+### Backend: prototypes
+
+Total.js extends `String`, `Array`, `Number` and `Date`. Before writing a helper, a loop or a regular expression, check whether a prototype does it. These exist in Total.js 5:
+
+- **String:** `format`, `parseJSON`, `parseInt`, `parseFloat`, `parseBoolean`, `parseDate`, `parseConfig`, `parseCSV`, `parseXML`, `slug`, `capitalize`, `pluralize`, `max`, `toSearch`, `toKeywords`, `removeTags`, `encode`, `decode`, `safehtml`, `md5`, `sha1`, `sha256`, `hash`, `crc32`, `encrypt`, `decrypt`, `isEmail`, `isPhone`, `isURL`, `isJSON`, `isUID`, `isGUID`, `isNumber`, `isBase64`, `isXSS`, `isSQLInjection`, `indent`, `tslash`.
+- **Array:** `findItem`, `findIndex`, `findAll`, `findValue`, `remove`, `quicksort`, `trim`, `first`, `last`, `take`, `skip`, `limit`, `group`, `random`, `wait`, `async`.
+- **Number:** `format`, `currency`, `round`, `floor`, `fixed`, `between`, `padLeft`, `padRight`, `filesize`, `pluralize`, `discount`, `parseDate`.
+- **Date:** `format`, `add`, `diff`, `extend`, `toUTC`, `setTimeZone`, `parseDate`.
+
+```js
+var name = '{0} {1}'.format(first, last);                  // not a template literal
+var index = items.findIndex('id', id);                     // not findIndex(m => m.id === id)
+var data = text.parseJSON();                               // not try { JSON.parse(text) } catch
+var slug = title.slug();                                   // not a hand-made regex
+var keywords = body.toKeywords();
+if (email.isEmail()) { ... }
+```
+
+If you are about to write a utility, search the framework source (`utils.js`) first. The helpers of `U.` (e.g. `U.normalize()`) and the globals (`UID()`, `NOW`, `CONF`, `DATA`) come before your own.
+
+### Frontend: Tangular
+
+In jComponent code and plugin HTML, build text and markup with **Tangular** templates (`{{ value }}`, `{{ foreach m in value }}`, `{{ if }}`) and its helpers, not with string concatenation or DOM-building code.
+
+```html
+<script type="text/html">
+	{{ foreach m in value }}
+	<figure class="exec" data-exec="?/edit" data-id="{{ m.id }}">{{ m.url }}</figure>
+	{{ end }}
+</script>
+```
+
+See [plugins-ui](../frontend/plugins-ui.md).
+
+## 3. No imports from Node.js
+
+Do not `require()` Node.js modules. Total.js exposes them:
+
+| Instead of | Use |
+|---|---|
+| `require('fs')` | `Total.Fs` |
+| `require('path')` | `Total.Path` |
+| `require('crypto')` | `Total.Crypto` |
+| `require('os')` | `Total.OS` |
+| `require('http')` / `require('https')` | `Total.Http` / `Total.Https` (for requests prefer `RESTBuilder`) |
+| `require('child_process')` | `Total.Child` |
+| `require('zlib')` | `Total.Zlib` |
+| `require('url')`, `require('util')`, `require('stream')` | `Total.Url`, `Total.Util`, `Total.Stream` |
+
+Also available: `Total.Cluster`, `Total.Dns`, `Total.Net`, `Total.Tls`, `Total.Worker` and `Total.isBundle` (since v0.0.50). Third-party packages are the last resort: the framework usually covers the need.
+
+```js
+// good
+var file = Total.Path.join(F.tmpdir, 'data.json');
+
+// avoid
+const Path = require('path');
+```
+
+(The official guide shows `const Path = require('path')`. That was for Total.js 4; in Total.js 5 use `Total.Path`.)
+
+## Formatting
+
+- Indent with **tabs** (width 4). No trailing white space.
+- End every statement with `;`.
+- Short strings in `'` apostrophes.
+- A condition with one statement has no braces and no blank line:
+
+```js
+if (!item)
+	return;
+
+item && refresh();     // fine for a simple expression
+```
+
+## Variables and names
+
+- Common names, the same in every project: `id`, `name`, `value`, `email`, `items` / `arr` (a collection), `item`, `tmp`, `dtcreated`, `dtupdated`.
+
+| Thing | Convention | Example |
+|---|---|---|
+| Files, folders | lowercase, `-` | `form-offer.html` |
+| Actions | `Collection\|verb` (pipe; exposed to MCP as `Collection_verb`) | `Redirects\|save` |
+| Schemas | plural, first letter upper case; `@Name` for a reusable input | `NEWSCHEMA('Tickets', ...)`, `'@Group'` |
+| API routes | lowercase, `_` between collection and verb | `tickets_create` |
+| Plugins, components, `FUNC.`, `MAIN.`, `REPO.` keys | lowercase | `FUNC.refreshtags` |
+| Table and column names | lowercase | `tbl_user`, `dtcreated` |
+
+## Framework globals
+
+Use the globals that exist instead of writing your own: `UID()` for identifiers, `NOW` for the current date, `CONF` for config, `DATA` for the database, `EMPTYARRAY` / `EMPTYOBJECT` for read-only defaults.
+
+```js
+model.id = UID();
+model.dtcreated = NOW;
+```
+
+## Comments
+
+A comment says why, in one or two lines, above the code it explains. Do not narrate what the next line does.
+
+## Dependencies
+
+Avoid adding any. If the framework has a helper (`RESTBuilder`, `FILESTORAGE`, `U.*`, `DATA`, a prototype), use it.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/actions.md
+
+# Actions
+
+An action is one unit of server logic: a name, the input it accepts, who may call it, and a function. Define it with `NEWACTION` in a `schemas/` file.
+
+```js
+NEWACTION('Redirects|save', {
+	name: 'Save redirect',
+	input: 'id,*url,*target,permanent:Boolean',
+	permissions: 'redirects,admin',
+	action: function($, model) {
+
+		if (model.id) {
+			var item = MAIN.db.redirects.findItem('id', model.id);
+			if (!item) {
+				$.invalid(404);
+				return;
+			}
+			item.dtupdated = NOW;
+			item.url = model.url;
+		} else {
+			model.id = UID();
+			model.dtcreated = NOW;
+			MAIN.db.redirects.push(model);
+		}
+
+		FUNC.save();
+		$.success();
+	}
+});
+```
+
+## Naming
+
+`Collection|verb`, collection in plural and capitalized: `Tickets|list`, `Groups|create`, `Users|remove`. Separate the two parts with a pipe `|`.
+
+The pipe is the convention because of MCP: the MCP router of Total.js 5 documents actions as `Notes|create` and exposes them as the tool `Notes_create` (tool names allow only letters, digits, `_` and `-`). The apps used as source for these pages (CMS, OpenPlatform, Todomator) write `Tickets/list` with a slash; their examples are shown here with a pipe. Use the pipe in new code, so the name an MCP client sees matches the action.
+
+The usual verbs:
+
+| Verb | Does | Input |
+|---|---|---|
+| `list` | returns a collection, often with `autoquery` | query string |
+| `read` | returns one record | `params: '*id:UID'` |
+| `create` | inserts, answers with the new id | `input` |
+| `update` | modifies one record | `params` + `input` |
+| `save` | create or update by `id` | `input` with optional `id` |
+| `remove` | deletes or flags one record | `params` |
+
+Always give the action a human `name:` ("Save redirect"): it is used in logs and tools.
+
+## Input and params
+
+- `input:` is the body, `params:` is the route parameters (`{id}`), `query:` is the query string.
+- A text spec: `'*name,color:Color,icon:Icon,permissions:[String]'`. A leading `*` makes a field required. After `:` goes the type (`Boolean`, `Number`, `UID`, `Email`, `Phone`, `Color`, `Date`, `String(100)`, `[String]`).
+- Reuse a definition with a named schema and `@`:
+
+```js
+NEWSCHEMA('@Group', '*name,color:Color,icon:Icon,reference,permissions:[String]');
+
+NEWACTION('Groups|create', {
+	name: 'Create group',
+	input: '@Group',
+	action: async function($, model) { /* ... */ }
+});
+```
+
+- Route parameters arrive in `$.params`, not as an argument: `$.params.id`.
+- A list typed `*field:[String]` is required: an empty list counts as missing. If empty is valid, drop the `*`.
+
+## Answering
+
+| Call | Use |
+|---|---|
+| `$.callback(data)` | return data (a record, a list, an id) |
+| `$.success()` / `$.success(id)` | return `{ success: true }` (with a value) |
+| `$.invalid(404)` | not found; the number is the HTTP status |
+| `$.invalid('@(Text for the user)')` | validation or business error; `@(...)` marks it for translation |
+
+Call exactly one of them, then `return`. An action that never answers hangs the request.
+
+## Permissions
+
+`permissions: 'redirects,admin'` allows users that have any of those permissions. Put it on every action that is not public, even when the route is already authorized.
+
+## Async and data
+
+Actions are `async` when they await `DATA` calls. Pass `$` to `.promise($)` so errors answer the request for you:
+
+```js
+action: async function($) {
+	var params = $.params;
+	var model = await DATA.read('op.tbl_group').id(params.id).error('@(Group not found)').promise($);
+	$.callback(model);
+}
+```
+
+See [queries](../database/queries.md) for `DATA`.
+
+## Calling one action from another
+
+`$.action('Items|types').promise()` (or `ACTION('Items|types', model).promise()` outside a request). Keep shared pieces in an action instead of copying code.
+
+## Keep an action small
+
+If one action grows beyond what fits on a screen, move the parts to `FUNC.` helpers or to other actions. Large filter builders (e.g. a `makefilter($, builder)` function inside the schema) stay next to the actions that use them.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/routes-and-auth.md
+
+# Routes and authentication
+
+## Where routes live
+
+In `exports.install` of a file in `controllers/` or of a plugin's `index.js`. One line per route, aligned in columns.
+
+```js
+exports.install = function() {
+
+	// Tickets
+	ROUTE('+API    ?       -tickets                   --> Tickets|list');
+	ROUTE('+API    ?       -tickets_detail/{id}       --> Tickets|read');
+	ROUTE('+API    ?       +tickets_create            --> Tickets|create', 1024 * 10);
+	ROUTE('+API    ?       +tickets_update/{id}       --> Tickets|update', 1024 * 10);
+	ROUTE('+API    ?       -tickets_remove/{id}       --> Tickets|remove');
+
+};
+```
+
+Group the lines with a short comment per collection.
+
+## Reading an API route
+
+```
+ROUTE('+API    ?    +tickets_create    --> Tickets|create', 1024 * 10);
+        |      |     |                     |                |
+        |      |     |                     |                max body size in bytes
+        |      |     |                     the action
+        |      |     "+" the request has a body (input), "-" it has none
+        |      the URL of the endpoint; "?" is replaced by CONF.$api ("/api/" by default)
+        "+" only for logged-in users; without it the route is public
+```
+
+- Endpoint names are lowercase with `_`: `tickets_create`, `users_remove/{id}`. `{id}` fills `$.params.id`.
+- Use `-` for reads and removals, `+` for creates and updates.
+- A plugin may bind the endpoint to its own base: `ROUTE('+API /setup/ -users --> Users|list')`.
+- Without a size, the default body limit applies. Give a limit to routes that take larger bodies.
+
+## Other routes
+
+```js
+ROUTE('+GET    /setup/', setup);         // a page, only for logged-in users
+ROUTE('POST    /notify/', notify);       // a public route with a handler function
+```
+
+A handler function is `function($)`. Prefer an API route plus an action; use a plain handler for pages, files and webhooks.
+
+## A route declared in the action
+
+`NEWACTION` also accepts `route: 'API ?'` (or `route: true`) and registers the endpoint itself. Total.js 5 apps keep routes in `controllers/`; use the `route:` property only in small apps that have no `controllers/` folder.
+
+## Authentication
+
+One `AUTH` in `definitions/auth.js`. It decides who the request is and calls `$.success(user)` or `$.invalid()`.
+
+```js
+AUTH(function($) {
+	var token = $.headers['x-token'];
+	if (token) {
+		if (BLOCKED($, 10)) {      // too many wrong tries from this client
+			$.invalid();
+			return;
+		}
+		if (token === CONF.token) {
+			BLOCKED($, -1);        // forget the failures
+			$.success(BOT);
+		} else
+			$.invalid();
+	} else
+		$.invalid();
+});
+```
+
+- The user object is small: `{ id, name, sa, permissions }`. `sa` marks a super administrator.
+- Use `BLOCKED($, count)` to rate-limit failed logins.
+- `+` routes call `AUTH` first; actions then check `permissions`.
+- `$.ip` takes the first value of `X-Forwarded-For`, which a client can forge. For security limits use `$.req.socket.remoteAddress`, or trust the header only behind your own proxy.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/definitions-and-modules.md
+
+# Definitions and modules
+
+## definitions/
+
+Files here are loaded when the app starts. They export nothing: they register things on the framework. One file per concern.
+
+| File | Holds |
+|---|---|
+| `auth.js` | the single `AUTH(...)` |
+| `init.js` | config defaults and `ON('ready', ...)`: load caches, register UI components |
+| `func.js` | shared helpers as `FUNC.name = function() {}` |
+| `db.js` | shared state objects (`MAIN.id`, `MAIN.db`) |
+
+```js
+// definitions/init.js
+CONF.version = '1';
+if (!CONF.cdn)
+	CONF.cdn = 'https://cdn.componentator.com';
+
+ON('ready', function() {
+	setTimeout(FUNC.load, 500);
+	COMPONENTATOR('ui', 'exec,locale,input,form,validate,...', true);
+});
+```
+
+```js
+// definitions/func.js
+FUNC.refreshtags = async function() {
+	REPO.tags = await DATA.find('tbl_tag').fields('id,search').promise();
+};
+```
+
+- Helpers are named in lowercase without separators: `FUNC.refreshtags`, `FUNC.notify`.
+- Use `ON('ready')` for anything that needs the app and the database to be up.
+- `EMIT('configure')` / `ON('configure')` is how parts of the app react to a config change.
+
+## config
+
+A plain file, one `key : value` per line. Read it with `CONF.key`. Settings the framework owns start with `$`: `$api`, `$minifyjs`. Secrets (keys, database URLs) do not belong in a repository: keep them in the deployment config.
+
+## modules/
+
+A module is an integration with another system or a self-contained service (`cdn.js`, `openplatform.js`, `visitors.js`). It uses the same `exports.install` pattern as a controller and may add its own globals (`OpenPlatform`). Keep a module independent: it reads `CONF`, not other modules' internals.
+
+## Shared state
+
+- `MAIN`: the application's own state (`MAIN.db`, `MAIN.cache`).
+- `REPO`: cached lookups that the UI also needs (`REPO.tags`, `REPO.ui`).
+- `FUNC`: functions shared by actions and controllers.
+
+Do not create new globals. Hang things from these three.
+
+## Config in the database
+
+When settings live in a table (`cl_config`), load them with `LOADCONFIG(rows)` and emit `configure`, as `FUNC.reconfigure` does in Todomator.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/gotchas.md
+
+# Gotchas of the server
+
+Things that behave differently from what you would guess. Each one is a rule.
+
+## Answers
+
+- In an **action**, `$.callback(data)` returns data. In a plain **route handler** (`function($)`), `$.callback(err, value)` takes the error first: answer with `$.json(data)` instead.
+- A status code on a handler: `$.status = 401; $.invalid('...')`, or `$.response.status = 401; $.json(...)`.
+- With `promise()` an action loses the HTTP code of the error. Put the code in `$.invalid('@(msg)', code)`.
+
+## Request data
+
+- Route parameters (`{id}`) are in `$.params`.
+- `$.body` is already parsed. The raw body (for webhook signatures) is `$.payload`, a Buffer.
+- `$.ip` is the first `X-Forwarded-For` value: forgeable. Use `$.req.socket.remoteAddress` for security limits.
+- The CSRF token is bound to the IP and `@{csrf}` can fail in views; pass `encodeURIComponent($.csrf())` through the repository.
+- The session is bound to the user agent: a request with another user agent (a mobile emulation in a test browser) is unauthorized.
+
+## Schemas and input
+
+- A `Boolean` that is absent is `false`. Use `partial: true` when absence must mean "unchanged".
+- With `partial`, a `null` number is ignored; use `0` for "none".
+- `*field:[String]` rejects an empty list; drop the `*` if empty is allowed.
+- Never `for...in` over an array. Use `for...of`.
+
+## Served JavaScript and static files
+
+- The JavaScript minifier (on by default in release) can break code that `node --check` accepts: a regex literal containing `//` is cut as a comment (write `indexOf('https://')` instead), and spaces next to `${...}` in template literals are removed. Check the served file, or set `$minifyjs : false` in `config`.
+- In release, static files are served from memory: restart the app after changing them. Browsers also cache: force a reload while testing.
+
+## Data
+
+- NoSQL: `NOSQL('x').find().where(...)`; `.sort(field, true)` is **descending**. Updates append a line and mark the old one, so the file grows until it is cleaned.
+- NoSQL dates arrive on the server as `Date`, on the client as text.
+
+## Tests
+
+- `opt.config` passed to `Total.run` is overridden by `(env)` entries of the config: set `process.env` first.
+- `total5 translate` scans the whole directory, `node_modules` included; run it on a copy of the sources or use a small script.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/database/sql-scripts.md
+
+# SQL scripts (PostgreSQL)
+
+Source: the [official guidelines](https://github.com/totaljs-es/guidelines) and the `database.sql` files of Todomator and OpenPlatform.
+
+## Files
+
+- `database.sql` holds the whole current schema, so a new installation needs one file.
+- A change to an existing installation goes in a separate script next to it, named with a date: `database-2024-10-30.sql`. OpenPlatform does this; Todomator also has `database_1-5.sql` by version. Prefer the dated name with dashes, as the file rule requires.
+- The first lines of an upgrade script say which version it upgrades from and that it must run before the app starts.
+- Inside a script, order the objects: **tables, views, functions and stored procedures, indexes**, each part under a banner comment (`-- TABLES`, `-- VIEWS`, `-- INDEXES`).
+- Todomator wraps its script in `BEGIN; ... COMMIT;` so that it applies completely or not at all.
+
+## Names
+
+All lowercase, singular.
+
+| Object | Prefix | Example |
+|---|---|---|
+| table | `tbl_` | `tbl_user`, `tbl_ticket_time` |
+| code list (rarely changes, used for choices) | `cl_` | `cl_status`, `cl_type` |
+| view | `view_` | `view_ticket` |
+| stored procedure | `sp_` | `sp_user` |
+| function | `fn_` | `fn_user` |
+
+Name indexes `<table>_idx<what>`: `tbl_ticket_idxstatus`. Name foreign keys `<table>_<column>_fkey`.
+
+## Columns
+
+- Type `text`, not `varchar`. Lists are `_text`, structured data `json` or `jsonb`, small numbers `int2`, dates `timestamp`, flags `bool`.
+- `id` is the primary key, `text`, filled in the code with `UID()`. A foreign key is the table plus `id`: `userid`, `folderid`, `parentid`.
+- Dates start with `dt`: `dtcreated`, `dtupdated`, `dtremoved`. Booleans start with `is`: `isremoved`, `ispublic`, `isdisabled`.
+- Use the same names for the same thing in every table: `name`, `body`, `search`, `sortindex`, `icon`, `color`.
+- When it fits, every table has `id`, `name` and `dtcreated`.
+- `dtcreated` defaults to UTC now: `DEFAULT timezone('utc'::text, now())`.
+- A column that lists search keywords is called `search`.
+
+## Order of the columns
+
+Identifiers first, then main fields, numbers, booleans, and dates last. Then the constraints and the primary key.
+
+```sql
+CREATE TABLE "public"."tbl_ticket" (
+	"id" text NOT NULL,
+	"folderid" text,
+	"ownerid" text,
+	"name" text,
+	"search" text,
+	"attrs" json,
+	"worked" int4 DEFAULT 0,
+	"ispublic" bool DEFAULT false,
+	"isremoved" bool DEFAULT false,
+	"dtupdated" timestamp,
+	"dtcreated" timestamp DEFAULT timezone('utc'::text, now()),
+	CONSTRAINT "tbl_ticket_folderid_fkey" FOREIGN KEY ("folderid") REFERENCES "public"."tbl_folder"("id") ON DELETE CASCADE ON UPDATE CASCADE,
+	PRIMARY KEY ("id")
+);
+```
+
+## Code lists
+
+A `cl_` table holds the choices of the app and is read once into memory.
+
+```sql
+CREATE TABLE "public"."cl_status" (
+	"id" text NOT NULL,
+	"name" text,
+	"icon" text,
+	"color" text,
+	"sortindex" int2 DEFAULT 0,
+	PRIMARY KEY ("id")
+);
+```
+
+## Format
+
+Tabs (width 4), no useless casts (`name <> 'x'`, not `name <> 'x'::text`), one statement per `;`, a trailing `;` on every command.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/database/queries.md
+
+# Queries with `DATA`
+
+Total.js talks to PostgreSQL through `DATA`, a query builder. Use it for everything it can express; write raw SQL only for what it cannot.
+
+Always end with `.promise($)` (in an async action) or `.callback($)`. Passing `$` lets the framework answer the request with the error.
+
+## Read
+
+```js
+// one record
+var item = await DATA.read('tbl_user').fields('id,name').id(params.id).error('@(User not found)').promise($);
+
+// several
+var items = await DATA.find('tbl_tag').fields('id,search').where('folderid', id).promise($);
+
+// values from a list
+var apps = await DATA.find('op.tbl_app_permission').fields('id,appid').in('id', permissions).promise($);
+```
+
+- `.fields('a,b')` selects columns; name them, do not read `*`.
+- `.id(value)` filters by the primary key.
+- `.error('@(text)')` or `.error(404)` answers with that error when nothing is found. It is what turns a missing row into a 404.
+
+## A list for the UI
+
+`autoquery` reads the query string (`?q=`, `sort`, `page`, `limit`) and builds the query. Name the allowed fields and their types, a default sort and a maximum page size:
+
+```js
+NEWACTION('Groups|list', {
+	name: 'List of groups',
+	action: function($) {
+		DATA.find('op.view_group').autoquery($.query, 'id:UID,name,color,icon,users:Number,dtcreated:Date,dtupdated:Date', 'dtcreated_desc', 100).callback($);
+	}
+});
+```
+
+A list that joins several tables reads from a `view_`.
+
+## Write
+
+```js
+model.id = UID();
+model.dtcreated = NOW;
+await DATA.insert('tbl_ticket_time', model).promise($);
+
+model.dtupdated = NOW;
+await DATA.modify('op.tbl_group', model).id(params.id).error('@(Group not found)').promise($);
+
+await DATA.remove('tbl_tag').id(params.id).error(404).promise($);
+await DATA.remove('tbl_notification').where('ticketid', params.id).where('typeid', 'logwork').promise($);
+```
+
+- Fill `id` with `UID()` and the dates with `NOW` in the action, not in the database.
+- Remove fields that are not columns before `insert` / `modify` (`model.permissions = undefined`).
+- Update or insert in one call: `DATA.modify('tbl_x', data, true).id(id).insert(fn, params)`.
+
+## Conditions
+
+`where(field, value)`, `in(field, array)`, `notin(field, array)`, `search(field, keyword)`, `or(function(b) { b.search('name', m); b.search('email', m); })`.
+
+```js
+var keywords = text.toKeywords(true, true);
+for (var keyword of keywords)
+	builder.search('a.search', keyword);
+```
+
+## Raw SQL
+
+`DATA.query('UPDATE tbl_ticket a SET worked=(SELECT ...) WHERE a.id=$1', [id]).promise($)`.
+
+- Prefer parameters (`$1`) over building the text.
+- When a value must go into the text, escape it with `PG_ESCAPE(value)` before `.format()`. Never concatenate user input.
+
+## Schemas (namespaces)
+
+A table can be addressed with its schema: `op.tbl_user`. Keep the prefix consistent inside one file.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/frontend/components.md
+
+# Components (jComponent)
+
+For widgets, forms, lists, inputs and every other piece of UI, **use a component that already exists**. If none fits, **create a component** (do not build the piece with ad hoc markup and scripts). Load components with `COMPONENTATOR()`, always.
+
+## 1. Look for the component first
+
+The catalogue of jComponent components, with the options and examples of each, is in Forge: <https://forge.totaljs.es/es/components/> (also in `/en/components/`).
+
+Before writing UI:
+
+1. Find the component that does the job (input, form, listing, datagrid, notify, menu, approve...).
+2. Read its page: what it does, its **configuration** and its context (what path and data it expects, what it needs around it).
+3. Use it from markup with `<ui-component name="..." path="..." config="...">`.
+
+Machine-readable forms of the same catalogue (use these from code or an agent):
+
+| What | URL |
+|---|---|
+| One component as markdown | `https://forge.totaljs.es/en/components/<name>.md` (e.g. `input.md`) |
+| The whole catalogue as one text | `https://forge.totaljs.es/llms-components.txt` |
+| The catalogue as JSON lines | `https://forge.totaljs.es/components/dataset.jsonl` |
+| Index of all Forge pages | `https://forge.totaljs.es/index.json` |
+
+Each page carries its framework version (`jcomponent@20`) and a content hash, so you can tell which version a rule refers to.
+
+## Preferred components
+
+When several components could do the job, use these:
+
+| For | Use | Notes |
+|---|---|---|
+| Form fields (text, email, phone, password, multiline, checkbox, select, date...) | `input` (j-Input) | One component for every field: `type` chooses the kind. It replaces j-Textbox and j-Dropdown. |
+| A box with a fixed height and scroll | `viewbox` | `height` is a percentage, `parent` is the container (or `window`), `scroll` / `scrollbar` control scrolling. |
+| Loaders | `loading` | Reacts to the `@showloading` and `@hideloading` flags; `style` picks the look (1 = spinner, 2 = line at the top). |
+| Tables and data grids | `datagrid` | For single page and enterprise apps: filters, sorting, pages, `height` modes (`auto`, `fluid`, `parent`). |
+| Buttons and calls to functions | `exec` | See below. |
+| Predefined design (panels, toolbars, badges, messages, listings, tabs, dark mode) | `intranetcss` | Ready-made CSS classes; see below. |
+
+### exec: buttons and function calls
+
+`exec` is a singleton that works for the whole page: any element with the class `exec` calls a function when it is clicked. Do not add `onclick` handlers or `addEventListener` for buttons.
+
+```html
+<button class="exec" data-exec="?/create"><i class="ti ti-plus-circle"></i>@(Create)</button>
+<span class="exec" data-exec="?/options" data-prevent="true">...</span>
+<a class="exec" data-href="/offers/">@(Offers)</a>
+```
+
+- `data-exec="NAME"`: the function to call, with the form `function(element, event)`. A `?` calls a method of the current plugin (`?/create` is `exports.create`).
+- `data-prevent="true"`: stops the click from going further (for a button inside a clickable row).
+- `data-href="URL"`: redirects instead of calling a function.
+- Double click and context menu use the same attributes with a suffix: `data-exec2` (class `exec2`) and `data-exec3` (class `exec3`).
+
+### intranetcss: predefined design
+
+`intranetcss` is a component made only of CSS. It brings the shared look of the intranet apps, with a dark mode, so a screen does not need its own style for the common pieces:
+
+- containers: `.panel` (with `label` and `.toolbar`), `.padding`, `.divider`, `.bg-smoke`
+- lists and menus: `.listing`, `.listing2`, `.nav`, `.tabmenu`, `.tabmenu2`, `.iconmenu`, `.keyvalue`
+- messages and badges: `.message`, `.message-success`, `.message-error`, `.message-alert`, `.badge` (with colors and sizes)
+- sizes: `.small`, `.medium`, `.large`
+
+Use these classes before writing new CSS (see [css](css.md)). The component is not in the Forge catalogue; its source (version 5) is served by the component download service.
+
+## 2. If it does not exist, create a component
+
+A piece of UI that has behaviour is a component, not a block of script inside a page.
+
+```js
+COMPONENT('name', function(self, config, cls) {
+	// keep the names: "self", "config" and "cls"
+});
+```
+
+- Names of components, plugins, variables and settings in **lowercase**.
+- Keep at most 2-3 levels of nesting in objects.
+- Avoid `_` in variable names.
+- **Think reusable**: a component takes its data from `path` and its options from `config`, and knows nothing about the screen that uses it.
+- Use the same name across projects for the same thing. Check the catalogue before choosing one.
+
+## 3. Load components with COMPONENTATOR()
+
+Never link a component file by hand. List the components the app uses in `definitions/init.js`:
+
+```js
+ON('ready', function() {
+	COMPONENTATOR('ui', 'exec,locale,page,viewbox,input,form,validate,loading,datagrid,intranetcss,message,menu,approve,notify,errorhandler', true);
+});
+```
+
+`COMPONENTATOR(name, components, removeprev, attrs)`:
+
+- `name`: the name of the bundle (`'ui'`).
+- `components`: the components of the bundle, comma-separated, without the `j-` prefix.
+- `removeprev` (default `true`): deletes the older bundles of the same name when the list changes.
+- `attrs`: optional extra parameters for the bundle.
+
+The framework downloads the bundle once, saves it in `public/` as `ui-<name>-<hash>.min.js` and stores its address in `REPO.<name>`. The layout loads it:
+
+```html
+<script src="@{REPO.ui}"></script>
+```
+
+Rules:
+
+- One `COMPONENTATOR()` call per bundle (`ui` for the app, `webui` for public pages).
+- List **only** the components the app uses: the bundle is what every user downloads.
+- When you start using a component, add it to the list; when no screen uses it any more, remove it.
+- A component you created yourself is a normal file of the app (`public/` or the plugin's `public/`), not a `COMPONENTATOR()` entry.
+
+## 4. Quick check
+
+- Is there a component for this in the catalogue? Use it.
+- Did you read its configuration and context before using it? Do.
+- Is it in the `COMPONENTATOR()` list? Add it.
+- Is there none? Create a reusable `COMPONENT('name', ...)` and use it from markup.
+
+See [plugins-ui](plugins-ui.md) for how screens and forms use components, and [views-and-layout](views-and-layout.md) for the layout that loads the bundle.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/frontend/plugins-ui.md
+
+# Plugins with UI
+
+A feature of an app is a **plugin**: a folder with a server part and a UI part that the framework loads and the app shell mounts. The CMS admin (pages, layouts, redirects, settings...) and the Todomator users screen are made this way.
+
+```
+plugins/redirects/
+	index.js              server: metadata + routes
+	schemas/redirects.js  actions (see backend/actions.md)
+	public/index.html     the screen: markup + <script>PLUGIN(...)</script>
+	public/form.html      the form that opens over the screen
+```
+
+## Server part: index.js
+
+```js
+exports.icon = 'ti ti-exchange';
+exports.name = '@(Redirects)';
+exports.position = 3;
+exports.permissions = [{ id: 'redirects', name: 'Redirects' }];
+exports.visible = function(user) {
+	return user.sa || user.permissions.indexOf('redirects') !== -1 || user.permissions.indexOf('admin') !== -1;
+};
+
+exports.install = function() {
+	ROUTE('+API    ?    -redirects_list               --> Redirects|list');
+	ROUTE('+API    ?    +redirects_save               --> Redirects|save');
+};
+```
+
+- `icon` is a Tabler icon class (`ti ti-name`), `name` is translatable with `@(...)`, `position` orders the menu.
+- `permissions` declares what the plugin adds; `visible` decides who sees it.
+- Routes use the same syntax as everywhere (see [routes-and-auth](../backend/routes-and-auth.md)).
+
+## UI part: a screen
+
+A screen is HTML with a `<ui-plugin>` root and one `PLUGIN(function(exports) { ... })` block. Keep markup, scoped style and logic in the same file.
+
+```html
+<style>
+	.CLASS .listing2 figure { margin-bottom: 10px; }
+</style>
+
+<ui-plugin class="CLASS bg-white">
+	<ui-component name="empty" path="?.items" config="parent:auto" class="invisible">
+		...
+	</ui-component>
+</ui-plugin>
+
+<script>
+	PLUGIN(function(exports) {
+
+		exports.reload = function() {
+			exports.refresh();
+		};
+
+		exports.refresh = function() {
+			exports.tapi('redirects_list', function(response) {
+				exports.set('items', response);
+			});
+		};
+
+	});
+</script>
+```
+
+Rules:
+
+- `CLASS` in selectors and class lists is replaced with a unique class for the plugin: it scopes the CSS so plugins do not collide.
+- `?` in a path (`?.items`, `?/create`) means "this plugin": `?.items` is the data, `?/create` is `exports.create`.
+- `exports.reload` runs every time the screen opens.
+- Call the server with `exports.tapi('endpoint_name', data, callback)`. Add `ERROR` after the name (`'redirects_read ERROR'`) to show an error message to the user automatically.
+- Set data with `exports.set('items', value)`, or globally with `SET('path @reset', value)`; read the model with `exports.model`.
+- Handlers are attached in markup: `class="exec" data-exec="?/edit" data-id="{{ m.id }}"`. Read the attribute with `ATTRD(el)`.
+- Text for people is always `@(Text)` so it can be translated.
+- Naming: plugin, component and global names in **lowercase**; keep the names `exports`, `self`, `config`, `cls` as they are.
+
+Official guide on names:
+
+```js
+// BAD
+PLUGIN('Name', function(plugin) { plugin.doSomething = function() {}; });
+
+// GOOD
+PLUGIN('name', function(exports) { exports.dosomething = function() {}; });
+```
+
+## A form
+
+A form is a second file loaded with an `importer` and shown by `miniform` / `form`. It has `?.field` inputs, a `validate` that enables the submit button, and a `submit` function.
+
+```html
+<ui-component name="miniform" path="common.form" config="if:CLASS;icon:ti ti-exchange;autofocus:true;reload:?/reload;submit:?/submit;width:400" class="hidden" plugin="CLASS">
+	<div class="padding">
+		<div class="m">
+			<ui-component name="input" path="?.url" config="required:1;placeholder:@(Relative URL address)">@(URL)</ui-component>
+		</div>
+	</div>
+	<nav>
+		<ui-component name="validate" path="?">
+			<button name="submit" disabled><i class="ti ti-check-circle"></i>@(SUBMIT)</button>
+			<button name="cancel">@(Cancel)</button>
+		</ui-component>
+	</nav>
+</ui-component>
+```
+
+Open it from the screen:
+
+```js
+exports.create = function() {
+	SET('formredirect @default', {});
+	SET('*form', 'formredirect');
+};
+```
+
+## Confirm and menu
+
+```js
+SETTER('approve/show', '@(Are you sure you want to remove it?)', ':ti ti-trash: @(Remove)', function() {
+	exports.tapi('redirects_remove/ ERROR', { id: id }, function() { exports.refresh(); });
+});
+SETTER('menu/show', opt);
+```
+
+## Think reusable
+
+Components, plugins and global names are shared across projects. Before inventing one, look in the [catalogue of components](components.md) and in another app for the same name.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/frontend/views-and-layout.md
+
+# Views and layout
+
+## Layout
+
+The shell of an app is one HTML file in `views/` (`admin.html`, `index.html`). It sets the title, loads the UI library, registers global components once and mounts the plugins.
+
+```html
+@{layout('')}
+@{title(config.name)}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link href="@{'%cdn'}/spa.min@19.css" rel="stylesheet" />
+	<script src="@{'%cdn'}/spa.min@19.js"></script>
+	<script src="@{REPO.ui}"></script>
+	@{import('meta', 'head', 'default.js + func.js', 'default.css', 'favicon.ico')}
+</head>
+<body class="invisible">
+
+	<ui-component name="exec"></ui-component>
+	<ui-component name="errorhandler"></ui-component>
+	<ui-component name="locale" config="requests:1;language:@{language}"></ui-component>
+	<ui-component name="LAZY menu" config="style:2"></ui-component>
+
+</body>
+</html>
+```
+
+- Directives start with `@{...}`: `@{title()}`, `@{import()}`, `@{if}` / `@{fi}`, `@{REPO.ui}`, `@{'%cdn'}` (a config value).
+- Global components are declared once in the layout. `LAZY` loads a component only when it is first used.
+- The component bundle is loaded with `COMPONENTATOR('ui', 'exec,locale,input,...', true)` in `definitions/init.js`. List only the components the app uses; see [components](components.md).
+- `<body class="invisible">` hides the page until the UI is ready.
+
+## Translations
+
+Every text a person reads is wrapped in `@(...)`, in views, in plugin HTML and in server messages: `@(Save)`. The text in English is the key.
+
+## Two kinds of pages
+
+- **App screens** (admin, tools): plugin HTML mounted in the layout, driven by `PLUGIN`.
+- **Public pages**: server-rendered views returned by a controller (`$.view('index')`) or compiled from the CMS. They carry no `PLUGIN` logic.
+
+## Naming
+
+Lowercase file names with `-`: `search-results.html`, `form-offer.html`.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/frontend/css.md
+
+# CSS
+
+Source: the [official guidelines](https://github.com/totaljs-es/guidelines).
+
+- File names lowercase, words separated by `-`.
+- **One rule per line**: keep all declarations of a selector on the same line.
+- Strings in `'` apostrophes.
+- No vendor prefixes. Put `/*auto*/` at the top of the file and Total.js adds them.
+- No LESS and no SASS: Total.js CSS supports variables and nested selectors.
+
+```css
+/*auto*/
+
+.class { key1: value; key2: value; key3: value; }
+.class > div { key1: value; key2: value; }
+```
+
+## In plugins
+
+Style that belongs to a screen goes at the top of its HTML file, scoped with `CLASS`:
+
+```html
+<style>
+	.CLASS .listing2 figure { margin-bottom: 10px; }
+	.CLASS .listing2 .permanent { background-color: #F6E7EA; }
+</style>
+```
+
+`CLASS` becomes a class unique to the plugin, so the rule cannot leak to other screens.
+
+## Predefined classes
+
+The `intranetcss` component provides the common design (panels, toolbars, badges, messages, listings, tabs, dark mode). Use its classes before writing new CSS: see [components](components.md).
+
+## Global style
+
+`public/default.css` holds what is shared. Colors that change per user or theme are CSS variables (`:root { --color: ... }`), set once in the layout.
+
+## Static files
+
+`/img/`, `/css/`, `/js/`, `/fonts/`, `/videos/`. Images use the file-name rule: lowercase with dashes.

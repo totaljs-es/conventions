@@ -22,6 +22,12 @@ Each zone is a folder. Read only the one you need.
 - database: [sql-scripts](database/sql-scripts.md), [queries](database/queries.md)
 - frontend: [components](frontend/components.md), [plugins-ui](frontend/plugins-ui.md), [views-and-layout](frontend/views-and-layout.md), [css](frontend/css.md)
 
+## For AI agents
+
+- [`AGENTS.md`](AGENTS.md): how to use these pages and the rules for every change (also `CLAUDE.md`, `GEMINI.md` and `.github/copilot-instructions.md`, which point to it).
+- [`llms.txt`](llms.txt): an index with a link to every page; [`llms-full.txt`](llms-full.txt): every page in one file.
+- Skills to write and to review code with these conventions: `.claude/skills/` and `.agents/skills/`.
+
 ## Principles
 
 1. **ES5 over ES6**: `var`, `function`, classic loops. ES6 only when there is no ES5 way.

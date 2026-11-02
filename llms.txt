@@ -1,0 +1,30 @@
+# Total.js conventions
+
+> How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, actions named Collection|verb, routes in controllers, DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR(). Learned from production Total.js 5 apps and the official style guide.
+
+Read only the zone you work in: general, backend, database or frontend. Every rule has an example taken from real code. Written for Total.js 5 (`total5` on npm); the official guidelines are for Total.js 4 and the pages mark where they differ.
+
+## Start here
+
+- [README](https://raw.githubusercontent.com/totaljs-es/conventions/main/README.md): The zones, the pages and the principles
+- [AGENTS.md](https://raw.githubusercontent.com/totaljs-es/conventions/main/AGENTS.md): For an agent: how to use these pages and the rules that apply to every change
+## General
+
+- [Project structure](https://raw.githubusercontent.com/totaljs-es/conventions/main/general/project-structure.md): Folders, index.js, where each kind of file goes, the checks
+- [JavaScript style](https://raw.githubusercontent.com/totaljs-es/conventions/main/general/javascript-style.md): ES5 over ES6, prototypes and Tangular first, no imports from Node.js, formatting and names
+## Backend
+
+- [Actions](https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/actions.md): NEWACTION: naming with a pipe, input and params, answers, permissions, DATA
+- [Routes and authentication](https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/routes-and-auth.md): ROUTE syntax for APIs, pages and uploads, and the single AUTH
+- [Definitions and modules](https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/definitions-and-modules.md): auth, init, func and db definitions, config, modules, MAIN, REPO and FUNC
+- [Gotchas of the server](https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/gotchas.md): Behaviours that differ from what you would guess
+## Database
+
+- [SQL scripts](https://raw.githubusercontent.com/totaljs-es/conventions/main/database/sql-scripts.md): PostgreSQL files, names, columns, order of the columns, code lists
+- [Queries with DATA](https://raw.githubusercontent.com/totaljs-es/conventions/main/database/queries.md): read, find, autoquery, insert, modify, remove, conditions, raw SQL
+## Frontend
+
+- [Components](https://raw.githubusercontent.com/totaljs-es/conventions/main/frontend/components.md): Use the existing jComponent components, preferred ones, exec, intranetcss, COMPONENTATOR()
+- [Plugins with UI](https://raw.githubusercontent.com/totaljs-es/conventions/main/frontend/plugins-ui.md): Server part, screens, forms, PLUGIN() and tapi
+- [Views and layout](https://raw.githubusercontent.com/totaljs-es/conventions/main/frontend/views-and-layout.md): The layout, directives, translations, public pages
+- [CSS](https://raw.githubusercontent.com/totaljs-es/conventions/main/frontend/css.md): Formatting, CLASS scoping, predefined classes
