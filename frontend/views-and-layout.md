@@ -31,7 +31,7 @@ The shell of an app is one HTML file in `views/` (`admin.html`, `index.html`). I
 
 - Directives start with `@{...}`: `@{title()}`, `@{import()}`, `@{if}` / `@{fi}`, `@{REPO.ui}`, `@{'%cdn'}` (a config value).
 - Global components are declared once in the layout. `LAZY` loads a component only when it is first used.
-- The component bundle is compiled on start with `COMPONENTATOR('ui', 'exec,locale,input,...', true)` in `definitions/init.js`. List only the components the app uses.
+- The component bundle is loaded with `COMPONENTATOR('ui', 'exec,locale,input,...', true)` in `definitions/init.js`. List only the components the app uses; see [components](components.md).
 - `<body class="invisible">` hides the page until the UI is ready.
 
 ## Translations

@@ -18,6 +18,7 @@ This repository is a reference of conventions for Total.js 5 applications. Read 
 - Actions are `NEWACTION('Collection|verb', { name, input, params, permissions, action })`.
 - Routes live in `controllers/` or in the plugin's `index.js`: `ROUTE('+API ? -name --> Collection|verb')`.
 - Data goes through `DATA` with `.promise($)`; ids are `UID()`, dates are `NOW`.
+- Frontend: use an existing jComponent component (catalogue: https://forge.totaljs.es/es/components/, markdown at `https://forge.totaljs.es/en/components/<name>.md`); if none exists, create a reusable `COMPONENT('name', ...)`. Load components only with `COMPONENTATOR()`.
 - Every text for people is `@(Text)`.
 - After editing JavaScript run `node --check file.js`; start the app and call the route you changed.
 

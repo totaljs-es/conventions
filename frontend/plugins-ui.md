@@ -124,4 +124,4 @@ SETTER('menu/show', opt);
 
 ## Think reusable
 
-Components, plugins and global names are shared across projects. Before inventing one, look in another app for the same name.
+Components, plugins and global names are shared across projects. Before inventing one, look in the [catalogue of components](components.md) and in another app for the same name.

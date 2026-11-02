@@ -13,14 +13,14 @@ Each zone is a folder. Read only the one you need.
 | [`general/`](general) | Project layout, JavaScript style, naming. Applies everywhere. |
 | [`backend/`](backend) | Actions, routes, authentication, definitions, modules, gotchas of the server. |
 | [`database/`](database) | PostgreSQL scripts and how the code queries them with `DATA`. |
-| [`frontend/`](frontend) | Plugins with UI, views and layouts, components, CSS. |
+| [`frontend/`](frontend) | jComponent components (use the existing ones, `COMPONENTATOR()`), plugins with UI, views and layouts, CSS. |
 
 ## Pages
 
 - general: [project-structure](general/project-structure.md), [javascript-style](general/javascript-style.md)
 - backend: [actions](backend/actions.md), [routes-and-auth](backend/routes-and-auth.md), [definitions-and-modules](backend/definitions-and-modules.md), [gotchas](backend/gotchas.md)
 - database: [sql-scripts](database/sql-scripts.md), [queries](database/queries.md)
-- frontend: [plugins-ui](frontend/plugins-ui.md), [views-and-layout](frontend/views-and-layout.md), [css](frontend/css.md)
+- frontend: [components](frontend/components.md), [plugins-ui](frontend/plugins-ui.md), [views-and-layout](frontend/views-and-layout.md), [css](frontend/css.md)
 
 ## Principles
 
