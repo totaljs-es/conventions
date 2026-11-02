@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"description": "Total.js 5 code conventions, for people and for AI agents",
 	"private": true,
+	"license": "MIT",
 	"scripts": {
 		"llms": "node scripts/llms.js --write",
 		"test": "node --test"

@@ -2,7 +2,7 @@
 
 How Total.js 5 applications are written, learned from real production apps and from the official style guide. It is a reference for people and for AI agents: read the zone you are working in, copy the pattern, keep the names.
 
-Every rule comes with an example taken from the code of the Total.js apps (CMS, Dashboard, OpenPlatform, Todomator) or from the [official guidelines](https://github.com/totaljs-es/guidelines). Where the two differ, the page says so.
+Every rule comes with an example taken from the code of the Total.js apps CMS, OpenPlatform and Todomator or from the [official guidelines](https://github.com/totaljs-es/guidelines). Where the two differ, the page says so.
 
 ## Zones
 
@@ -43,3 +43,7 @@ Each zone is a folder. Read only the one you need.
 ## Versions
 
 Written for **Total.js 5** (`total5` on npm). The official guidelines were written for Total.js 4 (`NEWSCHEMA`, `var`); the pages mark the places where Total.js 5 code differs. Do not assume a Total.js 4 API exists in version 5: check the framework source or an existing app.
+
+## License
+
+[MIT](LICENSE). The examples are short excerpts adapted from Total.js CMS and Total.js OpenPlatform (MIT, Copyright Peter Širka / Total.js) and from Todomator (MIT), kept to illustrate the conventions.
