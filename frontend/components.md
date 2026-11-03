@@ -112,6 +112,22 @@ Rules:
 - When you start using a component, add it to the list; when no screen uses it any more, remove it.
 - A component you created yourself is a normal file of the app (`public/` or the plugin's `public/`), not a `COMPONENTATOR()` entry.
 
+## Adapt the official component's appearance
+
+Reuse the official component and its configuration first. A different visual design usually needs a scoped CSS skin, not a copied component implementation or a file that embeds jComponent itself.
+
+Forge at commit `827311e` uses the official `backtotop` through `COMPONENTATOR('webui', 'backtotop', true)` and declares:
+
+```html
+<ui-component name="backtotop" class="forge-backtotop" config="icon:ti ti-arrow-up;$init:FUNC.backtotop" data-label="@(Back to top)"></ui-component>
+```
+
+Its `public/css/components.css` changes the appearance. Its `public/js/func.js` adds button semantics, a translated accessible name and keyboard focus handling through the native `$init` hook. The official component retains its scrolling and visibility behavior. The hook is needed because the inspected official component renders a span; CSS cannot provide button semantics.
+
+Verify hook timing against the installed runtime and component: the inspected `jComponent/library.js` calls `make` before applying `$init`, so the hook can adapt the generated markup. Keep such hooks small and idempotent, and check Enter, Space, pointer interaction, focus and reduced motion. If a component supplies the required semantics already, use them directly.
+
+Sources: Forge `definitions/ui.js`, `views/layout.html`, `public/js/func.js` and `public/css/components.css` at `827311e`; upstream `j-BackToTop/component.js` in Forge's pinned `vendor/components-master/`; [jComponent source](https://github.com/totaljs/jComponent), `library.js`, component creation and reconfiguration. This is a maintained-app example, not a claim that every Total.js app needs an initialization hook.
+
 ## 4. Quick check
 
 - Is there a component for this in the catalogue? Use it.

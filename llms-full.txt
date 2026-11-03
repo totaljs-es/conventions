@@ -180,6 +180,10 @@ The Forge application reorganization inspected on 2026-11-03 supplies a concrete
 
 Sources in Forge: `AGENTS.md`, `modules/i18n.js`, `modules/content-snapshot.js`, `definitions/benchmarks.js`, `controllers/default.js`, `tools/make-package.js`, `tools/with-test-app.js` and the standalone taskboard reference. The folder grouping is an adopted repository policy illustrated by Forge, not a claim that all inspected Total.js apps have identical directories or that Total.js forbids extra directories. Existing root SQL files, public asset contracts and legacy migration inputs remain separate considerations.
 
+## Forge frontend example
+
+Forge commit `827311e` is the concrete reference for CDN jComponent 20 loading, separate `ui`/`webui` component bundles, official BackToTop with a scoped skin and a native accessibility initialization hook. Inspect `views/layout.html`, `views/admin.html`, `definitions/ui.js`, `public/js/func.js` and `public/css/components.css` together. The pinned `vendor/components-master/j-BackToTop/` source and upstream `jComponent/library.js` explain generated markup and `$init` timing. This extends the earlier application snapshots; it does not change their recorded UI versions or claim that all apps use the same frontend shell.
+
 ---
 
 Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/general/workflow.md
@@ -1210,6 +1214,22 @@ Rules:
 - When you start using a component, add it to the list; when no screen uses it any more, remove it.
 - A component you created yourself is a normal file of the app (`public/` or the plugin's `public/`), not a `COMPONENTATOR()` entry.
 
+## Adapt the official component's appearance
+
+Reuse the official component and its configuration first. A different visual design usually needs a scoped CSS skin, not a copied component implementation or a file that embeds jComponent itself.
+
+Forge at commit `827311e` uses the official `backtotop` through `COMPONENTATOR('webui', 'backtotop', true)` and declares:
+
+```html
+<ui-component name="backtotop" class="forge-backtotop" config="icon:ti ti-arrow-up;$init:FUNC.backtotop" data-label="@(Back to top)"></ui-component>
+```
+
+Its `public/css/components.css` changes the appearance. Its `public/js/func.js` adds button semantics, a translated accessible name and keyboard focus handling through the native `$init` hook. The official component retains its scrolling and visibility behavior. The hook is needed because the inspected official component renders a span; CSS cannot provide button semantics.
+
+Verify hook timing against the installed runtime and component: the inspected `jComponent/library.js` calls `make` before applying `$init`, so the hook can adapt the generated markup. Keep such hooks small and idempotent, and check Enter, Space, pointer interaction, focus and reduced motion. If a component supplies the required semantics already, use them directly.
+
+Sources: Forge `definitions/ui.js`, `views/layout.html`, `public/js/func.js` and `public/css/components.css` at `827311e`; upstream `j-BackToTop/component.js` in Forge's pinned `vendor/components-master/`; [jComponent source](https://github.com/totaljs/jComponent), `library.js`, component creation and reconfiguration. This is a maintained-app example, not a claim that every Total.js app needs an initialization hook.
+
 ## 4. Quick check
 
 - Is there a component for this in the catalogue? Use it.
@@ -1372,8 +1392,8 @@ The shell of an app is one HTML file in `views/` (`admin.html`, `index.html`). I
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link href="@{'%cdn'}/spa.min@19.css" rel="stylesheet" />
-	<script src="@{'%cdn'}/spa.min@19.js"></script>
+	<link href="https://cdn.componentator.com/spa.min@20.css" rel="stylesheet" />
+	<script src="https://cdn.componentator.com/spa.min@20.js"></script>
 	<script src="@{REPO.ui}"></script>
 	@{import('meta', 'head', 'default.js + func.js', 'default.css', 'favicon.ico')}
 </head>
@@ -1388,10 +1408,22 @@ The shell of an app is one HTML file in `views/` (`admin.html`, `index.html`). I
 </html>
 ```
 
-- Directives start with `@{...}`: `@{title()}`, `@{import()}`, `@{if}` / `@{fi}`, `@{REPO.ui}`, `@{'%cdn'}` (a config value).
+- Directives start with `@{...}`: `@{title()}`, `@{import()}`, `@{if}` / `@{fi}`, `@{REPO.ui}`, `https://cdn.componentator.com` (a config value).
 - Global components are declared once in the layout. `LAZY` loads a component only when it is first used.
 - The component bundle is loaded with `COMPONENTATOR('ui', 'exec,locale,input,...', true)` in `definitions/init.js`. List only the components the app uses; see [components](components.md).
 - `<body class="invisible">` hides the page until the UI is ready.
+
+## Runtime, bundles and application assets
+
+The example above is adapted from the CMS shell, using this repository's jComponent 20 CDN default for new layouts. The inspected CMS itself uses 19; an existing app requires a deliberate version migration. Forge's public and admin layouts at commit `827311e` demonstrate the 20 setup.
+
+- Load `https://cdn.componentator.com/spa.min@20.css` and `https://cdn.componentator.com/spa.min@20.js` once per document. The runtime must precede component bundles and scripts that use its APIs.
+- `COMPONENTATOR()` downloads the selected components; it does not replace the core runtime. Load the matching `@{REPO.ui}` or `@{REPO.webui}` after the runtime.
+- Keep application helpers in app assets, such as `public/js/func.js`, and preserve the existing browser `FUNC` object when extending it. Load helpers before components that call them during initialization.
+- Keep the app stylesheet and scoped component skins after the base stylesheet; see [CSS](css.md). Remove embedded copies of the runtime and obsolete custom loaders when adopting this setup.
+- An isolated recipe iframe can intentionally use a pinned runtime with its own hashes and evidence. It is a separate document; preserve that version boundary.
+
+Changing asset loading must preserve the existing title, language, canonical and alternate URLs, metadata, structured data, agent discovery links, landmarks and accessible navigation. Check the rendered HTML and browser console, keyboard interaction, mobile layout and reduced-motion behavior. A component initializing successfully does not establish that the whole layout is accessible.
 
 ## Translations
 
@@ -1537,3 +1569,9 @@ The `intranetcss` component provides the common design (panels, toolbars, badges
 ## Static files
 
 `/img/`, `/css/`, `/js/`, `/fonts/`, `/videos/`. Images use the file-name rule: lowercase with dashes.
+
+## Component skins
+
+Scope overrides to an app class combined with the official component class, for example `.forge-backtotop.ui-backtotop`. Keep the official component's selectors and behavior intact. Component CSS can be injected after the app stylesheet; use deliberate specificity instead of depending only on load order or broad global overrides.
+
+Forge's `public/css/components.css` at commit `827311e` skins the official BackToTop this way. Preserve visible keyboard focus, sufficient contrast, mobile positioning and `prefers-reduced-motion` when adapting its appearance. Semantic or focus changes belong in a small native initialization hook, as described in [components](components.md), rather than in CSS.
