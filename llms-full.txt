@@ -1,6 +1,6 @@
 # Total.js conventions: every page
 
-> How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, pipe-separated action and schema names, explicit or action-declared routes, existing storage and DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR(). Learned from inspected Total.js 5 app snapshots and framework source.
+> How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, pipe-separated action and schema names, explicit or action-declared routes, recognizable runtime/private/docs folders, MODS module access, existing storage and DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR(). Learned from inspected Total.js 5 app snapshots and framework source.
 
 ---
 
@@ -41,7 +41,7 @@ Each zone is a folder. Read the general rules, then the pages relevant to your c
 1. **ES5 over ES6**: `var`, `function`, classic loops. ES6 only when there is no ES5 way.
 2. **Total.js first**: prototypes (`'{0}'.format()`, `findItem()`, `parseJSON()`...) in the backend and Tangular in the frontend, before any other function.
 3. **No imports from Node.js**: use `Total.Fs`, `Total.Path`, `Total.Crypto`... instead of `require()`.
-4. Follow the code that is already next to yours. A new file looks like its neighbours.
+4. Keep runtime code and inputs in recognizable Total.js folders. Use `private/` for internal runtime files, `docs/` for development material, and `MODS` for loaded application modules. Follow the code that is already next to yours. A new file looks like its neighbours.
 5. Keep names short, lowercase and the same across projects: `id`, `name`, `body`, `dtcreated`, `items`. Use `|` between parts of action and schema names (`Tickets|list`, `@Reports|Categories`), never `/` or `\`.
 6. Declare types once (`input:` / `params:` / `query:`). In the action, still check ownership, permissions, existence and business constraints.
 7. Follow the app's route registration pattern: explicit `ROUTE()` or the action's `route:`. Keep business logic in actions and use the existing storage model.
@@ -80,6 +80,8 @@ This repository is a reference of conventions for Total.js 5 applications. Read 
 - Repository default for new code — ES5 over ES6: `var`, `function`, classic loops, `'{0}'.format()` instead of template literals. ES6 only when there is no ES5 way.
 - Use Total.js prototypes (`findItem`, `format`, `parseJSON`, `slug`, `isEmail`...) in the backend and Tangular templates in the frontend before any other function.
 - In initialized app code, do not `require()` exposed Node.js modules: use `Total.Fs`, `Total.Path`, `Total.Crypto`, `Total.Os`, `Total.Zlib`, etc.
+- Runtime code and inputs use recognizable Total.js folders; internal runtime files belong under `private/`, and development documentation, evaluations and standalone examples under `docs/`. The running app must not depend on `docs/`. Update readers, exports, tests and deployment allowlists when moving files.
+- Loaded application modules are accessed through `MODS`, not repeated path-based imports. Preserve direct imports in standalone tools and respect module-loading order; see `backend/definitions-and-modules.md`.
 - Tabs, semicolons, `'` for short strings, lowercase file names with `-`.
 - Use `|` as the separator in action and schema names: `Tickets|list`, `Reports|Categories|list`, `@Reports|Categories`. Do not use `/` or `\` as name separators. When correcting an existing name, update registrations and every caller together, checking generated endpoints and compatibility. See `backend/actions.md`.
 - Follow the app's route style: explicit `ROUTE()` or an action's `route:`. Never register the same endpoint twice.
@@ -151,6 +153,7 @@ Dashboard and FlowOS declare a Total.js Enterprise license. They and IoT were in
 
 In [Total.js framework5](https://github.com/totaljs/framework5):
 
+- `index.js`, module loading, and `global.js`: automatic registration in `F.modules`, its `MODS` alias, module IDs and optional `install()`; sibling initialization still requires lifecycle care. CMS `plugins/dashboard/schemas/dashboard.js` demonstrates `MODS.visitors` in actions.
 - `index.js`, module initialization: `Total.Os`, `Total.Fs`, `Total.Path` and the other native module aliases; `COMPONENTATOR` and `MEMORIZE` implementations.
 - `builders.js`, `exports.newaction` and action execution: automatic routes, `user`, `sa` and `permissions`; `Options.prototype.invalid`, `done` and action calling.
 - `mcp.js`, tool-name sanitizer: `/` and `|` both become `_`; this is independent of this repository's `|` naming convention. Name corrections require coordinated caller and endpoint updates.
@@ -170,6 +173,12 @@ node scripts/check-sources.js --apps /path/to/downloaded/apps --framework /path/
 ```
 
 Run this from the conventions repository root. Exit 0 means the selected files match, 1 means drift or missing files, and 2 means invalid arguments. It requires local reference copies; `npm test` uses isolated fixtures and does not need those apps.
+
+## Forge organization policy
+
+The Forge application reorganization inspected on 2026-11-03 supplies a concrete maintained-project example for `private/languages.json`, `private/database/`, `docs/evaluations/`, `docs/findings/` and the subsequent standalone-example placement under `docs/examples/`. Runtime language reading, SQL startup, exports, isolated application copies and deployment allowlists were updated together. Application module consumers use `MODS`; standalone Node maintenance tools retain direct imports.
+
+Sources in Forge: `AGENTS.md`, `modules/i18n.js`, `modules/content-snapshot.js`, `definitions/benchmarks.js`, `controllers/default.js`, `tools/make-package.js`, `tools/with-test-app.js` and the standalone taskboard reference. The folder grouping is an adopted repository policy illustrated by Forge, not a claim that all inspected Total.js apps have identical directories or that Total.js forbids extra directories. Existing root SQL files, public asset contracts and legacy migration inputs remain separate considerations.
 
 ---
 
@@ -208,6 +217,14 @@ Remove duplicated validation and pass-through wrappers when a native call expres
 
 Make corrections by coherent feature, preserving owner changes. A formatting rewrite and an endpoint redesign have different review risks; keep their intent explicit. Do not edit minified vendor assets, bundles or runtime databases as source.
 
+## Organize files during a refactor
+
+Apply the [project structure](project-structure.md) policy: runtime files in recognizable Total.js folders, private runtime inputs under `private/`, and documentation, evaluation material and independent examples under `docs/`. The running application must not depend on `docs/`; development tools can use its fixtures. Consume automatically loaded modules through `MODS`, while preserving standalone-tool imports.
+
+Before deleting an old tree, remove its runtime reader, routes, generators and obsolete checks together. Preserve contracts unless the requested scope explicitly retires them. Retain the current external integration when replacing local artifacts with an external source, and keep its integrity checks. Generated/minified dependencies and historical evidence must not be silently rewritten as part of a folder move.
+
+Check package contents and private-file allowlists, temporary export layouts, migration inputs and documentation links after moving a file. An old layout may still be intentional input to a one-time legacy migration; document that exception instead of changing what the migration reads.
+
 ## Verify the result
 
 - Run `node --check` for changed JS; it does not cover inline scripts in HTML, templates or browser APIs.
@@ -229,6 +246,9 @@ Use the nearest compatible Total.js example. Use | between parts of action
 and schema names, never / or \. Update registrations and callers together
 when correcting names, checking endpoint compatibility. Preserve URLs,
 permissions, storage model and UI major version during corrections.
+Keep runtime inputs in private/, internal documentation and examples in docs/,
+and loaded application module access through MODS. Preserve standalone-tool
+imports and update package/test/export paths when moving files.
 Report convention findings with file/line, rule, proposed fix and checks run.
 ```
 
@@ -299,11 +319,36 @@ modules/            integrations with other systems (cdn, openplatform, tapi...)
 plugins/<name>/     a feature: index.js (server), index.html (UI), schemas/, public/
 schemas/            actions that are not part of a plugin
 views/              layout and pages (HTML with @{...} directives)
-public/             static files: default.css, default.js, img/, fonts/
+public/             browser-accessible static files
+private/            internal runtime files and grouped SQL/maintenance assets
+docs/               development documentation, evidence and standalone examples
 database.sql        the full schema; changes go to dated files next to it
 ```
 
 Optional, when the app is shipped: `Dockerfile`, `docker-compose.yaml`, `bundle.sh` (writes `--bundles--/app.bundle`), `license.txt`, `readme.md`.
+
+## Recognizable application folders
+
+**Repository policy:** runtime code and inputs belong in the framework folders above. Classify a file by its consumer, rather than creating a new top-level folder for every concern. `docs/` is for development material; the running application must not read it. Development tools may read evaluation fixtures and reference projects there.
+
+The Forge reorganization is a concrete application of this policy:
+
+| Material | Location | Consumer |
+|---|---|---|
+| Enabled-language catalogue | `private/languages.json` | Application and validation tools |
+| Interface translations | `resources/<lang>.resource` | Native localization |
+| SQL, migration notes and maintenance units | `private/database/` | Startup, installation and maintenance |
+| Evaluation fixtures and recorded checks | `docs/evaluations/` | Development tools and reviewers |
+| Investigation reports and reproductions | `docs/findings/` | Developers |
+| Standalone reference applications | `docs/examples/<name>/` | Readers and example checks |
+
+A language catalogue is configuration data, not the interface translation store. Database-backed editorial translations remain in their existing database. Moving a file does not authorize a storage migration.
+
+Use `public/` only when a browser or public client is intended to retrieve the file. Use `private/` for files the application needs internally. Exclude credentials, local databases and development documentation from deployment archives; whitelist the specific private paths required by the runtime rather than packaging the entire directory. Generated assets are not hand-edited source.
+
+The root `database.sql` and dated upgrades used by OpenPlatform and Todomator remain valid existing layouts. When grouping internal SQL files, put the group under `private/database/` rather than creating an application-level `database/` folder. This is repository policy, not a restriction of the Total.js loader. The `database/` folder in this conventions repository is a documentation zone, not an application runtime directory.
+
+Source: Forge's `private/languages.json`, `private/database/`, `modules/i18n.js`, `definitions/benchmarks.js`, `tools/make-package.js`, `tools/with-test-app.js` and `docs/examples/taskboard/`. See [sources and scope](sources.md).
 
 ## index.js
 
@@ -341,6 +386,8 @@ Run it with `node index.js 8000` (add `--release` for release mode).
 
 - `node --check path/to/file.js` for every JavaScript file you change.
 - Start the app and call the route you touched. If the project has no test script, do not say tests passed.
+
+After moving files, update runtime readers, exporters, migration tools, isolated-test setup, package allowlists, ignore rules and documentation links together. Preserve source content and recorded evidence. Verify that the archive includes the new runtime paths and excludes internal documentation and credentials.
 
 ---
 
@@ -450,6 +497,8 @@ const Path = require('path');
 (The official guide shows `const Path = require('path')`. That was for Total.js 4; in Total.js 5 use `Total.Path`.)
 
 Application files run after Total.js has initialized these globals. Bootstrap files still load `total5`, database adapters may need `require('querybuilderpg')`, and standalone Node.js tools (such as this repo's generator) use Node imports. Do not apply app-global rules to a process that has not loaded the framework.
+
+Access application modules through `MODS.name` or `MODS['hyphenated-name']`, rather than repeatedly requiring their file path. Standalone tools may import a shared helper directly; requiring `total5` alone does not populate the module registry. See [definitions and modules](../backend/definitions-and-modules.md).
 
 ## Formatting
 
@@ -750,13 +799,31 @@ A plain file, one `key : value` per line. Read it with `CONF.key`. Settings the 
 
 ## modules/
 
-A module is an integration with another system or a self-contained service (`cdn.js`, `openplatform.js`, `visitors.js`). It uses the same `exports.install` pattern as a controller and may add its own globals (`OpenPlatform`). Keep a module independent: it reads `CONF`, not other modules' internals.
+A module is an integration with another system or a self-contained service (`cdn.js`, `openplatform.js`, `visitors.js`). Total.js loads `modules/*.js` automatically and registers the exports under `MODS`, using `exports.id` or the filename without its extension. The loader calls `exports.install()` when that method exists; a module exposing reusable methods does not need an empty installer.
+
+Use that registry from initialized application code. Adapted from CMS `plugins/dashboard/schemas/dashboard.js`:
+
+```js
+var data = MODS.visitors.today();
+var visitors = MODS.visitors.instance.visitors;
+```
+
+Hyphenated IDs use bracket access, for example `MODS['knowledge-source']`. Do not repeatedly import an application module with `require(PATH.root('modules/...'))`. Name application modules `.js`; in the inspected loader, a `.cjs` helper is not automatically registered by the `modules` scan.
+
+`MODS` exists after framework initialization, but an entry exists only after its module loads. Read another module from an exported method or an appropriate lifecycle callback; do not depend on sibling filename order or introduce circular initialization. Work needing application state or a database belongs in the existing ready/configure lifecycle. An automatically called `install()` must not require arguments supplied only by a later controller.
+
+A standalone Node tool does not acquire loaded application modules merely by requiring `total5`. It may import a shared CommonJS helper directly. Preserve that execution boundary when code is shared with validators or maintenance tools; do not replace valid CLI imports with an unpopulated `MODS` entry. The `total5` bootstrap and third-party database adapters also retain their required imports.
+
+Keep a module independent: it reads `CONF`, not another integration's private internals. Some existing integrations expose a dedicated global such as `OpenPlatform`; preserve that public contract when present. New application module consumers use `MODS`.
+
+Sources: framework5 `index.js` (module loading and optional installer), `global.js` (`MODS = F.modules`), CMS dashboard actions, and Forge controllers/definitions after its module reorganization.
 
 ## Shared state
 
 - `MAIN`: the application's own state (`MAIN.db`, `MAIN.cache`).
 - `REPO`: cached lookups that the UI also needs (`REPO.tags`, `REPO.ui`).
 - `FUNC`: functions shared by actions and controllers.
+- `MODS`: automatically registered application module exports.
 
 Do not create new globals. Hang things from these three.
 
@@ -863,6 +930,7 @@ Source: the [official guidelines](https://github.com/totaljs-es/guidelines) and 
 ## Files
 
 - `database.sql` holds the whole current schema, so a new installation needs one file.
+- Preserve the existing root SQL-file layout in apps that use it. When grouping SQL and maintenance files in a directory, use `private/database/`; update application readers, migration tools and package allowlists together. This layout policy does not change the SQL contract. See [project structure](../general/project-structure.md).
 - A change to an existing installation goes in a separate script next to it, named with a date: `database-2024-10-30.sql`. OpenPlatform does this; Todomator also has `database_1-5.sql` by version. Prefer the dated name with dashes, as the file rule requires.
 - The first lines of an upgrade script say which version it upgrades from and that it must run before the app starts.
 - Inside a script, order the objects: **tables, views, functions and stored procedures, indexes**, each part under a banner comment (`-- TABLES`, `-- VIEWS`, `-- INDEXES`).

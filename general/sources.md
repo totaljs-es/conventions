@@ -29,6 +29,7 @@ Dashboard and FlowOS declare a Total.js Enterprise license. They and IoT were in
 
 In [Total.js framework5](https://github.com/totaljs/framework5):
 
+- `index.js`, module loading, and `global.js`: automatic registration in `F.modules`, its `MODS` alias, module IDs and optional `install()`; sibling initialization still requires lifecycle care. CMS `plugins/dashboard/schemas/dashboard.js` demonstrates `MODS.visitors` in actions.
 - `index.js`, module initialization: `Total.Os`, `Total.Fs`, `Total.Path` and the other native module aliases; `COMPONENTATOR` and `MEMORIZE` implementations.
 - `builders.js`, `exports.newaction` and action execution: automatic routes, `user`, `sa` and `permissions`; `Options.prototype.invalid`, `done` and action calling.
 - `mcp.js`, tool-name sanitizer: `/` and `|` both become `_`; this is independent of this repository's `|` naming convention. Name corrections require coordinated caller and endpoint updates.
@@ -48,3 +49,9 @@ node scripts/check-sources.js --apps /path/to/downloaded/apps --framework /path/
 ```
 
 Run this from the conventions repository root. Exit 0 means the selected files match, 1 means drift or missing files, and 2 means invalid arguments. It requires local reference copies; `npm test` uses isolated fixtures and does not need those apps.
+
+## Forge organization policy
+
+The Forge application reorganization inspected on 2026-11-03 supplies a concrete maintained-project example for `private/languages.json`, `private/database/`, `docs/evaluations/`, `docs/findings/` and the subsequent standalone-example placement under `docs/examples/`. Runtime language reading, SQL startup, exports, isolated application copies and deployment allowlists were updated together. Application module consumers use `MODS`; standalone Node maintenance tools retain direct imports.
+
+Sources in Forge: `AGENTS.md`, `modules/i18n.js`, `modules/content-snapshot.js`, `definitions/benchmarks.js`, `controllers/default.js`, `tools/make-package.js`, `tools/with-test-app.js` and the standalone taskboard reference. The folder grouping is an adopted repository policy illustrated by Forge, not a claim that all inspected Total.js apps have identical directories or that Total.js forbids extra directories. Existing root SQL files, public asset contracts and legacy migration inputs remain separate considerations.

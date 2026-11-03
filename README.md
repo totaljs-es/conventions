@@ -33,7 +33,7 @@ Each zone is a folder. Read the general rules, then the pages relevant to your c
 1. **ES5 over ES6**: `var`, `function`, classic loops. ES6 only when there is no ES5 way.
 2. **Total.js first**: prototypes (`'{0}'.format()`, `findItem()`, `parseJSON()`...) in the backend and Tangular in the frontend, before any other function.
 3. **No imports from Node.js**: use `Total.Fs`, `Total.Path`, `Total.Crypto`... instead of `require()`.
-4. Follow the code that is already next to yours. A new file looks like its neighbours.
+4. Keep runtime code and inputs in recognizable Total.js folders. Use `private/` for internal runtime files, `docs/` for development material, and `MODS` for loaded application modules. Follow the code that is already next to yours. A new file looks like its neighbours.
 5. Keep names short, lowercase and the same across projects: `id`, `name`, `body`, `dtcreated`, `items`. Use `|` between parts of action and schema names (`Tickets|list`, `@Reports|Categories`), never `/` or `\`.
 6. Declare types once (`input:` / `params:` / `query:`). In the action, still check ownership, permissions, existence and business constraints.
 7. Follow the app's route registration pattern: explicit `ROUTE()` or the action's `route:`. Keep business logic in actions and use the existing storage model.

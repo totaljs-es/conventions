@@ -12,11 +12,36 @@ modules/            integrations with other systems (cdn, openplatform, tapi...)
 plugins/<name>/     a feature: index.js (server), index.html (UI), schemas/, public/
 schemas/            actions that are not part of a plugin
 views/              layout and pages (HTML with @{...} directives)
-public/             static files: default.css, default.js, img/, fonts/
+public/             browser-accessible static files
+private/            internal runtime files and grouped SQL/maintenance assets
+docs/               development documentation, evidence and standalone examples
 database.sql        the full schema; changes go to dated files next to it
 ```
 
 Optional, when the app is shipped: `Dockerfile`, `docker-compose.yaml`, `bundle.sh` (writes `--bundles--/app.bundle`), `license.txt`, `readme.md`.
+
+## Recognizable application folders
+
+**Repository policy:** runtime code and inputs belong in the framework folders above. Classify a file by its consumer, rather than creating a new top-level folder for every concern. `docs/` is for development material; the running application must not read it. Development tools may read evaluation fixtures and reference projects there.
+
+The Forge reorganization is a concrete application of this policy:
+
+| Material | Location | Consumer |
+|---|---|---|
+| Enabled-language catalogue | `private/languages.json` | Application and validation tools |
+| Interface translations | `resources/<lang>.resource` | Native localization |
+| SQL, migration notes and maintenance units | `private/database/` | Startup, installation and maintenance |
+| Evaluation fixtures and recorded checks | `docs/evaluations/` | Development tools and reviewers |
+| Investigation reports and reproductions | `docs/findings/` | Developers |
+| Standalone reference applications | `docs/examples/<name>/` | Readers and example checks |
+
+A language catalogue is configuration data, not the interface translation store. Database-backed editorial translations remain in their existing database. Moving a file does not authorize a storage migration.
+
+Use `public/` only when a browser or public client is intended to retrieve the file. Use `private/` for files the application needs internally. Exclude credentials, local databases and development documentation from deployment archives; whitelist the specific private paths required by the runtime rather than packaging the entire directory. Generated assets are not hand-edited source.
+
+The root `database.sql` and dated upgrades used by OpenPlatform and Todomator remain valid existing layouts. When grouping internal SQL files, put the group under `private/database/` rather than creating an application-level `database/` folder. This is repository policy, not a restriction of the Total.js loader. The `database/` folder in this conventions repository is a documentation zone, not an application runtime directory.
+
+Source: Forge's `private/languages.json`, `private/database/`, `modules/i18n.js`, `definitions/benchmarks.js`, `tools/make-package.js`, `tools/with-test-app.js` and `docs/examples/taskboard/`. See [sources and scope](sources.md).
 
 ## index.js
 
@@ -54,3 +79,5 @@ Run it with `node index.js 8000` (add `--release` for release mode).
 
 - `node --check path/to/file.js` for every JavaScript file you change.
 - Start the app and call the route you touched. If the project has no test script, do not say tests passed.
+
+After moving files, update runtime readers, exporters, migration tools, isolated-test setup, package allowlists, ignore rules and documentation links together. Preserve source content and recorded evidence. Verify that the archive includes the new runtime paths and excludes internal documentation and credentials.

@@ -5,6 +5,7 @@ Source: the [official guidelines](https://github.com/totaljs-es/guidelines) and 
 ## Files
 
 - `database.sql` holds the whole current schema, so a new installation needs one file.
+- Preserve the existing root SQL-file layout in apps that use it. When grouping SQL and maintenance files in a directory, use `private/database/`; update application readers, migration tools and package allowlists together. This layout policy does not change the SQL contract. See [project structure](../general/project-structure.md).
 - A change to an existing installation goes in a separate script next to it, named with a date: `database-2024-10-30.sql`. OpenPlatform does this; Todomator also has `database_1-5.sql` by version. Prefer the dated name with dashes, as the file rule requires.
 - The first lines of an upgrade script say which version it upgrades from and that it must run before the app starts.
 - Inside a script, order the objects: **tables, views, functions and stored procedures, indexes**, each part under a banner comment (`-- TABLES`, `-- VIEWS`, `-- INDEXES`).

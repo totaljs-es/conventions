@@ -31,6 +31,14 @@ Remove duplicated validation and pass-through wrappers when a native call expres
 
 Make corrections by coherent feature, preserving owner changes. A formatting rewrite and an endpoint redesign have different review risks; keep their intent explicit. Do not edit minified vendor assets, bundles or runtime databases as source.
 
+## Organize files during a refactor
+
+Apply the [project structure](project-structure.md) policy: runtime files in recognizable Total.js folders, private runtime inputs under `private/`, and documentation, evaluation material and independent examples under `docs/`. The running application must not depend on `docs/`; development tools can use its fixtures. Consume automatically loaded modules through `MODS`, while preserving standalone-tool imports.
+
+Before deleting an old tree, remove its runtime reader, routes, generators and obsolete checks together. Preserve contracts unless the requested scope explicitly retires them. Retain the current external integration when replacing local artifacts with an external source, and keep its integrity checks. Generated/minified dependencies and historical evidence must not be silently rewritten as part of a folder move.
+
+Check package contents and private-file allowlists, temporary export layouts, migration inputs and documentation links after moving a file. An old layout may still be intentional input to a one-time legacy migration; document that exception instead of changing what the migration reads.
+
 ## Verify the result
 
 - Run `node --check` for changed JS; it does not cover inline scripts in HTML, templates or browser APIs.
@@ -52,5 +60,8 @@ Use the nearest compatible Total.js example. Use | between parts of action
 and schema names, never / or \. Update registrations and callers together
 when correcting names, checking endpoint compatibility. Preserve URLs,
 permissions, storage model and UI major version during corrections.
+Keep runtime inputs in private/, internal documentation and examples in docs/,
+and loaded application module access through MODS. Preserve standalone-tool
+imports and update package/test/export paths when moving files.
 Report convention findings with file/line, rule, proposed fix and checks run.
 ```

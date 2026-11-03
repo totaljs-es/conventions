@@ -1,6 +1,6 @@
 # Total.js conventions
 
-> How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, pipe-separated action and schema names, explicit or action-declared routes, existing storage and DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR(). Learned from inspected Total.js 5 app snapshots and framework source.
+> How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, pipe-separated action and schema names, explicit or action-declared routes, recognizable runtime/private/docs folders, MODS module access, existing storage and DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR(). Learned from inspected Total.js 5 app snapshots and framework source.
 
 Read the general rules, then the affected backend, database or frontend pages. Distinguish observed patterns, repository defaults and installed framework behaviour. Written for Total.js 5 (`total5` on npm); the official guidelines are for Total.js 4 and the pages mark where they differ.
 
@@ -13,13 +13,13 @@ Read the general rules, then the affected backend, database or frontend pages. D
 - [Sources and scope](https://raw.githubusercontent.com/totaljs-es/conventions/main/general/sources.md): Evidence, reference variants, snapshot hashes and repository policies
 - [Write and refactor workflow](https://raw.githubusercontent.com/totaljs-es/conventions/main/general/workflow.md): Select a reference, preserve contracts, correct code and verify behaviour
 - [Native patterns](https://raw.githubusercontent.com/totaljs-es/conventions/main/general/native-patterns.md): Direct framework calls, existing helpers and execution context
-- [Project structure](https://raw.githubusercontent.com/totaljs-es/conventions/main/general/project-structure.md): Folders, index.js, where each kind of file goes, the checks
+- [Project structure](https://raw.githubusercontent.com/totaljs-es/conventions/main/general/project-structure.md): Native runtime folders, private inputs, internal docs/examples, entry point and move checks
 - [JavaScript style](https://raw.githubusercontent.com/totaljs-es/conventions/main/general/javascript-style.md): ES5 over ES6, prototypes and Tangular first, no imports from Node.js, formatting and names
 ## Backend
 
 - [Actions](https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/actions.md): NEWACTION: naming with a pipe, input and params, answers, permissions, DATA
 - [Routes and authentication](https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/routes-and-auth.md): ROUTE syntax for APIs, pages and uploads, and the single AUTH
-- [Definitions and modules](https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/definitions-and-modules.md): auth, init, func and db definitions, config, modules, MAIN, REPO and FUNC
+- [Definitions and modules](https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/definitions-and-modules.md): auth, init, func and db, config, automatic MODS loading, lifecycle and standalone-tool boundaries
 - [Storage and integrations](https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/storage-and-integrations.md): Existing persistence, RESTBuilder, configuration and lifecycle
 - [Gotchas of the server](https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/gotchas.md): Behaviours that differ from what you would guess
 ## Database

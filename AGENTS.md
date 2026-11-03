@@ -14,6 +14,8 @@ This repository is a reference of conventions for Total.js 5 applications. Read 
 - Repository default for new code — ES5 over ES6: `var`, `function`, classic loops, `'{0}'.format()` instead of template literals. ES6 only when there is no ES5 way.
 - Use Total.js prototypes (`findItem`, `format`, `parseJSON`, `slug`, `isEmail`...) in the backend and Tangular templates in the frontend before any other function.
 - In initialized app code, do not `require()` exposed Node.js modules: use `Total.Fs`, `Total.Path`, `Total.Crypto`, `Total.Os`, `Total.Zlib`, etc.
+- Runtime code and inputs use recognizable Total.js folders; internal runtime files belong under `private/`, and development documentation, evaluations and standalone examples under `docs/`. The running app must not depend on `docs/`. Update readers, exports, tests and deployment allowlists when moving files.
+- Loaded application modules are accessed through `MODS`, not repeated path-based imports. Preserve direct imports in standalone tools and respect module-loading order; see `backend/definitions-and-modules.md`.
 - Tabs, semicolons, `'` for short strings, lowercase file names with `-`.
 - Use `|` as the separator in action and schema names: `Tickets|list`, `Reports|Categories|list`, `@Reports|Categories`. Do not use `/` or `\` as name separators. When correcting an existing name, update registrations and every caller together, checking generated endpoints and compatibility. See `backend/actions.md`.
 - Follow the app's route style: explicit `ROUTE()` or an action's `route:`. Never register the same endpoint twice.

@@ -171,6 +171,16 @@
 			"root": "framework",
 			"path": "mcp.js",
 			"sha256": "035552fbe3bbc39e8c82def94fc20b6330f18663fe6645c66e861c399cf2b978"
+		},
+		{
+			"root": "framework",
+			"path": "global.js",
+			"sha256": "f3a1e1a60b5c5af753d6911916ca176c0001d721cc93c517cae3364203b543fd"
+		},
+		{
+			"root": "apps",
+			"path": "cms-master/plugins/dashboard/schemas/dashboard.js",
+			"sha256": "bee05715b9cc9c6d3092706cf6d818842a27584d2848a371deb9573658f7b079"
 		}
 	]
 }
