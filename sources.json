@@ -1,0 +1,176 @@
+{
+	"reviewed": "2026-11-03",
+	"description": "Selected inspected source files; hashes identify local snapshots, not current remote branches or app correctness.",
+	"files": [
+		{
+			"root": "apps",
+			"path": "cms-master/plugins/redirects/index.js",
+			"sha256": "f9d6dc0a46e92b6915d7d03b2b53721a1d48eb96b63971520e8a6b3da83cd620"
+		},
+		{
+			"root": "apps",
+			"path": "cms-master/plugins/redirects/schemas/redirects.js",
+			"sha256": "305728b98c8bf377bf0cb5c3488cee4f48ce1f4028d41bfc6220532da0f17009"
+		},
+		{
+			"root": "apps",
+			"path": "cms-master/plugins/redirects/public/index.html",
+			"sha256": "d147dbc9cfcfea1631262e88475cd93fed81b89cf595c2f6b62614e04e59bef2"
+		},
+		{
+			"root": "apps",
+			"path": "cms-master/plugins/redirects/public/form.html",
+			"sha256": "95da11592209f4ccdfbacac4e401ccccb789d773bc8b04da17217223dc9d48ca"
+		},
+		{
+			"root": "apps",
+			"path": "cms-master/definitions/db.js",
+			"sha256": "30a4241b72f55a7d89b86aaf2449ade6252bf2d25f3ec76d1767176709fa8385"
+		},
+		{
+			"root": "apps",
+			"path": "cms-master/definitions/func.js",
+			"sha256": "e26ee76566d80f092a7c3c5d5f230198c958afb9fb6bc7e0d2a59bb3f2ffb026"
+		},
+		{
+			"root": "apps",
+			"path": "cms-master/definitions/init.js",
+			"sha256": "f71f59a790d0594c370fdb57149eaea34e4d903165f9ca903cc37fd7b3e321a1"
+		},
+		{
+			"root": "apps",
+			"path": "cms-master/views/admin.html",
+			"sha256": "b864fd93d2303c83c49c66f4f10de68f802d577e8f8cbe8d5f1f4b694ec63708"
+		},
+		{
+			"root": "apps",
+			"path": "openplatform-master/plugins/setup/schemas/groups.js",
+			"sha256": "bd6587b2556b00fc2542d13fbc8aa809d4c30e2efd5346e8685e4d5ac0338f64"
+		},
+		{
+			"root": "apps",
+			"path": "openplatform-master/plugins/setup/index.js",
+			"sha256": "44b309c5f031039282c7b4fe496b8817657a21204f37854dbd98604ee5fbf90a"
+		},
+		{
+			"root": "apps",
+			"path": "openplatform-master/database.sql",
+			"sha256": "8c81009a8597c0e2d99bfa038f9bc2f7463460c621f42e3cf43403c3799485c1"
+		},
+		{
+			"root": "apps",
+			"path": "openplatform-master/database-2024-10-30.sql",
+			"sha256": "2f3e3cc911a3dec7b6fe73598a3c62c45b09eff2f533869a20737339d277e703"
+		},
+		{
+			"root": "apps",
+			"path": "todomator-main/schemas/tickets.js",
+			"sha256": "a0912661e3c75d36d576cb9ca62c1595b66c184b41c35f07dce2a68ebbd26512"
+		},
+		{
+			"root": "apps",
+			"path": "todomator-main/definitions/init.js",
+			"sha256": "049308f2c180b8da52594534ac158c65710320a1eccd3de4ac9e2575ec5f595b"
+		},
+		{
+			"root": "apps",
+			"path": "todomator-main/definitions/func.js",
+			"sha256": "833b451983327f40ed6c1464d284d33f329a9be7a4f4ab2d539b81bfd49a6a35"
+		},
+		{
+			"root": "apps",
+			"path": "todomator-main/definitions/auth.js",
+			"sha256": "25c40621aad10c81fc242cd216638f644b55e1c9f5fb3dda0f1b556b78c41fe2"
+		},
+		{
+			"root": "apps",
+			"path": "todomator-main/views/index.html",
+			"sha256": "62c149939b0264b2b0659e85d469f0bdc439f8c135a879a7746e02fd12cc64d9"
+		},
+		{
+			"root": "apps",
+			"path": "todomator-main/views/login.html",
+			"sha256": "26851310f9c3dac4c642801e55e3b5979e09b99a07b041f2c8d3d227ddad6306"
+		},
+		{
+			"root": "apps",
+			"path": "dashboard-main/package.json",
+			"sha256": "7fd12fe473973f00e31b89d906f934da23b36c4d0a8c65d161d17adf8c4a74e9"
+		},
+		{
+			"root": "apps",
+			"path": "dashboard-main/plugins/views/index.js",
+			"sha256": "36153b33596dd69f7f80b6e2e54b2b44b5ffa6eac2a96098a911c9248c039273"
+		},
+		{
+			"root": "apps",
+			"path": "dashboard-main/plugins/views/public/form.html",
+			"sha256": "44a934c209cc2ace7daf7b00952207550c2d8fe69b27b0e3470956527a32188d"
+		},
+		{
+			"root": "apps",
+			"path": "dashboard-main/modules/openplatform.js",
+			"sha256": "82d2bdf69af6a9107187c596968db1e8e6642f86d8ed5a17de95e84e5770c7ae"
+		},
+		{
+			"root": "apps",
+			"path": "dashboard-main/views/admin.html",
+			"sha256": "b162b9231c657633279f5a6c6cb256edfeb235993c66b71c2818053b2b1524fd"
+		},
+		{
+			"root": "apps",
+			"path": "flowos-main/package.json",
+			"sha256": "b238d27dce91e71e4319e33bf4d441560f0e44014e8776436cdaac96ebdac41c"
+		},
+		{
+			"root": "apps",
+			"path": "flowos-main/definitions/init.js",
+			"sha256": "0785fe1a0d9976f571534ad524fa66a084242206ec853d6dffb2cae2dd7550d1"
+		},
+		{
+			"root": "apps",
+			"path": "flowos-main/views/index.html",
+			"sha256": "f738b1d061f101573379ee14ce36d736da1bae9ae8d155f171f7964a8030fd88"
+		},
+		{
+			"root": "apps",
+			"path": "iot-main/admin/plugins/devices/schemas/devices.js",
+			"sha256": "10749ee1dd3351a777a3104ba628fbc3c4022bf1aaaca138428534f8629abf4c"
+		},
+		{
+			"root": "apps",
+			"path": "iot-main/admin/plugins/dataviews/index.js",
+			"sha256": "33bc24a8554148b081cc1c878c60a5b1eb4c260c2be6e519d6c63deca2c35869"
+		},
+		{
+			"root": "apps",
+			"path": "iot-main/admin/views/admin.html",
+			"sha256": "b0eca33d22f9f612dde8cbddc52bb3094b36fa4daf26d33bbfece8d7f8f6b7ed"
+		},
+		{
+			"root": "framework",
+			"path": "index.js",
+			"sha256": "e001acfd733eefa9eb24b4a1add2eca1acb14c780445488ed8dcd17a8f45c3c1"
+		},
+		{
+			"root": "framework",
+			"path": "builders.js",
+			"sha256": "75caddc5d1ae7d688389ac6ab6c39e9700a3c93f5a0c740c58e2c4ae5071c06b"
+		},
+		{
+			"root": "framework",
+			"path": "controller.js",
+			"sha256": "ca73075bf1831637e917c646e4d8f49232634606f098147f05beec3c32eef0d4"
+		},
+		{
+			"root": "framework",
+			"path": "querybuilder.js",
+			"sha256": "52c2b75982dcf6f1e8d2c17219097e70c8531712aa1d39982536b1a703bef4b3"
+		},
+		{
+			"root": "framework",
+			"path": "mcp.js",
+			"sha256": "035552fbe3bbc39e8c82def94fc20b6330f18663fe6645c66e861c399cf2b978"
+		}
+	]
+}

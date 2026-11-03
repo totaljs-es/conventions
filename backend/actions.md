@@ -1,5 +1,7 @@
 # Actions
 
+Source: CMS `plugins/redirects/schemas/redirects.js`, OpenPlatform `plugins/setup/schemas/groups.js`, Todomator `schemas/tickets.js` and framework `builders.js`. Examples adapt IDs to this repo's pipe default and retain only the relevant fields.
+
 An action is one unit of server logic: a name, the input it accepts, who may call it, and a function. Define it with `NEWACTION` in a `schemas/` file.
 
 ```js
@@ -17,6 +19,8 @@ NEWACTION('Redirects|save', {
 			}
 			item.dtupdated = NOW;
 			item.url = model.url;
+			item.target = model.target;
+			item.permanent = model.permanent;
 		} else {
 			model.id = UID();
 			model.dtcreated = NOW;
@@ -33,7 +37,11 @@ NEWACTION('Redirects|save', {
 
 `Collection|verb`, collection in plural and capitalized: `Tickets|list`, `Groups|create`, `Users|remove`. Separate the two parts with a pipe `|`.
 
-The pipe is the convention because of MCP: the MCP router of Total.js 5 documents actions as `Notes|create` and exposes them as the tool `Notes_create` (tool names allow only letters, digits, `_` and `-`). The apps used as source for these pages (CMS, OpenPlatform, Todomator) write `Tickets/list` with a slash; their examples are shown here with a pipe. Use the pipe in new code, so the name an MCP client sees matches the action.
+Use `|` between parts of action and schema names, never `/` or `\`: `Tickets|list`, `Reports|Categories|list`, `@Reports|Categories`. A simple name such as `Tickets` or `@Group` needs no separator. This is the Total.js convention adopted by this repository, including grouped and nested names.
+
+Some reference snapshots contain slash names; they are historical observations, not the naming rule to reproduce. When correcting them, update registrations, route targets, `ACTION` / `$.action` calls and direct action-name `tapi()` calls together. Check automatically generated endpoint names and existing external callers; preserve public URLs with explicit routes or compatibility mappings where needed. Do not change URL path separators or plugin method paths such as `?/refresh`: this rule applies to action/schema names.
+
+The framework's MCP sanitizer maps both `/` and `|` to `_`; the pipe convention is our naming choice, not an MCP requirement. See [sources](../general/sources.md).
 
 The usual verbs:
 
@@ -76,11 +84,13 @@ NEWACTION('Groups|create', {
 | `$.invalid(404)` | not found; the number is the HTTP status |
 | `$.invalid('@(Text for the user)')` | validation or business error; `@(...)` marks it for translation |
 
-Call exactly one of them, then `return`. An action that never answers hangs the request.
+Complete each response path once. Use an early `return` when code would otherwise fall through after answering; a terminal callback does not need a redundant return. A delegated `.callback($)` or `.callback($.done(id))` also completes the action.
 
 ## Permissions
 
-`permissions: 'redirects,admin'` allows users that have any of those permissions. Put it on every action that is not public, even when the route is already authorized.
+`permissions: 'redirects,admin'` uses the app's `UNAUTHORIZED` policy. Preserve the app's authorization mechanism: some actions use `permissions`, others `user: true`, `sa`, or an explicit `UNAUTHORIZED($, ...)` check. Authentication and access to a particular record are separate checks. Menu visibility grants no server access.
+
+For a protected action that may also be called internally, declare the appropriate action-level check; the `+` on an HTTP route alone does not protect other invocation paths. `public: true` in reference code is not proof that an endpoint is anonymous; inspect the route and action checks. See `builders.js` action execution in the framework source.
 
 ## Async and data
 
@@ -100,6 +110,10 @@ See [queries](../database/queries.md) for `DATA`.
 
 `$.action('Items|types').promise()` (or `ACTION('Items|types', model).promise()` outside a request). Keep shared pieces in an action instead of copying code.
 
+## Grouped schemas are also Total.js 5
+
+Todomator uses `NEWSCHEMA('Tickets', function(schema) { schema.action('list', { ... }); });`. Do not classify every `NEWSCHEMA` as Total.js 4: reusable input definitions and grouped actions exist in the inspected v5 framework. Keep the target project's established form and verify any API before migrating it.
+
 ## Keep an action small
 
-If one action grows beyond what fits on a screen, move the parts to `FUNC.` helpers or to other actions. Large filter builders (e.g. a `makefilter($, builder)` function inside the schema) stay next to the actions that use them.
+Split a repeated operation or a distinct responsibility when it improves readability. Length alone is not a reason to add a helper or an action chain. Large filter builders (e.g. a `makefilter($, builder)` function inside the schema) stay next to the actions that use them.

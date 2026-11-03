@@ -36,8 +36,8 @@ Run it with `node index.js 8000` (add `--release` for release mode).
 
 ## Where things go
 
-- **A route** goes in `controllers/*.js` or in `plugins/<name>/index.js`, never inside an action file.
-- **Business logic** is a `NEWACTION` in `schemas/` (or `plugins/<name>/schemas/`).
+- **A route** follows the app's existing pattern: `controllers/*.js` / plugin `index.js`, or the action's `route:` property (Dashboard/IoT/Todomator).
+- **Business logic** belongs in actions: usually `schemas/` or `plugins/<name>/schemas/`; compact plugins may declare actions in `index.js` (Dashboard).
 - **Shared helpers** hang from `FUNC` (`FUNC.notify`, `FUNC.save`) and live in `definitions/func.js`.
 - **Shared state in memory** hangs from `MAIN` (the app) or `REPO` (cached lookups, e.g. `REPO.tags`).
 - **Startup work** (config defaults, loading caches, registering UI components) goes in `ON('ready', ...)` in `definitions/init.js`.

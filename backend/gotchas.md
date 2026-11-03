@@ -5,16 +5,16 @@ Things that behave differently from what you would guess. Each one is a rule.
 ## Answers
 
 - In an **action**, `$.callback(data)` returns data. In a plain **route handler** (`function($)`), `$.callback(err, value)` takes the error first: answer with `$.json(data)` instead.
-- `$.invalid(404)`: a number above 399 sets the HTTP status (`$.invalid()` without an argument is 401). `$.invalid('@(text)')` answers with the message; its second argument is the `path` of the field the error belongs to, not a status code.
+- `$.invalid(404)`: a number above 399 sets the HTTP status (an omitted error becomes 401 in the inspected `ErrorBuilder.push`; use an explicit code for clarity). `$.invalid('@(text)')` answers with the message; its second argument is the `path` of the field the error belongs to, not a status code.
 - On a handler you can also set the status yourself: `$.response.status = 401; $.json(...)`.
 
 ## Request data
 
 - Route parameters (`{id}`) are in `$.params`.
-- `$.body` is already parsed. The raw body (for webhook signatures) is `$.payload`, a Buffer.
+- In a controller, `$.body` is parsed and `$.payload` holds the buffered raw body for the supported body-parsing path. In an action, `$.payload` / `model` is the action input, not that raw HTTP buffer. For webhook signatures use the controller context and verify the route flags/content type preserve the bytes you sign.
 - `$.ip` is the first `X-Forwarded-For` value: forgeable. Use `$.req.socket.remoteAddress` for security limits.
-- The CSRF token is bound to the IP and `@{csrf}` can fail in views; pass `encodeURIComponent($.csrf())` through the repository.
-- The session is bound to the user agent: a request with another user agent (a mobile emulation in a test browser) is unauthorized.
+- When changing CSRF handling, check the installed framework's `Controller.prototype.csrf` and view directive support; verify token generation and validation together. Do not introduce an alternative transport solely because a past app needed one.
+- Session checks depend on the app's authentication module. Inspect its cookie, token and user-agent checks before assuming a session is portable between clients.
 
 ## Schemas and input
 
@@ -25,7 +25,7 @@ Things that behave differently from what you would guess. Each one is a rule.
 
 ## Served JavaScript and static files
 
-- The JavaScript minifier (on by default in release) can break code that `node --check` accepts: a regex literal containing `//` is cut as a comment (write `indexOf('https://')` instead), and spaces next to `${...}` in template literals are removed. Check the served file, or set `$minifyjs : false` in `config`.
+- `node --check` does not validate the release minifier or browser execution. Check the served asset in the installed version when changing regular expressions or template syntax. Diagnose a reproducible failure before disabling `$minifyjs`; do not make a global configuration change as a style fix.
 - In release, static files are served from memory: restart the app after changing them. Browsers also cache: force a reload while testing.
 
 ## Data
@@ -36,4 +36,4 @@ Things that behave differently from what you would guess. Each one is a rule.
 ## Tests
 
 - `opt.config` passed to `Total.run` is overridden by `(env)` entries of the config: set `process.env` first.
-- `total5 translate` scans the whole directory, `node_modules` included; run it on a copy of the sources or use a small script.
+- Before running a translation extractor, check its scan scope in the installed version and keep generated/vendor directories out of the input. Verify the resulting `.resource` files.

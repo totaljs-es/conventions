@@ -48,7 +48,9 @@ A handler function is `function($)`. Prefer an API route plus an action; use a p
 
 ## A route declared in the action
 
-`NEWACTION` also accepts `route: 'API ?'` (or `route: true`) and registers the endpoint itself. Total.js 5 apps keep routes in `controllers/`; use the `route:` property only in small apps that have no `controllers/` folder.
+`NEWACTION` also accepts `route: '+API ?'` (or `route: true`) and registers the endpoint itself. This is used throughout Dashboard and IoT, and by standalone Todomator actions. It is not restricted to small apps. CMS/OpenPlatform also use explicit controller or plugin routes. Follow one registration style for the feature; do not add a duplicate explicit route for an action that already registers its own.
+
+In the inspected framework `route: true` builds an API route, adding authentication when `user` or `permissions` requires it. An explicit route string controls its own prefix; inspect it rather than assuming all `route:` forms imply authentication. Automatic endpoint names come from action IDs. Preserve their spelling in `tapi()` calls.
 
 ## Authentication
 
@@ -74,5 +76,5 @@ AUTH(function($) {
 
 - The user object is small: `{ id, name, sa, permissions }`. `sa` marks a super administrator.
 - Use `BLOCKED($, limit)` to rate-limit failed logins: it counts tries per `$.ip` and returns `true` once the limit is passed (`BLOCKED($, -1)` clears the count). Because it keys on `$.ip`, it inherits the `X-Forwarded-For` caveat below.
-- `+` routes call `AUTH` first; actions then check `permissions`.
+- `+` routes require authentication; action-level checks apply when configured. Test authenticated, anonymous and insufficient-permission requests.
 - `$.ip` takes the first value of `X-Forwarded-For`, which a client can forge. For security limits use `$.req.socket.remoteAddress`, or trust the header only behind your own proxy.

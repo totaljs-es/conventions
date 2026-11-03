@@ -82,6 +82,11 @@ Test.describe('the pages', function() {
 
 	Test.test('every relative link works', function() {
 		var all = pages('').concat(['CLAUDE.md', 'GEMINI.md']);
+		['.agents/skills', '.claude/skills'].forEach(function(base) {
+			Fs.readdirSync(Path.join(ROOT, base)).forEach(function(name) {
+				all.push(base + '/' + name + '/SKILL.md');
+			});
+		});
 		all.forEach(function(file) {
 			var text = read(file);
 			var regex = /\]\(([^)#\s]+)(#[^)]*)?\)/g;

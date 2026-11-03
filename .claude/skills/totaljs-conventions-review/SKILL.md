@@ -1,30 +1,22 @@
 ---
 name: totaljs-conventions-review
-description: Use when you review a Total.js 5 change (a diff, a file, a pull request) against the conventions of these pages.
+description: Review a Total.js 5 diff or feature against the Total.js conventions with source-backed findings and corrections that preserve existing contracts.
 ---
 
 # Review a Total.js 5 change
 
-Read `README.md`, then the pages of the zones that the change touches. Check each item and report the ones that fail with the file and line.
+Read the repository's `AGENTS.md`, `general/sources.md`, `general/workflow.md` and pages for the affected zones. Resolve paths from the conventions repository root. Inspect the target project's instructions and actual backend/UI versions before reporting an API violation.
 
-**General and style**
-- Tabs, `;`, `'` for short strings; lowercase file names with `-`.
-- ES5 where an ES5 way exists; no `for...in` over an array; `const` only for module-level constants.
-- A Total.js prototype or helper exists for it? (`format`, `findItem`, `parseJSON`, `slug`, `isEmail`, `U.*`, `UID()`, `NOW`)
-- No `require()` of Node.js modules (use `Total.*`); no new dependency that the framework covers.
-- Comments say why, in one or two lines.
+Review the bounded feature with its callers. For each actionable finding give file and line, concrete problem, supporting convention/reference, smallest correction and verification. Distinguish runtime defects, contract changes and convention mismatches from optional simplifications. Do not report a repository preference as an unsupported framework requirement.
 
-**Backend**
-- `Collection|verb` names with a `name:`; `input:` / `params:` declare what the action accepts; `permissions:` on every action that is not public.
-- Routes only in `controllers/` or the plugin's `index.js`; endpoint names lowercase with `_`.
-- Exactly one answer per path (`$.callback`, `$.success`, `$.invalid`) followed by `return`.
-- No raw user input concatenated into SQL; `PG_ESCAPE` when a value must go into the text.
+Check these points where relevant:
 
-**Database**
-- `tbl_` / `cl_` / `view_` prefixes, lowercase, `text` columns, `dt` dates and `is` booleans, identifiers first and dates last, a dated upgrade script.
+- Tabs, semicolons, short quoted strings, familiar names and the repo's ES5 preference for new code; no array `for...in`. No unrelated mass reformatting.
+- Existing native helper/component before custom wrappers or dependencies. App globals only after initialization; `Total.Os`, not `Total.OS`.
+- Action/schema name separators are `|`, never `/` or `\`, including grouped/nested names. For naming corrections check registrations, route targets, action-name callers, generated endpoints and external compatibility together. URL and plugin method paths keep their own syntax. Explicit routes and action `route:` are valid alternatives; no duplicate endpoints.
+- Declared input/query/params plus business, ownership and server authorization checks. Menu visibility is not authorization. Complete each response path once, with early returns where fallthrough is possible.
+- Existing persistence and cache lifecycle. SQL filters and projections, safe parameters/escaping, request-bound error handling and the exact response envelope expected by the caller.
+- SQL names/upgrades consistent with the project; do not force a SQL migration on other storage models.
+- Matching jComponent major and component config, catalogue bundle entries, `exec`, local plugin paths, form importer/submit/caller refresh, Tangular binding, `CLASS` and translations.
 
-**Frontend**
-- An existing component is used before new markup; components load only through `COMPONENTATOR()`; buttons use `exec`.
-- Texts in `@(...)`; `CLASS` scopes the CSS of a plugin; intranetcss classes before new CSS.
-
-Say plainly what you could not check (for example, that you did not run the app).
+Run relevant checks if available and authorized. State what you could not verify. If no actionable findings remain, say so without implying runtime checks that were not performed.

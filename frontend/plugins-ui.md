@@ -27,13 +27,13 @@ exports.install = function() {
 };
 ```
 
-- `icon` is a Tabler icon class (`ti ti-name`), `name` is translatable with `@(...)`, `position` orders the menu.
+- `icon` is a Total Icons class (`ti ti-name`), `name` is translatable with `@(...)`, `position` orders the menu.
 - `permissions` declares what the plugin adds; `visible` decides who sees it.
 - Routes use the same syntax as everywhere (see [routes-and-auth](../backend/routes-and-auth.md)).
 
 ## UI part: a screen
 
-A screen is HTML with a `<ui-plugin>` root and one `PLUGIN(function(exports) { ... })` block. Keep markup, scoped style and logic in the same file.
+A screen is HTML with a `<ui-plugin>` root and one `PLUGIN(function(exports) { ... })` block. Keep markup, scoped style and logic in the same file. Screens may also include a `virtualwire` toolbar, importer declarations and other app-shell wrappers; copy the nearest screen rather than enforcing exactly one root element.
 
 ```html
 <style>
@@ -83,6 +83,8 @@ PLUGIN('Name', function(plugin) { plugin.doSomething = function() {}; });
 // GOOD
 PLUGIN('name', function(exports) { exports.dosomething = function() {}; });
 ```
+
+See [binding and forms](binding-and-forms.md) for the importer, model path, submit callback and caller refresh as one connected flow.
 
 ## A form
 

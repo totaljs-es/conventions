@@ -1,8 +1,8 @@
 # Queries with `DATA`
 
-Total.js talks to PostgreSQL through `DATA`, a query builder. Use it for everything it can express; write raw SQL only for what it cannot.
+For SQL-backed features, Total.js uses `DATA` and the configured database adapter (for example `querybuilderpg`). Do not introduce SQL into a FileStorage/MEMORIZE feature just to match this page. Use the builder for what it can express; write raw SQL only when needed.
 
-Always end with `.promise($)` (in an async action) or `.callback($)`. Passing `$` lets the framework answer the request with the error.
+For request-bound results use `.promise($)` (in an async action), `.callback($)` or `.callback($.done(id))`. In jobs and shared helpers without a request use `.promise()` with explicit error handling or an error-first callback. Do not invent a request context. Some source apps enqueue background writes without awaiting them; do not copy that when the response depends on the write succeeding.
 
 ## Read
 
@@ -34,7 +34,7 @@ NEWACTION('Groups|list', {
 });
 ```
 
-A list that joins several tables reads from a `view_`.
+A reusable joined list often reads from a `view_`. IoT also uses `DATA.list(...)` for paginated output; OpenPlatform uses `DATA.find(...)`. Preserve the response shape expected by the UI rather than swapping these because their query chains look similar.
 
 ## Write
 
@@ -53,6 +53,16 @@ await DATA.remove('tbl_notification').where('ticketid', params.id).where('typeid
 - Fill `id` with `UID()` and the dates with `NOW` in the action, not in the database.
 - Remove fields that are not columns before `insert` / `modify` (`model.permissions = undefined`).
 - Update or insert in one call: `DATA.modify('tbl_x', data, true).id(id).insert(fn, params)`.
+
+## Success after a write
+
+When a write should return the app's success envelope rather than its raw database result, the reference apps use:
+
+```js
+DATA.remove('tbl_tag').id($.params.id).error(404).callback($.done($.params.id));
+```
+
+Adapted from Todomator's `schemas/tickets.js` (`reset`). Keep the established response contract. A raw `.callback($)` and `$.done(id)` are not interchangeable responses.
 
 ## Conditions
 

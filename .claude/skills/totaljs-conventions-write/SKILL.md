@@ -1,20 +1,18 @@
 ---
 name: totaljs-conventions-write
-description: Use when you write or change Total.js 5 code (an action, a route, a plugin, a SQL script, a component, a view) and want it to follow the conventions of real Total.js apps.
+description: Write or correct Total.js 5 app code using the Total.js conventions and the target project's existing native patterns.
 ---
 
 # Write Total.js 5 code
 
-1. Find the zone of the change and read only its pages in `README.md`: `general/`, `backend/`, `database/` or `frontend/`.
-2. Open the nearest existing file of the project you are editing and copy its pattern; use the pages to decide what is idiomatic.
-3. Apply the rules that hold for every change:
-   - ES5 over ES6 (`var`, `function`, classic loops, `'{0}'.format()`); never `for...in` over an array.
-   - Total.js first: prototypes (`findItem`, `findIndex('id', v)`, `parseJSON`, `slug`...) in the backend, Tangular in the frontend.
-   - No `require()` of Node.js modules: `Total.Fs`, `Total.Path`, `Total.Crypto`, `Total.OS`...
-   - Actions `NEWACTION('Collection|verb', { name, input, params, permissions, action })`; routes in `controllers/` or the plugin's `index.js`.
-   - Data through `DATA` with `.promise($)`; `UID()` for ids, `NOW` for dates; text for people in `@(Text)`.
-   - Frontend: an existing jComponent component first (`input`, `viewbox`, `loading`, `datagrid`, `exec`, `intranetcss`), loaded with `COMPONENTATOR()`; if none exists, a reusable `COMPONENT('name', ...)`.
-4. Check what you wrote: `node --check` on each JavaScript file, then start the app and call the route or open the screen.
-5. Report the checks you ran and the ones you could not run.
+Read the repository's `AGENTS.md`, `general/sources.md`, `general/workflow.md` and the affected zone pages from `README.md`. Paths here are relative to the conventions repository root; resolve them there even when working in a consuming app.
 
-Do not assume a Total.js 4 API exists in version 5: look in the framework source or an existing app.
+Select a concrete compatible reference and read its route, action and caller together. Identify the target app's installed backend and UI versions, route style and storage model before writing. Preserve URLs, permissions, settings keys, response shapes and plugin/model paths during corrections. Action/schema names use `|`; when correcting a name, update its registration and callers together and check endpoint compatibility.
+
+Use the direct native pattern: declared input, business/ownership checks, existing storage, one response. Prefer Total.js helpers/prototypes and RESTBuilder over new wrappers or dependencies. Follow the repository's ES5 preference for new code, but do not rewrite unrelated working code. `Total.Os` is case-sensitive; standalone tools and bootstrap code have a different execution context from loaded app files.
+
+Keep explicit routes where the app uses them; keep action `route:` registrations where it uses those. Use `|` as the separator for standalone, grouped and nested action/schema names, never `/` or `\`. Update affected route targets and action-name callers together; URL and plugin method path separators remain unchanged. Use `DATA` for SQL features and the existing load/save lifecycle for FileStorage or persisted memory features. Use `.promise($)` / `.callback($)` / `$.done(id)` according to the response contract.
+
+For UI, match the loaded jComponent major, read component configuration, reuse catalogue components through `COMPONENTATOR()` and load custom components from app assets. Preserve importer/form paths and caller refresh. Use `exec`, scoped `CLASS`, Tangular and English `@(...)` keys with native resources; see `frontend/binding-and-forms.md`.
+
+Verify syntax and the observable route/screen behaviour using the workflow's relevant checks. Report what changed, which reference supports it, checks run and what remains unverified. Documentation tests do not establish runtime compatibility.

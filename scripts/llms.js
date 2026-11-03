@@ -13,25 +13,30 @@ var Path = require('path');
 var ROOT = Path.join(__dirname, '..');
 var BASE = 'https://raw.githubusercontent.com/totaljs-es/conventions/main/';
 
-var SUMMARY = 'How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, actions named Collection|verb, routes in controllers, DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR(). Learned from production Total.js 5 apps and the official style guide.';
+var SUMMARY = 'How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, pipe-separated action and schema names, explicit or action-declared routes, existing storage and DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR(). Learned from inspected Total.js 5 app snapshots and framework source.';
 
-var DETAILS = 'Read only the zone you work in: general, backend, database or frontend. Every rule has an example taken from real code. Written for Total.js 5 (`total5` on npm); the official guidelines are for Total.js 4 and the pages mark where they differ.';
+var DETAILS = 'Read the general rules, then the affected backend, database or frontend pages. Distinguish observed patterns, repository defaults and installed framework behaviour. Written for Total.js 5 (`total5` on npm); the official guidelines are for Total.js 4 and the pages mark where they differ.';
 
 // Every page, in the order in which it is read: [section, file, title, what it says]
 var PAGES = [
 	['Start here', 'README.md', 'README', 'The zones, the pages and the principles'],
 	['Start here', 'AGENTS.md', 'AGENTS.md', 'For an agent: how to use these pages and the rules that apply to every change'],
+	['General', 'general/sources.md', 'Sources and scope', 'Evidence, reference variants, snapshot hashes and repository policies'],
+	['General', 'general/workflow.md', 'Write and refactor workflow', 'Select a reference, preserve contracts, correct code and verify behaviour'],
+	['General', 'general/native-patterns.md', 'Native patterns', 'Direct framework calls, existing helpers and execution context'],
 	['General', 'general/project-structure.md', 'Project structure', 'Folders, index.js, where each kind of file goes, the checks'],
 	['General', 'general/javascript-style.md', 'JavaScript style', 'ES5 over ES6, prototypes and Tangular first, no imports from Node.js, formatting and names'],
 	['Backend', 'backend/actions.md', 'Actions', 'NEWACTION: naming with a pipe, input and params, answers, permissions, DATA'],
 	['Backend', 'backend/routes-and-auth.md', 'Routes and authentication', 'ROUTE syntax for APIs, pages and uploads, and the single AUTH'],
 	['Backend', 'backend/definitions-and-modules.md', 'Definitions and modules', 'auth, init, func and db definitions, config, modules, MAIN, REPO and FUNC'],
+	['Backend', 'backend/storage-and-integrations.md', 'Storage and integrations', 'Existing persistence, RESTBuilder, configuration and lifecycle'],
 	['Backend', 'backend/gotchas.md', 'Gotchas of the server', 'Behaviours that differ from what you would guess'],
 	['Database', 'database/sql-scripts.md', 'SQL scripts', 'PostgreSQL files, names, columns, order of the columns, code lists'],
 	['Database', 'database/queries.md', 'Queries with DATA', 'read, find, autoquery, insert, modify, remove, conditions, raw SQL'],
 	['Frontend', 'frontend/components.md', 'Components', 'Use the existing jComponent components, preferred ones, exec, intranetcss, COMPONENTATOR()'],
 	['Frontend', 'frontend/plugins-ui.md', 'Plugins with UI', 'Server part, screens, forms, PLUGIN() and tapi'],
 	['Frontend', 'frontend/views-and-layout.md', 'Views and layout', 'The layout, directives, translations, public pages'],
+	['Frontend', 'frontend/binding-and-forms.md', 'Binding and forms', 'Connected screen/importer/form flow, binding, translations and lifecycle'],
 	['Frontend', 'frontend/css.md', 'CSS', 'Formatting, CLASS scoping, predefined classes']
 ];
 

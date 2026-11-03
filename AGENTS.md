@@ -5,20 +5,22 @@ This repository is a reference of conventions for Total.js 5 applications. Read 
 ## How to use it
 
 1. Open [README.md](README.md) and pick the zone you work in: `general/`, `backend/`, `database/` or `frontend/`.
-2. Read only the pages of that zone. Each page has rules with examples taken from real apps.
+2. Read the general rules and the pages for the affected zones. Start with `general/sources.md` and `general/workflow.md` when choosing a pattern or correcting existing code.
 3. Copy the pattern of the nearest existing file in the project you are editing; use these pages to decide what is idiomatic.
 
 ## Rules that apply to every change
 
 - Total.js 5 only. Do not use Total.js 4 APIs.
-- ES5 over ES6: `var`, `function`, classic loops, `'{0}'.format()` instead of template literals. ES6 only when there is no ES5 way.
+- Repository default for new code — ES5 over ES6: `var`, `function`, classic loops, `'{0}'.format()` instead of template literals. ES6 only when there is no ES5 way.
 - Use Total.js prototypes (`findItem`, `format`, `parseJSON`, `slug`, `isEmail`...) in the backend and Tangular templates in the frontend before any other function.
-- Do not `require()` Node.js modules: use `Total.Fs`, `Total.Path`, `Total.Crypto`, `Total.OS`, `Total.Zlib`, etc.
+- In initialized app code, do not `require()` exposed Node.js modules: use `Total.Fs`, `Total.Path`, `Total.Crypto`, `Total.Os`, `Total.Zlib`, etc.
 - Tabs, semicolons, `'` for short strings, lowercase file names with `-`.
-- Actions are `NEWACTION('Collection|verb', { name, input, params, permissions, action })`.
-- Routes live in `controllers/` or in the plugin's `index.js`: `ROUTE('+API ? -name --> Collection|verb')`.
-- Data goes through `DATA` with `.promise($)`; ids are `UID()`, dates are `NOW`.
-- Frontend: use an existing jComponent component (catalogue: https://forge.totaljs.es/es/components/, markdown at `https://forge.totaljs.es/en/components/<name>.md`); if none exists, create a reusable `COMPONENT('name', ...)`. Load components only with `COMPONENTATOR()`.
+- Use `|` as the separator in action and schema names: `Tickets|list`, `Reports|Categories|list`, `@Reports|Categories`. Do not use `/` or `\` as name separators. When correcting an existing name, update registrations and every caller together, checking generated endpoints and compatibility. See `backend/actions.md`.
+- Follow the app's route style: explicit `ROUTE()` or an action's `route:`. Never register the same endpoint twice.
+- Keep the existing storage model: `DATA` for SQL, `FILESTORAGE` for files/CMS metadata, `MEMORIZE` where the app uses it. In request queries use `.promise($)` / `.callback($)`; ids are `UID()`, dates are `NOW`.
+- Verify APIs against the installed Total.js and UI versions; the source apps mix versions and patterns. Distinguish repository policy from a framework requirement.
+- Preserve URLs, permissions, input/output shapes, settings keys and model paths during a style correction. Do not add an abstraction when a direct native call fits; see `general/native-patterns.md`.
+- Frontend: match the app's jComponent major version; use an existing jComponent component (catalogue: https://forge.totaljs.es/es/components/, markdown at `https://forge.totaljs.es/en/components/<name>.md`); if none exists, create a reusable `COMPONENT('name', ...)`. Load catalogue components with `COMPONENTATOR()`; load app-owned components from app assets.
 - Every text for people is `@(Text)`.
 - After editing JavaScript run `node --check file.js`; start the app and call the route you changed.
 

@@ -2,7 +2,7 @@
 
 Source: the [official guidelines](https://github.com/totaljs-es/guidelines) plus what the Total.js 5 apps do. Three rules come first, because they decide most of the code you write:
 
-1. **ES5 over ES6.** Always prefer the ES5 way.
+1. **ES5 over ES6.** This repository chooses the ES5 form for new examples; it is a policy, not a claim that all reference apps use ES5.
 2. **Total.js first.** Use the framework's prototypes (backend) and Tangular (frontend) before any other function.
 3. **No imports from Node.js.** Use the modules Total.js already exposes.
 
@@ -14,7 +14,7 @@ Write `var`, `function`, classic loops and string helpers. Use an ES6 feature on
 |---|---|
 | `var item = ...;` | `let` / `const` in a function |
 | `function(item) { ... }` | `item => ...` |
-| `for (var i = 0; i < arr.length; i++)` | `for...of`, `forEach`, `map`, `filter`, `reduce` chains |
+| `for (var i = 0; i < arr.length; i++)` | long transformation chains or `for...of` in new examples |
 | `'Hello {0}'.format(name)` | template literal `` `Hello ${name}` `` |
 | `var a = obj.a;` | destructuring, spread, optional chaining |
 | `arr.findItem('id', id)` | `arr.find(x => x.id === id)` |
@@ -34,9 +34,9 @@ const item = db.redirects.find(m => m.id === model.id);
 Notes:
 
 - `async` / `await` stays where the framework's own code uses it (`await DATA.find(...).promise($)`): there the ES5 alternative is a callback chain (`.callback($)`), which is also valid when it reads better.
-- Some source apps use `let`, arrows and template literals. Do not copy those from them: write the ES5 form.
+- The apps also use `let`, arrows, `for...of` and `async` functions. The ES5 preference here is a repository default. Do not rewrite unrelated working code merely to make an existing app look uniformly ES5.
 - `const` is for module-level constants only: `const ADMIN = { id: 'admin', sa: true };`.
-- **Never `for...in` over an array**: Total.js adds enumerable methods to `Array.prototype`. Use a classic `for` loop.
+- **Never `for...in` over an array**: it enumerates property names, including enumerable extensions, rather than just indexed values. Use a classic `for` loop.
 
 ## 2. Total.js first
 
@@ -83,23 +83,25 @@ Do not `require()` Node.js modules. Total.js exposes them:
 | `require('fs')` | `Total.Fs` |
 | `require('path')` | `Total.Path` |
 | `require('crypto')` | `Total.Crypto` |
-| `require('os')` | `Total.OS` |
+| `require('os')` | `Total.Os` |
 | `require('http')` / `require('https')` | `Total.Http` / `Total.Https` (for requests prefer `RESTBuilder`) |
 | `require('child_process')` | `Total.Child` |
 | `require('zlib')` | `Total.Zlib` |
 | `require('url')`, `require('util')`, `require('stream')` | `Total.Url`, `Total.Util`, `Total.Stream` |
 
-Also available: `Total.Cluster`, `Total.Dns`, `Total.Net`, `Total.Tls`, `Total.Worker` and `Total.isBundle` (since v0.0.50). Third-party packages are the last resort: the framework usually covers the need.
+Also available: `Total.Cluster`, `Total.Dns`, `Total.Net`, `Total.Tls`, `Total.Worker` and `Total.isBundle`. Check availability in the installed version. `Total.Os` is case-sensitive; `Total.OS` is not the exported property. Third-party packages are the last resort: the framework usually covers the need.
 
 ```js
 // good
-var file = Total.Path.join(F.tmpdir, 'data.json');
+var file = PATH.temp('data.json');
 
 // avoid
 const Path = require('path');
 ```
 
 (The official guide shows `const Path = require('path')`. That was for Total.js 4; in Total.js 5 use `Total.Path`.)
+
+Application files run after Total.js has initialized these globals. Bootstrap files still load `total5`, database adapters may need `require('querybuilderpg')`, and standalone Node.js tools (such as this repo's generator) use Node imports. Do not apply app-global rules to a process that has not loaded the framework.
 
 ## Formatting
 
@@ -123,7 +125,7 @@ item && refresh();     // fine for a simple expression
 |---|---|---|
 | Files, folders | lowercase, `-` | `form-offer.html` |
 | Actions | `Collection\|verb` (pipe; exposed to MCP as `Collection_verb`) | `Redirects\|save` |
-| Schemas | plural, first letter upper case; `@Name` for a reusable input | `NEWSCHEMA('Tickets', ...)`, `'@Group'` |
+| Schemas | plural, first letter upper case; `@Name` for a reusable input; `\|` separates nested names, never `/` or `\` | `NEWSCHEMA('Tickets', ...)`, `'@Reports\|Categories'` |
 | API routes | lowercase, `_` between collection and verb | `tickets_create` |
 | Plugins, components, `FUNC.`, `MAIN.`, `REPO.` keys | lowercase | `FUNC.refreshtags` |
 | Table and column names | lowercase | `tbl_user`, `dtcreated` |

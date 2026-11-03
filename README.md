@@ -1,12 +1,12 @@
 # Total.js conventions
 
-How Total.js 5 applications are written, learned from real production apps and from the official style guide. It is a reference for people and for AI agents: read the zone you are working in, copy the pattern, keep the names.
+How Total.js 5 applications are written, learned from inspected app snapshots, framework source and the official style guide. It is a reference for people and for AI agents: read the zone you are working in, copy the pattern, keep the names.
 
-Every rule comes with an example taken from the code of the Total.js apps CMS, OpenPlatform and Todomator or from the [official guidelines](https://github.com/totaljs-es/guidelines). Where the two differ, the page says so.
+The reference apps are CMS, OpenPlatform, Todomator, Dashboard, FlowOS and IoT. [Sources and scope](general/sources.md) records the inspected files and distinguishes observed patterns, repository defaults and framework behaviour. This is a maintained community reference, not a claim that every rule has been approved by Total.js.
 
 ## Zones
 
-Each zone is a folder. Read only the one you need.
+Each zone is a folder. Read the general rules, then the pages relevant to your change.
 
 | Zone | What it covers |
 |---|---|
@@ -17,10 +17,10 @@ Each zone is a folder. Read only the one you need.
 
 ## Pages
 
-- general: [project-structure](general/project-structure.md), [javascript-style](general/javascript-style.md)
-- backend: [actions](backend/actions.md), [routes-and-auth](backend/routes-and-auth.md), [definitions-and-modules](backend/definitions-and-modules.md), [gotchas](backend/gotchas.md)
+- general: [sources](general/sources.md), [workflow](general/workflow.md), [native-patterns](general/native-patterns.md), [project-structure](general/project-structure.md), [javascript-style](general/javascript-style.md)
+- backend: [storage-and-integrations](backend/storage-and-integrations.md), [actions](backend/actions.md), [routes-and-auth](backend/routes-and-auth.md), [definitions-and-modules](backend/definitions-and-modules.md), [gotchas](backend/gotchas.md)
 - database: [sql-scripts](database/sql-scripts.md), [queries](database/queries.md)
-- frontend: [components](frontend/components.md), [plugins-ui](frontend/plugins-ui.md), [views-and-layout](frontend/views-and-layout.md), [css](frontend/css.md)
+- frontend: [binding-and-forms](frontend/binding-and-forms.md), [components](frontend/components.md), [plugins-ui](frontend/plugins-ui.md), [views-and-layout](frontend/views-and-layout.md), [css](frontend/css.md)
 
 ## For AI agents
 
@@ -34,15 +34,19 @@ Each zone is a folder. Read only the one you need.
 2. **Total.js first**: prototypes (`'{0}'.format()`, `findItem()`, `parseJSON()`...) in the backend and Tangular in the frontend, before any other function.
 3. **No imports from Node.js**: use `Total.Fs`, `Total.Path`, `Total.Crypto`... instead of `require()`.
 4. Follow the code that is already next to yours. A new file looks like its neighbours.
-5. Keep names short, lowercase and the same across projects: `id`, `name`, `body`, `dtcreated`, `items`.
-6. Declare input once (`input:` / `params:`) and let the framework validate it. The action body trusts what it receives.
-7. Keep routes in one place (`controllers/` or the plugin's `index.js`), logic in actions, data access in `DATA`.
+5. Keep names short, lowercase and the same across projects: `id`, `name`, `body`, `dtcreated`, `items`. Use `|` between parts of action and schema names (`Tickets|list`, `@Reports|Categories`), never `/` or `\`.
+6. Declare types once (`input:` / `params:` / `query:`). In the action, still check ownership, permissions, existence and business constraints.
+7. Follow the app's route registration pattern: explicit `ROUTE()` or the action's `route:`. Keep business logic in actions and use the existing storage model.
 8. Add no dependency that the framework already covers.
 9. Check what you changed: `node --check file.js`, then run the app and call the route.
 
+## Creating and correcting apps
+
+Start with the [write and refactor workflow](general/workflow.md). It covers choosing a reference, preserving contracts, reviewing existing code and recording checks. Use [native patterns](general/native-patterns.md) to replace unnecessary wrappers, [storage and integrations](backend/storage-and-integrations.md) for persistence and outgoing HTTP, and [binding and forms](frontend/binding-and-forms.md) for a complete UI flow. A conventions check does not certify runtime correctness.
+
 ## Versions
 
-Written for **Total.js 5** (`total5` on npm). The official guidelines were written for Total.js 4 (`NEWSCHEMA`, `var`); the pages mark the places where Total.js 5 code differs. Do not assume a Total.js 4 API exists in version 5: check the framework source or an existing app.
+Written for **Total.js 5** (`total5` on npm). The official guidelines were written for Total.js 4 (including schema examples); the pages mark the places where Total.js 5 code differs. Do not assume a Total.js 4 API exists in version 5: check the framework source or an existing app.
 
 ## License
 

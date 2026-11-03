@@ -1,6 +1,6 @@
 # Components (jComponent)
 
-For widgets, forms, lists, inputs and every other piece of UI, **use a component that already exists**. If none fits, **create a component** (do not build the piece with ad hoc markup and scripts). Load components with `COMPONENTATOR()`, always.
+For widgets, forms, lists, inputs and every other piece of UI, **use a component that already exists**. If none fits, **create a component** (do not build the piece with ad hoc markup and scripts). Load catalogue components with `COMPONENTATOR()`; custom app-owned components remain normal app assets.
 
 ## 1. Look for the component first
 
@@ -22,6 +22,10 @@ Machine-readable forms of the same catalogue (use these from code or an agent):
 | Index of all Forge pages | `https://forge.totaljs.es/index.json` |
 
 Each page carries its framework version (`jcomponent@20`) and a content hash, so you can tell which version a rule refers to.
+
+## Match the UI version first
+
+The inspected CMS admin loads `spa.min@19`, while Dashboard, IoT and FlowOS use `@20`; Todomator also mixes shells. A catalogue entry for jComponent 20 does not prove its markup or options work in 19. Check the actual layout, bundle and nearby screen before using a component or copying `PLUGIN`/binding syntax. A backend Total.js 5 dependency does not select the browser UI major version.
 
 ## Preferred components
 
@@ -80,7 +84,7 @@ COMPONENT('name', function(self, config, cls) {
 
 ## 3. Load components with COMPONENTATOR()
 
-Never link a component file by hand. List the components the app uses in `definitions/init.js`:
+For shared catalogue components, use the app's `COMPONENTATOR()` bundle. App-owned components load through the app's existing assets. For example, in `definitions/init.js`:
 
 ```js
 ON('ready', function() {
