@@ -65,3 +65,9 @@ and loaded application module access through MODS. Preserve standalone-tool
 imports and update package/test/export paths when moving files.
 Report convention findings with file/line, rule, proposed fix and checks run.
 ```
+
+## Documentation and AI kits
+
+Keep deliverable documentation limited to contracts, setup, commands and verified limits. Do not include personal names, internal conversations, tool provenance or incidental machine details. Choose the smallest useful structure and follow the target's examples; adding an authoring kit does not authorize rewriting its catalogue.
+
+For reusable AI guidance, use one maintained workflow per skill and pointers for the supported agents. Keep documentation indexes generated and tested. Include compatible examples and artifact-specific checks. Follow [native testing](testing.md) for the runner, dependencies and integration boundaries, and [CMS widgets](../frontend/cms-widgets.md) when the deliverable is a widget rather than a jComponent.

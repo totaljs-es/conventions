@@ -29,7 +29,8 @@ Name indexes `<table>_idx<what>`: `tbl_ticket_idxstatus`. Name foreign keys `<ta
 - `id` is the primary key, `text`, filled in the code with `UID()`. A foreign key is the table plus `id`: `userid`, `folderid`, `parentid`.
 - Dates start with `dt`: `dtcreated`, `dtupdated`, `dtremoved`. Booleans start with `is`: `isremoved`, `ispublic`, `isdisabled`.
 - Use the same names for the same thing in every table: `name`, `body`, `search`, `sortindex`, `icon`, `color`.
-- When it fits, every table has `id`, `name` and `dtcreated`.
+- New feature tables include `id`, `name` and `dtcreated`. Preserve established schemas and externally owned contracts; document a concrete exception instead of treating these columns as optional by default.
+- Tables tracking changes normally also have `createdby`, `updatedby`, `removedby` as `jsonb`, and `dtupdated`, `dtremoved`. Without an authenticated actor, keep the author columns nullable rather than fabricating a user. A caller display field such as `username` is separate from authorship.
 - `dtcreated` defaults to UTC now: `DEFAULT timezone('utc'::text, now())`.
 - A column that lists search keywords is called `search`.
 
@@ -73,3 +74,18 @@ CREATE TABLE "public"."cl_status" (
 ## Format
 
 Tabs (width 4), no useless casts (`name <> 'x'`, not `name <> 'x'::text`), one statement per `;`, a trailing `;` on every command.
+
+## Audit fields and migrations
+
+Authorship fields are project schema conventions, not automatically populated database/framework columns. For a feature that records changes, include the columns and leave the actor null when no authenticated identity exists:
+
+```sql
+"createdby" jsonb,
+"updatedby" jsonb,
+"removedby" jsonb,
+"dtcreated" timestamp DEFAULT timezone('utc'::text, now()),
+"dtupdated" timestamp,
+"dtremoved" timestamp
+```
+
+Optional display fields such as username or summary belong only to features that need them. A schema default is not a migration of existing tables: add an upgrade when introducing columns or renaming tables in an installed application.

@@ -16,10 +16,10 @@ Each zone is a folder. Read the general rules, then the pages relevant to your c
 
 ## Pages
 
-- general: [workflow](general/workflow.md), [native-patterns](general/native-patterns.md), [project-structure](general/project-structure.md), [javascript-style](general/javascript-style.md)
+- general: [workflow](general/workflow.md), [native-patterns](general/native-patterns.md), [project-structure](general/project-structure.md), [javascript-style](general/javascript-style.md), [testing](general/testing.md)
 - backend: [storage-and-integrations](backend/storage-and-integrations.md), [actions](backend/actions.md), [action-kits](backend/action-kits.md), [routes-and-auth](backend/routes-and-auth.md), [definitions-and-modules](backend/definitions-and-modules.md), [gotchas](backend/gotchas.md)
 - database: [sql-scripts](database/sql-scripts.md), [queries](database/queries.md)
-- frontend: [binding-and-forms](frontend/binding-and-forms.md), [components](frontend/components.md), [plugins-ui](frontend/plugins-ui.md), [views-and-layout](frontend/views-and-layout.md), [css](frontend/css.md)
+- frontend: [binding-and-forms](frontend/binding-and-forms.md), [components](frontend/components.md), [plugins-ui](frontend/plugins-ui.md), [views-and-layout](frontend/views-and-layout.md), [css](frontend/css.md), [CMS widgets](frontend/cms-widgets.md)
 
 ## For AI agents
 

@@ -21,3 +21,5 @@ Check these points where relevant:
 - Standalone actions (`backend/action-kits.md`): `name`, `summary`, `input`, `output`; configurable values in `config` with no real secret; one answer per path; a test with assertions that needs no network.
 
 Run relevant checks if available and authorized. State what you could not verify. If no actionable findings remain, say so without implying runtime checks that were not performed.
+
+For standalone actions and widgets also read `general/testing.md` and the matching `backend/action-kits.md` or `frontend/cms-widgets.md`. Check anonymous versus authenticated contracts, nullable authorship, fixed status values, test-only config, cached NOW timestamps and actual visual review.

@@ -23,6 +23,7 @@ This repository is a reference of conventions for Total.js 5 applications. Read 
 - Preserve URLs, permissions, input/output shapes, settings keys and model paths during a style correction. Do not add an abstraction when a direct native call fits; see `general/native-patterns.md`.
 - Frontend: match the app's jComponent major version; use an existing jComponent component (catalogue: https://forge.totaljs.es/es/components/, markdown at `https://forge.totaljs.es/en/components/<name>.md`); if none exists, create a reusable `COMPONENT('name', ...)`. Load catalogue components with `COMPONENTATOR()`; load app-owned components from app assets.
 - Every text for people is `@(Text)`.
+- For native test suites and tools, disposable test databases and browser evidence, see `general/testing.md`. CMS widgets retain their own single-file format and editor contracts; see `frontend/cms-widgets.md`.
 - After editing JavaScript run `node --check file.js`; start the app and call the route you changed.
 
 ## Layout

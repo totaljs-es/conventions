@@ -13,7 +13,7 @@ var Path = require('path');
 var ROOT = Path.join(__dirname, '..');
 var BASE = 'https://raw.githubusercontent.com/totaljs-es/conventions/main/';
 
-var SUMMARY = 'How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, pipe-separated action and schema names, explicit or action-declared routes, recognizable runtime/private/docs folders, MODS module access, existing storage and DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR().';
+var SUMMARY = 'How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, pipe-separated action and schema names, explicit or action-declared routes, recognizable runtime/private/docs folders, MODS module access, existing storage and DATA queries, PostgreSQL scripts, native tests, CMS widgets and jComponent components loaded with COMPONENTATOR().';
 
 var DETAILS = 'Read the general rules, then the affected backend, database or frontend pages. Written for Total.js 5 (`total5` on npm);';
 
@@ -25,8 +25,9 @@ var PAGES = [
 	['General', 'general/native-patterns.md', 'Native patterns', 'Direct framework calls, existing helpers and execution context'],
 	['General', 'general/project-structure.md', 'Project structure', 'Native runtime folders, private inputs, internal docs/examples, entry point and move checks'],
 	['General', 'general/javascript-style.md', 'JavaScript style', 'ES5 over ES6, prototypes and Tangular first, no imports from Node.js, formatting and names'],
+	['General', 'general/testing.md', 'Native tests and tools', 'Direct total5/test bootstrap, suite config, disposable databases and visual verification'],
 	['Backend', 'backend/actions.md', 'Actions', 'NEWACTION: naming with a pipe, input and params, answers, permissions, DATA'],
-	['Backend', 'backend/action-kits.md', 'Standalone actions with tests', 'Folder per action, contract, config, fixtures, local-server tests and the checker'],
+	['Backend', 'backend/action-kits.md', 'Standalone actions with tests', 'Folder per action, contract, suite config, small samples, database integration, local-server tests and the checker'],
 	['Backend', 'backend/routes-and-auth.md', 'Routes and authentication', 'ROUTE syntax for APIs, pages and uploads, and the single AUTH'],
 	['Backend', 'backend/definitions-and-modules.md', 'Definitions and modules', 'auth, init, func and db, config, automatic MODS loading, lifecycle and standalone-tool boundaries'],
 	['Backend', 'backend/storage-and-integrations.md', 'Storage and integrations', 'Existing persistence, RESTBuilder, configuration and lifecycle'],
@@ -37,6 +38,7 @@ var PAGES = [
 	['Frontend', 'frontend/plugins-ui.md', 'Plugins with UI', 'Server part, screens, forms, PLUGIN() and tapi'],
 	['Frontend', 'frontend/views-and-layout.md', 'Views and layout', 'The layout, directives, translations, public pages'],
 	['Frontend', 'frontend/binding-and-forms.md', 'Binding and forms', 'Connected screen/importer/form flow, binding, translations and lifecycle'],
+	['Frontend', 'frontend/cms-widgets.md', 'CMS widgets', 'Native single-file format, metadata, settings, scoped CSS, rendering and previews'],
 	['Frontend', 'frontend/css.md', 'CSS', 'Formatting, CLASS scoping, predefined classes']
 ];
 

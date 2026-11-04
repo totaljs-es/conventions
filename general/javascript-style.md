@@ -89,7 +89,7 @@ Do not `require()` Node.js modules. Total.js exposes them:
 | `require('zlib')` | `Total.Zlib` |
 | `require('url')`, `require('util')`, `require('stream')` | `Total.Url`, `Total.Util`, `Total.Stream` |
 
-Also available: `Total.Cluster`, `Total.Dns`, `Total.Net`, `Total.Tls`, `Total.Worker` and `Total.isBundle`. `Total.Os` is case-sensitive; `Total.OS` is not the exported property. Third-party packages are the last resort: the framework usually covers the need.
+Also available: `Total.Cluster`, `Total.Dns`, `Total.Net`, `Total.Tls`, `Total.Worker` and `Total.isBundle`. `Total.Os` is case-sensitive; `Total.OS` is not the exported property. For Node modules without a dedicated exposed property, use the global `REQUIRE('vm')` rather than inventing `Total.Vm`. In the reference implementation `REQUIRE` aliases `Total.require`; prefer the familiar global spelling in new code. Third-party packages are the last resort: the framework usually covers the need.
 
 ```js
 // good
@@ -140,6 +140,10 @@ Use the globals that exist instead of writing your own: `UID()` for identifiers,
 model.id = UID();
 model.dtcreated = NOW;
 ```
+
+`NOW` is a framework-owned cached Date, not a fresh clock read on every access/action. Do not initialize or reassign it in actions/tests that already load Total.js. Consecutive actions can share the same timestamp, so timestamps alone do not establish insertion order, uniqueness or elapsed time. Use an explicit ordering key when the contract needs a strict sequence. The refresh interval is version-dependent: the reference Framework 5 `index.js` refreshes it in a service timer every 5000 ms.
+
+Source: [Framework 5 index.js](https://github.com/totaljs/framework5/blob/7d2d553fc774090081b4e3b1ae75a52ef06b42b8/index.js) (NOW initialization/service refresh) and [global.js](https://github.com/totaljs/framework5/blob/7d2d553fc774090081b4e3b1ae75a52ef06b42b8/global.js) (REQUIRE alias). See [native tests](testing.md) for standalone suites.
 
 ## Comments
 

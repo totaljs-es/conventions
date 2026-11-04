@@ -17,4 +17,4 @@ For UI, match the loaded jComponent major, read component configuration, reuse c
 
 Verify syntax and the observable route/screen behaviour using the workflow's relevant checks. Report what changed, which reference supports it, checks run and what remains unverified. Documentation tests do not establish runtime compatibility.
 
-For a standalone action (a kit, not an app feature) follow `backend/action-kits.md`: contract first, `config` for URL and secrets, a fixture-based test with assertions, no network.
+For a standalone action (a kit, not an app feature) follow `backend/action-kits.md`: contract first, `config` for URL and secrets, sample-based assertions and explicit database/provider integration boundaries. See `general/testing.md` for native test bootstrap and disposable databases. For CMS widgets follow `frontend/cms-widgets.md`; verify compatible hooks, editable content, repeated settings and the rendered preview.
