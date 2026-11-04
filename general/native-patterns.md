@@ -1,6 +1,6 @@
 # Prefer direct native patterns
 
-The reference apps put operations directly in actions and plugin methods, with shared behaviour in `FUNC` or a dedicated integration module. They do not require a service/repository/DTO stack for each feature. Sources: CMS redirects and `definitions/func.js`; OpenPlatform `plugins/setup/schemas/groups.js`; Todomator `schemas/tickets.js`.
+Operations go directly in actions and plugin methods, with shared behaviour in `FUNC` or a dedicated integration module. There is no service/repository/DTO stack for each feature.
 
 ## Choose the existing operation
 
@@ -20,7 +20,7 @@ These are selection defaults, not a ban on helpers. A helper earns its place by 
 
 ## Input is already typed; business rules still matter
 
-Adapted from CMS `plugins/redirects/schemas/redirects.js` (the action ID below uses this repo's pipe default):
+Example:
 
 ```js
 NEWACTION('Redirects|read', {
@@ -37,7 +37,7 @@ NEWACTION('Redirects|read', {
 });
 ```
 
-Do not reparse `model.id` or add an alternative success envelope. In a user-owned feature, also constrain the lookup to the owner or tenant using the target app's existing rule. This CMS example is an admin collection, not a complete ownership model for other products.
+Do not reparse `model.id` or add an alternative success envelope. In a user-owned feature, also constrain the lookup to the owner or tenant using the target app's existing rule.
 
 ## Know the execution context
 

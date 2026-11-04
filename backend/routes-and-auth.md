@@ -48,9 +48,9 @@ A handler function is `function($)`. Prefer an API route plus an action; use a p
 
 ## A route declared in the action
 
-`NEWACTION` also accepts `route: '+API ?'` (or `route: true`) and registers the endpoint itself. This is used throughout Dashboard and IoT, and by standalone Todomator actions. It is not restricted to small apps. CMS/OpenPlatform also use explicit controller or plugin routes. Follow one registration style for the feature; do not add a duplicate explicit route for an action that already registers its own.
+`NEWACTION` also accepts `route: '+API ?'` (or `route: true`) and registers the endpoint itself. It is not restricted to small apps; explicit controller or plugin routes are equally valid. Follow one registration style for the feature; do not add a duplicate explicit route for an action that already registers its own.
 
-In the inspected framework `route: true` builds an API route, adding authentication when `user` or `permissions` requires it. An explicit route string controls its own prefix; inspect it rather than assuming all `route:` forms imply authentication. Automatic endpoint names come from action IDs. Preserve their spelling in `tapi()` calls.
+`route: true` builds an API route, adding authentication when `user` or `permissions` requires it. An explicit route string controls its own prefix; inspect it rather than assuming all `route:` forms imply authentication. Automatic endpoint names come from action IDs. Preserve their spelling in `tapi()` calls.
 
 ## Authentication
 

@@ -1,7 +1,5 @@
 # CSS
 
-Source: the [official guidelines](https://github.com/totaljs-es/guidelines).
-
 - File names lowercase, words separated by `-`.
 - **One rule per line**: keep all declarations of a selector on the same line.
 - Strings in `'` apostrophes.
@@ -42,6 +40,6 @@ The `intranetcss` component provides the common design (panels, toolbars, badges
 
 ## Component skins
 
-Scope overrides to an app class combined with the official component class, for example `.forge-backtotop.ui-backtotop`. Keep the official component's selectors and behavior intact. Component CSS can be injected after the app stylesheet; use deliberate specificity instead of depending only on load order or broad global overrides.
+Scope overrides to an app class combined with the official component class, for example `.app-backtotop.ui-backtotop`. Keep the official component's selectors and behavior intact. Component CSS can be injected after the app stylesheet; use deliberate specificity instead of depending only on load order or broad global overrides.
 
-Forge's `public/css/components.css` at commit `827311e` skins the official BackToTop this way. Preserve visible keyboard focus, sufficient contrast, mobile positioning and `prefers-reduced-motion` when adapting its appearance. Semantic or focus changes belong in a small native initialization hook, as described in [components](components.md), rather than in CSS.
+Skinning the official BackToTop works this way. Preserve visible keyboard focus, sufficient contrast, mobile positioning and `prefers-reduced-motion` when adapting its appearance. Semantic or focus changes belong in a small native initialization hook, as described in [components](components.md), rather than in CSS.

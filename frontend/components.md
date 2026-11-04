@@ -4,7 +4,7 @@ For widgets, forms, lists, inputs and every other piece of UI, **use a component
 
 ## 1. Look for the component first
 
-The catalogue of jComponent components, with the options and examples of each, is in Forge: <https://forge.totaljs.es/es/components/> (also in `/en/components/`).
+The catalogue of jComponent components, with the options and examples of each, is in the Forge catalogue: <https://forge.totaljs.es/es/components/> (also in `/en/components/`).
 
 Before writing UI:
 
@@ -25,7 +25,7 @@ Each page carries its framework version (`jcomponent@20`) and a content hash, so
 
 ## Match the UI version first
 
-The inspected CMS admin loads `spa.min@19`, while Dashboard, IoT and FlowOS use `@20`; Todomator also mixes shells. A catalogue entry for jComponent 20 does not prove its markup or options work in 19. Check the actual layout, bundle and nearby screen before using a component or copying `PLUGIN`/binding syntax. A backend Total.js 5 dependency does not select the browser UI major version.
+Apps load `spa.min@19` or `@20`. A catalogue entry for jComponent 20 does not prove its markup or options work in 19. Check the actual layout, bundle and nearby screen before using a component or copying `PLUGIN`/binding syntax. A backend Total.js 5 dependency does not select the browser UI major version.
 
 ## Preferred components
 
@@ -64,7 +64,7 @@ When several components could do the job, use these:
 - messages and badges: `.message`, `.message-success`, `.message-error`, `.message-alert`, `.badge` (with colors and sizes)
 - sizes: `.small`, `.medium`, `.large`
 
-Use these classes before writing new CSS (see [css](css.md)). The component is not in the Forge catalogue; its source (version 5) is served by the component download service.
+Use these classes before writing new CSS (see [css](css.md)). Its source (version 5) is served by the component download service.
 
 ## 2. If it does not exist, create a component
 
@@ -116,17 +116,15 @@ Rules:
 
 Reuse the official component and its configuration first. A different visual design usually needs a scoped CSS skin, not a copied component implementation or a file that embeds jComponent itself.
 
-Forge at commit `827311e` uses the official `backtotop` through `COMPONENTATOR('webui', 'backtotop', true)` and declares:
+The official `backtotop` is loaded through `COMPONENTATOR('webui', 'backtotop', true)` and declared as:
 
 ```html
-<ui-component name="backtotop" class="forge-backtotop" config="icon:ti ti-arrow-up;$init:FUNC.backtotop" data-label="@(Back to top)"></ui-component>
+<ui-component name="backtotop" class="app-backtotop" config="icon:ti ti-arrow-up;$init:FUNC.backtotop" data-label="@(Back to top)"></ui-component>
 ```
 
-Its `public/css/components.css` changes the appearance. Its `public/js/func.js` adds button semantics, a translated accessible name and keyboard focus handling through the native `$init` hook. The official component retains its scrolling and visibility behavior. The hook is needed because the inspected official component renders a span; CSS cannot provide button semantics.
+A stylesheet changes the appearance; a `FUNC` function adds button semantics, a translated accessible name and keyboard focus handling through the native `$init` hook. The official component retains its scrolling and visibility behavior. The hook is needed because the official component renders a span; CSS cannot provide button semantics.
 
-Verify hook timing against the installed runtime and component: the inspected `jComponent/library.js` calls `make` before applying `$init`, so the hook can adapt the generated markup. Keep such hooks small and idempotent, and check Enter, Space, pointer interaction, focus and reduced motion. If a component supplies the required semantics already, use them directly.
-
-Sources: Forge `definitions/ui.js`, `views/layout.html`, `public/js/func.js` and `public/css/components.css` at `827311e`; upstream `j-BackToTop/component.js` in Forge's pinned `vendor/components-master/`; [jComponent source](https://github.com/totaljs/jComponent), `library.js`, component creation and reconfiguration. This is a maintained-app example, not a claim that every Total.js app needs an initialization hook.
+Verify hook timing against the installed runtime and component: jComponent's `library.js` calls `make` before applying `$init`, so the hook can adapt the generated markup. Keep such hooks small and idempotent, and check Enter, Space, pointer interaction, focus and reduced motion. If a component supplies the required semantics already, use them directly.
 
 ## 4. Quick check
 

@@ -1,11 +1,11 @@
 # Writing and correcting Total.js apps
 
-Use this workflow with the [source map](sources.md) and the pages for the affected zone. It is a review method, not an automatic certification.
+Use this workflow with the pages for the affected zone.
 
 ## Before writing
 
 1. Read the target project's instructions, entry point, dependencies and nearest working feature. Identify the backend version, browser UI major, storage model and route registration pattern.
-2. Select a concrete reference: for example CMS redirects for a FileStorage feature, or OpenPlatform groups for SQL CRUD. Read its route, action, screen and form together.
+2. Select the nearest existing feature of the target project with the same storage model. Read its route, action, screen and form together.
 3. Record the contracts you must preserve: URL and action ID, body/query/params, response envelope, permission IDs, settings keys and plugin/model paths.
 4. Find the native helper or existing component before creating a wrapper. See [native patterns](native-patterns.md). Read only the component documentation compatible with the app's UI version.
 
@@ -55,7 +55,7 @@ Add this to a consuming project's instructions when adopting this reference:
 
 ```text
 Follow the Total.js conventions at https://github.com/totaljs-es/conventions.
-Read general/sources.md, general/workflow.md and the pages for this change.
+Read general/workflow.md and the pages for this change.
 Use the nearest compatible Total.js example. Use | between parts of action
 and schema names, never / or \. Update registrations and callers together
 when correcting names, checking endpoint compatibility. Preserve URLs,

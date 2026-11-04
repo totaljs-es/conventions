@@ -13,20 +13,20 @@ var Path = require('path');
 var ROOT = Path.join(__dirname, '..');
 var BASE = 'https://raw.githubusercontent.com/totaljs-es/conventions/main/';
 
-var SUMMARY = 'How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, pipe-separated action and schema names, explicit or action-declared routes, recognizable runtime/private/docs folders, MODS module access, existing storage and DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR(). Learned from inspected Total.js 5 app snapshots and framework source.';
+var SUMMARY = 'How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, pipe-separated action and schema names, explicit or action-declared routes, recognizable runtime/private/docs folders, MODS module access, existing storage and DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR().';
 
-var DETAILS = 'Read the general rules, then the affected backend, database or frontend pages. Distinguish observed patterns, repository defaults and installed framework behaviour. Written for Total.js 5 (`total5` on npm); the official guidelines are for Total.js 4 and the pages mark where they differ.';
+var DETAILS = 'Read the general rules, then the affected backend, database or frontend pages. Written for Total.js 5 (`total5` on npm);';
 
 // Every page, in the order in which it is read: [section, file, title, what it says]
 var PAGES = [
 	['Start here', 'README.md', 'README', 'The zones, the pages and the principles'],
 	['Start here', 'AGENTS.md', 'AGENTS.md', 'For an agent: how to use these pages and the rules that apply to every change'],
-	['General', 'general/sources.md', 'Sources and scope', 'Evidence, reference variants, snapshot hashes and repository policies'],
 	['General', 'general/workflow.md', 'Write and refactor workflow', 'Select a reference, preserve contracts, correct code and verify behaviour'],
 	['General', 'general/native-patterns.md', 'Native patterns', 'Direct framework calls, existing helpers and execution context'],
 	['General', 'general/project-structure.md', 'Project structure', 'Native runtime folders, private inputs, internal docs/examples, entry point and move checks'],
 	['General', 'general/javascript-style.md', 'JavaScript style', 'ES5 over ES6, prototypes and Tangular first, no imports from Node.js, formatting and names'],
 	['Backend', 'backend/actions.md', 'Actions', 'NEWACTION: naming with a pipe, input and params, answers, permissions, DATA'],
+	['Backend', 'backend/action-kits.md', 'Standalone actions with tests', 'Folder per action, contract, config, fixtures, local-server tests and the checker'],
 	['Backend', 'backend/routes-and-auth.md', 'Routes and authentication', 'ROUTE syntax for APIs, pages and uploads, and the single AUTH'],
 	['Backend', 'backend/definitions-and-modules.md', 'Definitions and modules', 'auth, init, func and db, config, automatic MODS loading, lifecycle and standalone-tool boundaries'],
 	['Backend', 'backend/storage-and-integrations.md', 'Storage and integrations', 'Existing persistence, RESTBuilder, configuration and lifecycle'],

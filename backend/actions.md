@@ -1,7 +1,5 @@
 # Actions
 
-Source: CMS `plugins/redirects/schemas/redirects.js`, OpenPlatform `plugins/setup/schemas/groups.js`, Todomator `schemas/tickets.js` and framework `builders.js`. Examples adapt IDs to this repo's pipe default and retain only the relevant fields.
-
 An action is one unit of server logic: a name, the input it accepts, who may call it, and a function. Define it with `NEWACTION` in a `schemas/` file.
 
 ```js
@@ -37,11 +35,11 @@ NEWACTION('Redirects|save', {
 
 `Collection|verb`, collection in plural and capitalized: `Tickets|list`, `Groups|create`, `Users|remove`. Separate the two parts with a pipe `|`.
 
-Use `|` between parts of action and schema names, never `/` or `\`: `Tickets|list`, `Reports|Categories|list`, `@Reports|Categories`. A simple name such as `Tickets` or `@Group` needs no separator. This is the Total.js convention adopted by this repository, including grouped and nested names.
+Use `|` between parts of action and schema names, never `/` or `\`: `Tickets|list`, `Reports|Categories|list`, `@Reports|Categories`. A simple name such as `Tickets` or `@Group` needs no separator. This applies to grouped and nested names too.
 
-Some reference snapshots contain slash names; they are historical observations, not the naming rule to reproduce. When correcting them, update registrations, route targets, `ACTION` / `$.action` calls and direct action-name `tapi()` calls together. Check automatically generated endpoint names and existing external callers; preserve public URLs with explicit routes or compatibility mappings where needed. Do not change URL path separators or plugin method paths such as `?/refresh`: this rule applies to action/schema names.
+Existing code may contain slash names; they are not the naming rule to reproduce. When correcting them, update registrations, route targets, `ACTION` / `$.action` calls and direct action-name `tapi()` calls together. Check automatically generated endpoint names and existing external callers; preserve public URLs with explicit routes or compatibility mappings where needed. Do not change URL path separators or plugin method paths such as `?/refresh`: this rule applies to action/schema names.
 
-The framework's MCP sanitizer maps both `/` and `|` to `_`; the pipe convention is our naming choice, not an MCP requirement. See [sources](../general/sources.md).
+The framework's MCP sanitizer maps both `/` and `|` to `_`; the pipe convention is our naming choice, not an MCP requirement.
 
 The usual verbs:
 
@@ -92,6 +90,10 @@ Complete each response path once. Use an early `return` when code would otherwis
 
 For a protected action that may also be called internally, declare the appropriate action-level check; the `+` on an HTTP route alone does not protect other invocation paths. `public: true` in reference code is not proof that an endpoint is anonymous; inspect the route and action checks. See `builders.js` action execution in the framework source.
 
+## Options and calling
+
+Beyond `input`, an action can declare `summary` (the description of the tool when it is exposed), `config` (defaults read as `$.config`), `output` (a filter: only the declared keys leave the action), `timeout`, `cache` and `mcp: true`. Callers override per call: `ACTION('Name', payload).config({}).env('test').user(user).promise()`. `.promise()` resolves with the answer and rejects with the error list. Standalone actions with tests: see [action kits](action-kits.md).
+
 ## Async and data
 
 Actions are `async` when they await `DATA` calls. Pass `$` to `.promise($)` so errors answer the request for you:
@@ -112,7 +114,7 @@ See [queries](../database/queries.md) for `DATA`.
 
 ## Grouped schemas are also Total.js 5
 
-Todomator uses `NEWSCHEMA('Tickets', function(schema) { schema.action('list', { ... }); });`. Do not classify every `NEWSCHEMA` as Total.js 4: reusable input definitions and grouped actions exist in the inspected v5 framework. Keep the target project's established form and verify any API before migrating it.
+`NEWSCHEMA('Tickets', function(schema) { schema.action('list', { ... }); });`. Reusable input definitions and grouped actions are Total.js 5. Keep the target project's established form.
 
 ## Keep an action small
 

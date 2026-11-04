@@ -1,6 +1,6 @@
 # Binding and forms as one flow
 
-Source: CMS `plugins/redirects/public/index.html` and `public/form.html`. The following connected example is adapted to the repo's ES5 preference and includes only the fields needed to show the lifecycle. It assumes the CMS shell, jComponent version, importer and `*form` alias setup; it is not a standalone page.
+The following connected example includes only the fields needed to show the lifecycle. It assumes the app shell, jComponent version, importer and `*form` alias setup; it is not a standalone page.
 
 ## Screen → model → importer
 
@@ -68,7 +68,7 @@ The form component owns the submit/cancel buttons. Ordinary screen buttons use `
 
 ## Binding and templates
 
-CMS screens bind `?.items` through `ui-bind` and render a `script type="text/html"` with Tangular. Update the model (`exports.set('items', response)`) so the binding owns rendering, rather than keeping a parallel list in the DOM. Use `CLASS` for screen CSS, `?` for local paths and `data-exec="?/method"` for handlers. Preserve the shell's global model paths.
+Screens bind `?.items` through `ui-bind` and render a `script type="text/html"` with Tangular. Update the model (`exports.set('items', response)`) so the binding owns rendering, rather than keeping a parallel list in the DOM. Use `CLASS` for screen CSS, `?` for local paths and `data-exec="?/method"` for handlers. Preserve the shell's global model paths.
 
 Treat user text as text in templates; do not add raw HTML rendering or string-built event attributes. Backend view directives (`@{...}`), translation markers (`@(...)`) and client Tangular (`{{ ... }}`) are distinct stages. Use the syntax supported by that app's library and compiler; check a working template for block terminators and escaping.
 

@@ -8,7 +8,7 @@ config              settings, one "key : value" per line
 package.json        "total5" is the runtime dependency
 controllers/        routes: exports.install = function() { ROUTE(...) }
 definitions/        auth.js, init.js, func.js, db.js: loaded at start, no exports
-modules/            integrations with other systems (cdn, openplatform, tapi...)
+modules/            integrations with other systems (cdn, tapi...)
 plugins/<name>/     a feature: index.js (server), index.html (UI), schemas/, public/
 schemas/            actions that are not part of a plugin
 views/              layout and pages (HTML with @{...} directives)
@@ -22,9 +22,9 @@ Optional, when the app is shipped: `Dockerfile`, `docker-compose.yaml`, `bundle.
 
 ## Recognizable application folders
 
-**Repository policy:** runtime code and inputs belong in the framework folders above. Classify a file by its consumer, rather than creating a new top-level folder for every concern. `docs/` is for development material; the running application must not read it. Development tools may read evaluation fixtures and reference projects there.
+Runtime code and inputs belong in the framework folders above. Classify a file by its consumer, rather than creating a new top-level folder for every concern. `docs/` is for development material; the running application must not read it. Development tools may read evaluation fixtures and reference projects there.
 
-The Forge reorganization is a concrete application of this policy:
+Where things go:
 
 | Material | Location | Consumer |
 |---|---|---|
@@ -39,9 +39,7 @@ A language catalogue is configuration data, not the interface translation store.
 
 Use `public/` only when a browser or public client is intended to retrieve the file. Use `private/` for files the application needs internally. Exclude credentials, local databases and development documentation from deployment archives; whitelist the specific private paths required by the runtime rather than packaging the entire directory. Generated assets are not hand-edited source.
 
-The root `database.sql` and dated upgrades used by OpenPlatform and Todomator remain valid existing layouts. When grouping internal SQL files, put the group under `private/database/` rather than creating an application-level `database/` folder. This is repository policy, not a restriction of the Total.js loader. The `database/` folder in this conventions repository is a documentation zone, not an application runtime directory.
-
-Source: Forge's `private/languages.json`, `private/database/`, `modules/i18n.js`, `definitions/benchmarks.js`, `tools/make-package.js`, `tools/with-test-app.js` and `docs/examples/taskboard/`. See [sources and scope](sources.md).
+The root `database.sql` and dated upgrades remain valid existing layouts. When grouping internal SQL files, put the group under `private/database/` rather than creating an application-level `database/` folder.
 
 ## index.js
 
@@ -61,8 +59,8 @@ Run it with `node index.js 8000` (add `--release` for release mode).
 
 ## Where things go
 
-- **A route** follows the app's existing pattern: `controllers/*.js` / plugin `index.js`, or the action's `route:` property (Dashboard/IoT/Todomator).
-- **Business logic** belongs in actions: usually `schemas/` or `plugins/<name>/schemas/`; compact plugins may declare actions in `index.js` (Dashboard).
+- **A route** follows the app's existing pattern: `controllers/*.js` / plugin `index.js`, or the action's `route:` property.
+- **Business logic** belongs in actions: usually `schemas/` or `plugins/<name>/schemas/`; compact plugins may declare actions in `index.js`.
 - **Shared helpers** hang from `FUNC` (`FUNC.notify`, `FUNC.save`) and live in `definitions/func.js`.
 - **Shared state in memory** hangs from `MAIN` (the app) or `REPO` (cached lookups, e.g. `REPO.tags`).
 - **Startup work** (config defaults, loading caches, registering UI components) goes in `ON('ready', ...)` in `definitions/init.js`.

@@ -36,7 +36,7 @@ The shell of an app is one HTML file in `views/` (`admin.html`, `index.html`). I
 
 ## Runtime, bundles and application assets
 
-The example above is adapted from the CMS shell, using this repository's jComponent 20 CDN default for new layouts. The inspected CMS itself uses 19; an existing app requires a deliberate version migration. Forge's public and admin layouts at commit `827311e` demonstrate the 20 setup.
+New layouts load jComponent 20 from the CDN. An existing app on another major version requires a deliberate migration.
 
 - Load `https://cdn.componentator.com/spa.min@20.css` and `https://cdn.componentator.com/spa.min@20.js` once per document. The runtime must precede component bundles and scripts that use its APIs.
 - `COMPONENTATOR()` downloads the selected components; it does not replace the core runtime. Load the matching `@{REPO.ui}` or `@{REPO.webui}` after the runtime.
@@ -53,7 +53,7 @@ Every text a person reads is wrapped in `@(...)`, in views, in plugin HTML and i
 ## Two kinds of pages
 
 - **App screens** (admin, tools): plugin HTML mounted in the layout, driven by `PLUGIN`.
-- **Public pages**: server-rendered views returned by a controller (`$.view('index')`) or compiled from the CMS. They carry no `PLUGIN` logic.
+- **Public pages**: server-rendered views returned by a controller (`$.view('index')`). They carry no `PLUGIN` logic.
 
 ## Naming
 

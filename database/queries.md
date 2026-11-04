@@ -34,7 +34,7 @@ NEWACTION('Groups|list', {
 });
 ```
 
-A reusable joined list often reads from a `view_`. IoT also uses `DATA.list(...)` for paginated output; OpenPlatform uses `DATA.find(...)`. Preserve the response shape expected by the UI rather than swapping these because their query chains look similar.
+A reusable joined list often reads from a `view_`. `DATA.list(...)` is used for paginated output and `DATA.find(...)` for plain lists. Preserve the response shape expected by the UI rather than swapping them because their query chains look similar.
 
 ## Write
 
@@ -56,13 +56,13 @@ await DATA.remove('tbl_notification').where('ticketid', params.id).where('typeid
 
 ## Success after a write
 
-When a write should return the app's success envelope rather than its raw database result, the reference apps use:
+When a write should return the app's success envelope rather than its raw database result, use:
 
 ```js
 DATA.remove('tbl_tag').id($.params.id).error(404).callback($.done($.params.id));
 ```
 
-Adapted from Todomator's `schemas/tickets.js` (`reset`). Keep the established response contract. A raw `.callback($)` and `$.done(id)` are not interchangeable responses.
+Keep the established response contract. A raw `.callback($)` and `$.done(id)` are not interchangeable responses.
 
 ## Conditions
 

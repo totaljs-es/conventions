@@ -1,8 +1,7 @@
 # Total.js conventions
 
-How Total.js 5 applications are written, learned from inspected app snapshots, framework source and the official style guide. It is a reference for people and for AI agents: read the zone you are working in, copy the pattern, keep the names.
+How Total.js 5 applications are written. It is a reference for people and for AI agents: read the zone you are working in, copy the pattern, keep the names.
 
-The reference apps are CMS, OpenPlatform, Todomator, Dashboard, FlowOS and IoT. [Sources and scope](general/sources.md) records the inspected files and distinguishes observed patterns, repository defaults and framework behaviour. This is a maintained community reference, not a claim that every rule has been approved by Total.js.
 
 ## Zones
 
@@ -17,8 +16,8 @@ Each zone is a folder. Read the general rules, then the pages relevant to your c
 
 ## Pages
 
-- general: [sources](general/sources.md), [workflow](general/workflow.md), [native-patterns](general/native-patterns.md), [project-structure](general/project-structure.md), [javascript-style](general/javascript-style.md)
-- backend: [storage-and-integrations](backend/storage-and-integrations.md), [actions](backend/actions.md), [routes-and-auth](backend/routes-and-auth.md), [definitions-and-modules](backend/definitions-and-modules.md), [gotchas](backend/gotchas.md)
+- general: [workflow](general/workflow.md), [native-patterns](general/native-patterns.md), [project-structure](general/project-structure.md), [javascript-style](general/javascript-style.md)
+- backend: [storage-and-integrations](backend/storage-and-integrations.md), [actions](backend/actions.md), [action-kits](backend/action-kits.md), [routes-and-auth](backend/routes-and-auth.md), [definitions-and-modules](backend/definitions-and-modules.md), [gotchas](backend/gotchas.md)
 - database: [sql-scripts](database/sql-scripts.md), [queries](database/queries.md)
 - frontend: [binding-and-forms](frontend/binding-and-forms.md), [components](frontend/components.md), [plugins-ui](frontend/plugins-ui.md), [views-and-layout](frontend/views-and-layout.md), [css](frontend/css.md)
 
@@ -42,12 +41,12 @@ Each zone is a folder. Read the general rules, then the pages relevant to your c
 
 ## Creating and correcting apps
 
-Start with the [write and refactor workflow](general/workflow.md). It covers choosing a reference, preserving contracts, reviewing existing code and recording checks. Use [native patterns](general/native-patterns.md) to replace unnecessary wrappers, [storage and integrations](backend/storage-and-integrations.md) for persistence and outgoing HTTP, and [binding and forms](frontend/binding-and-forms.md) for a complete UI flow. A conventions check does not certify runtime correctness.
+Start with the [write and refactor workflow](general/workflow.md). It covers choosing a reference, preserving contracts, reviewing existing code and recording checks. Use [native patterns](general/native-patterns.md) to replace unnecessary wrappers, [storage and integrations](backend/storage-and-integrations.md) for persistence and outgoing HTTP, and [binding and forms](frontend/binding-and-forms.md) for a complete UI flow.
 
 ## Versions
 
-Written for **Total.js 5** (`total5` on npm). The official guidelines were written for Total.js 4 (including schema examples); the pages mark the places where Total.js 5 code differs. Do not assume a Total.js 4 API exists in version 5: check the framework source or an existing app.
+Written for **Total.js 5** (`total5` on npm). Do not use Total.js 4 APIs.
 
 ## License
 
-[MIT](LICENSE). The examples are short excerpts adapted from Total.js CMS and Total.js OpenPlatform (MIT, Copyright Peter Širka / Total.js) and from Todomator (MIT), kept to illustrate the conventions.
+[MIT](LICENSE).

@@ -1,6 +1,6 @@
 # Plugins with UI
 
-A feature of an app is a **plugin**: a folder with a server part and a UI part that the framework loads and the app shell mounts. The CMS admin (pages, layouts, redirects, settings...) and the Todomator users screen are made this way.
+A feature of an app is a **plugin**: a folder with a server part and a UI part that the framework loads and the app shell mounts.
 
 ```
 plugins/redirects/

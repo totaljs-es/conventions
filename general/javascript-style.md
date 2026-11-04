@@ -1,8 +1,8 @@
 # JavaScript style
 
-Source: the [official guidelines](https://github.com/totaljs-es/guidelines) plus what the Total.js 5 apps do. Three rules come first, because they decide most of the code you write:
+Three rules come first, because they decide most of the code you write:
 
-1. **ES5 over ES6.** This repository chooses the ES5 form for new examples; it is a policy, not a claim that all reference apps use ES5.
+1. **ES5 over ES6.** New code uses the ES5 form.
 2. **Total.js first.** Use the framework's prototypes (backend) and Tangular (frontend) before any other function.
 3. **No imports from Node.js.** Use the modules Total.js already exposes.
 
@@ -34,7 +34,7 @@ const item = db.redirects.find(m => m.id === model.id);
 Notes:
 
 - `async` / `await` stays where the framework's own code uses it (`await DATA.find(...).promise($)`): there the ES5 alternative is a callback chain (`.callback($)`), which is also valid when it reads better.
-- The apps also use `let`, arrows, `for...of` and `async` functions. The ES5 preference here is a repository default. Do not rewrite unrelated working code merely to make an existing app look uniformly ES5.
+- Existing code may use `let`, arrows, `for...of` and `async` functions. Do not rewrite unrelated working code merely to make an existing app look uniformly ES5.
 - `const` is for module-level constants only: `const ADMIN = { id: 'admin', sa: true };`.
 - **Never `for...in` over an array**: it enumerates property names, including enumerable extensions, rather than just indexed values. Use a classic `for` loop.
 
@@ -89,7 +89,7 @@ Do not `require()` Node.js modules. Total.js exposes them:
 | `require('zlib')` | `Total.Zlib` |
 | `require('url')`, `require('util')`, `require('stream')` | `Total.Url`, `Total.Util`, `Total.Stream` |
 
-Also available: `Total.Cluster`, `Total.Dns`, `Total.Net`, `Total.Tls`, `Total.Worker` and `Total.isBundle`. Check availability in the installed version. `Total.Os` is case-sensitive; `Total.OS` is not the exported property. Third-party packages are the last resort: the framework usually covers the need.
+Also available: `Total.Cluster`, `Total.Dns`, `Total.Net`, `Total.Tls`, `Total.Worker` and `Total.isBundle`. `Total.Os` is case-sensitive; `Total.OS` is not the exported property. Third-party packages are the last resort: the framework usually covers the need.
 
 ```js
 // good
@@ -99,7 +99,7 @@ var file = PATH.temp('data.json');
 const Path = require('path');
 ```
 
-(The official guide shows `const Path = require('path')`. That was for Total.js 4; in Total.js 5 use `Total.Path`.)
+In Total.js 5 use `Total.Path`, not `const Path = require('path')`.
 
 Application files run after Total.js has initialized these globals. Bootstrap files still load `total5`, database adapters may need `require('querybuilderpg')`, and standalone Node.js tools (such as this repo's generator) use Node imports. Do not apply app-global rules to a process that has not loaded the framework.
 

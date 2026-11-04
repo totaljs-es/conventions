@@ -1,6 +1,6 @@
 # Total.js conventions: every page
 
-> How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, pipe-separated action and schema names, explicit or action-declared routes, recognizable runtime/private/docs folders, MODS module access, existing storage and DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR(). Learned from inspected Total.js 5 app snapshots and framework source.
+> How Total.js 5 applications are written: ES5 over ES6, Total.js prototypes and Tangular first, no imports from Node.js, pipe-separated action and schema names, explicit or action-declared routes, recognizable runtime/private/docs folders, MODS module access, existing storage and DATA queries, PostgreSQL scripts and jComponent components loaded with COMPONENTATOR().
 
 ---
 
@@ -8,9 +8,8 @@ Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/README.md
 
 # Total.js conventions
 
-How Total.js 5 applications are written, learned from inspected app snapshots, framework source and the official style guide. It is a reference for people and for AI agents: read the zone you are working in, copy the pattern, keep the names.
+How Total.js 5 applications are written. It is a reference for people and for AI agents: read the zone you are working in, copy the pattern, keep the names.
 
-The reference apps are CMS, OpenPlatform, Todomator, Dashboard, FlowOS and IoT. [Sources and scope](general/sources.md) records the inspected files and distinguishes observed patterns, repository defaults and framework behaviour. This is a maintained community reference, not a claim that every rule has been approved by Total.js.
 
 ## Zones
 
@@ -25,8 +24,8 @@ Each zone is a folder. Read the general rules, then the pages relevant to your c
 
 ## Pages
 
-- general: [sources](general/sources.md), [workflow](general/workflow.md), [native-patterns](general/native-patterns.md), [project-structure](general/project-structure.md), [javascript-style](general/javascript-style.md)
-- backend: [storage-and-integrations](backend/storage-and-integrations.md), [actions](backend/actions.md), [routes-and-auth](backend/routes-and-auth.md), [definitions-and-modules](backend/definitions-and-modules.md), [gotchas](backend/gotchas.md)
+- general: [workflow](general/workflow.md), [native-patterns](general/native-patterns.md), [project-structure](general/project-structure.md), [javascript-style](general/javascript-style.md)
+- backend: [storage-and-integrations](backend/storage-and-integrations.md), [actions](backend/actions.md), [action-kits](backend/action-kits.md), [routes-and-auth](backend/routes-and-auth.md), [definitions-and-modules](backend/definitions-and-modules.md), [gotchas](backend/gotchas.md)
 - database: [sql-scripts](database/sql-scripts.md), [queries](database/queries.md)
 - frontend: [binding-and-forms](frontend/binding-and-forms.md), [components](frontend/components.md), [plugins-ui](frontend/plugins-ui.md), [views-and-layout](frontend/views-and-layout.md), [css](frontend/css.md)
 
@@ -50,15 +49,15 @@ Each zone is a folder. Read the general rules, then the pages relevant to your c
 
 ## Creating and correcting apps
 
-Start with the [write and refactor workflow](general/workflow.md). It covers choosing a reference, preserving contracts, reviewing existing code and recording checks. Use [native patterns](general/native-patterns.md) to replace unnecessary wrappers, [storage and integrations](backend/storage-and-integrations.md) for persistence and outgoing HTTP, and [binding and forms](frontend/binding-and-forms.md) for a complete UI flow. A conventions check does not certify runtime correctness.
+Start with the [write and refactor workflow](general/workflow.md). It covers choosing a reference, preserving contracts, reviewing existing code and recording checks. Use [native patterns](general/native-patterns.md) to replace unnecessary wrappers, [storage and integrations](backend/storage-and-integrations.md) for persistence and outgoing HTTP, and [binding and forms](frontend/binding-and-forms.md) for a complete UI flow.
 
 ## Versions
 
-Written for **Total.js 5** (`total5` on npm). The official guidelines were written for Total.js 4 (including schema examples); the pages mark the places where Total.js 5 code differs. Do not assume a Total.js 4 API exists in version 5: check the framework source or an existing app.
+Written for **Total.js 5** (`total5` on npm). Do not use Total.js 4 APIs.
 
 ## License
 
-[MIT](LICENSE). The examples are short excerpts adapted from Total.js CMS and Total.js OpenPlatform (MIT, Copyright Peter Širka / Total.js) and from Todomator (MIT), kept to illustrate the conventions.
+[MIT](LICENSE).
 
 ---
 
@@ -71,13 +70,13 @@ This repository is a reference of conventions for Total.js 5 applications. Read 
 ## How to use it
 
 1. Open [README.md](README.md) and pick the zone you work in: `general/`, `backend/`, `database/` or `frontend/`.
-2. Read the general rules and the pages for the affected zones. Start with `general/sources.md` and `general/workflow.md` when choosing a pattern or correcting existing code.
+2. Read the general rules and the pages for the affected zones. Start with `general/workflow.md` when choosing a pattern or correcting existing code.
 3. Copy the pattern of the nearest existing file in the project you are editing; use these pages to decide what is idiomatic.
 
 ## Rules that apply to every change
 
 - Total.js 5 only. Do not use Total.js 4 APIs.
-- Repository default for new code — ES5 over ES6: `var`, `function`, classic loops, `'{0}'.format()` instead of template literals. ES6 only when there is no ES5 way.
+- ES5 over ES6 in new code: `var`, `function`, classic loops, `'{0}'.format()` instead of template literals. ES6 only when there is no ES5 way.
 - Use Total.js prototypes (`findItem`, `format`, `parseJSON`, `slug`, `isEmail`...) in the backend and Tangular templates in the frontend before any other function.
 - In initialized app code, do not `require()` exposed Node.js modules: use `Total.Fs`, `Total.Path`, `Total.Crypto`, `Total.Os`, `Total.Zlib`, etc.
 - Runtime code and inputs use recognizable Total.js folders; internal runtime files belong under `private/`, and development documentation, evaluations and standalone examples under `docs/`. The running app must not depend on `docs/`. Update readers, exports, tests and deployment allowlists when moving files.
@@ -85,8 +84,7 @@ This repository is a reference of conventions for Total.js 5 applications. Read 
 - Tabs, semicolons, `'` for short strings, lowercase file names with `-`.
 - Use `|` as the separator in action and schema names: `Tickets|list`, `Reports|Categories|list`, `@Reports|Categories`. Do not use `/` or `\` as name separators. When correcting an existing name, update registrations and every caller together, checking generated endpoints and compatibility. See `backend/actions.md`.
 - Follow the app's route style: explicit `ROUTE()` or an action's `route:`. Never register the same endpoint twice.
-- Keep the existing storage model: `DATA` for SQL, `FILESTORAGE` for files/CMS metadata, `MEMORIZE` where the app uses it. In request queries use `.promise($)` / `.callback($)`; ids are `UID()`, dates are `NOW`.
-- Verify APIs against the installed Total.js and UI versions; the source apps mix versions and patterns. Distinguish repository policy from a framework requirement.
+- Keep the existing storage model: `DATA` for SQL, `FILESTORAGE` for files/metadata, `MEMORIZE` where the app uses it. In request queries use `.promise($)` / `.callback($)`; ids are `UID()`, dates are `NOW`.
 - Preserve URLs, permissions, input/output shapes, settings keys and model paths during a style correction. Do not add an abstraction when a direct native call fits; see `general/native-patterns.md`.
 - Frontend: match the app's jComponent major version; use an existing jComponent component (catalogue: https://forge.totaljs.es/es/components/, markdown at `https://forge.totaljs.es/en/components/<name>.md`); if none exists, create a reusable `COMPONENT('name', ...)`. Load catalogue components with `COMPONENTATOR()`; load app-owned components from app assets.
 - Every text for people is `@(Text)`.
@@ -120,82 +118,16 @@ Every rule here comes from code that exists. When you add a rule, add an example
 
 ---
 
-Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/general/sources.md
-
-# Sources and scope
-
-Reviewed on 2026-11-03 against six downloaded Total.js 5 application snapshots and local framework source. The downloads have no Git history, so folder names such as `main` are not revision identifiers. `sources.json` records SHA-256 hashes for the specific files used; it does not claim to inventory every app file. Verify current behaviour against the target app's installed dependency, especially when `package.json` says `latest` or `beta`.
-
-## What a rule means
-
-- **Observed pattern:** present in the listed app files. Follow the nearest compatible example in the target app.
-- **Repository default:** a choice for new code here, such as ES5 preference, pipe action IDs and dated SQL upgrades. It is not evidence that every Total.js app uses that choice.
-- **Framework behaviour:** confirmed in the inspected framework source. Check the installed revision before depending on it.
-
-Current project requirements and explicit user instructions take priority. Preserve existing contracts while correcting style. This reference cannot guarantee approval by an individual reviewer.
-
-## Reference map
-
-Paths below are relative to each downloaded app root. Public links are navigation aids; the hashes describe the local inspected files, not the current remote branch.
-
-| App | Files to start with | Demonstrated pattern |
-|---|---|---|
-| [CMS](https://github.com/totaljs/cms) | `plugins/redirects/index.js`, `plugins/redirects/schemas/redirects.js`, `plugins/redirects/public/index.html`, `plugins/redirects/public/form.html`, `definitions/func.js`, `definitions/init.js`, `views/admin.html` | Explicit routes, slash action IDs, FileStorage metadata, plugin/form flow, jComponent 19 shell |
-| [OpenPlatform](https://github.com/totaljs/openplatform) | `plugins/setup/schemas/groups.js`, `plugins/setup/index.js`, `database.sql`, `database-2024-10-30.sql` | Shared input, SQL actions, route params, dated upgrades |
-| [Todomator](https://github.com/totaljs/todomator) | `schemas/tickets.js`, `definitions/init.js`, `definitions/func.js`, `views/index.html`, `views/login.html` | Grouped and standalone actions, ownership filters, `$.done`, service/configure events, different UI shells |
-| Dashboard | `plugins/views/index.js`, `plugins/views/public/form.html`, `modules/openplatform.js`, `views/admin.html` | Actions with `route:` in plugin entry, pipe IDs, MEMORIZE, jComponent 20 |
-| FlowOS | `definitions/init.js`, `views/index.html` | Flow persistence, websocket permissions, local jComponent 20 assets |
-| IoT | `admin/plugins/devices/schemas/devices.js`, `admin/plugins/dataviews/index.js`, `admin/views/admin.html` | `route:` in schema files, paginated lists, permissions, jComponent 20 |
-
-Dashboard and FlowOS declare a Total.js Enterprise license. They and IoT were inspected for patterns; this reference adds no source excerpts from those apps and grants no rights to redistribute them. The code excerpts added here are adapted from the MIT apps or are illustrative combinations explicitly identified as such. Avoid copying bundled libraries, configuration secrets or runtime data into this repository.
-
-## Framework checks
-
-In [Total.js framework5](https://github.com/totaljs/framework5):
-
-- `index.js`, module loading, and `global.js`: automatic registration in `F.modules`, its `MODS` alias, module IDs and optional `install()`; sibling initialization still requires lifecycle care. CMS `plugins/dashboard/schemas/dashboard.js` demonstrates `MODS.visitors` in actions.
-- `index.js`, module initialization: `Total.Os`, `Total.Fs`, `Total.Path` and the other native module aliases; `COMPONENTATOR` and `MEMORIZE` implementations.
-- `builders.js`, `exports.newaction` and action execution: automatic routes, `user`, `sa` and `permissions`; `Options.prototype.invalid`, `done` and action calling.
-- `mcp.js`, tool-name sanitizer: `/` and `|` both become `_`; this is independent of this repository's `|` naming convention. Name corrections require coordinated caller and endpoint updates.
-- `querybuilder.js`, `QBP.promise`, `callback`, `autoquery` and `CTP.list`: error flow and query operations.
-- `controller.js`, `callback`, `invalid`, `csrf` and payload handling: controller APIs differ from action APIs.
-
-The [official guidelines](https://github.com/totaljs-es/guidelines) remain a style reference; their older examples do not decide v5 API availability.
-
-## Maintaining evidence
-
-When adding a rule, record the file and operation that support it. Label an adapted example and describe any deliberate change (such as converting arrows to functions). When sources disagree, document the alternatives instead of silently presenting one as universal. Update hashes after a new source review; a matching hash proves file identity, not correctness or production readiness.
-
-Verify the recorded files without modifying them:
-
-```bash
-node scripts/check-sources.js --apps /path/to/downloaded/apps --framework /path/to/framework5
-```
-
-Run this from the conventions repository root. Exit 0 means the selected files match, 1 means drift or missing files, and 2 means invalid arguments. It requires local reference copies; `npm test` uses isolated fixtures and does not need those apps.
-
-## Forge organization policy
-
-The Forge application reorganization inspected on 2026-11-03 supplies a concrete maintained-project example for `private/languages.json`, `private/database/`, `docs/evaluations/`, `docs/findings/` and the subsequent standalone-example placement under `docs/examples/`. Runtime language reading, SQL startup, exports, isolated application copies and deployment allowlists were updated together. Application module consumers use `MODS`; standalone Node maintenance tools retain direct imports.
-
-Sources in Forge: `AGENTS.md`, `modules/i18n.js`, `modules/content-snapshot.js`, `definitions/benchmarks.js`, `controllers/default.js`, `tools/make-package.js`, `tools/with-test-app.js` and the standalone taskboard reference. The folder grouping is an adopted repository policy illustrated by Forge, not a claim that all inspected Total.js apps have identical directories or that Total.js forbids extra directories. Existing root SQL files, public asset contracts and legacy migration inputs remain separate considerations.
-
-## Forge frontend example
-
-Forge commit `827311e` is the concrete reference for CDN jComponent 20 loading, separate `ui`/`webui` component bundles, official BackToTop with a scoped skin and a native accessibility initialization hook. Inspect `views/layout.html`, `views/admin.html`, `definitions/ui.js`, `public/js/func.js` and `public/css/components.css` together. The pinned `vendor/components-master/j-BackToTop/` source and upstream `jComponent/library.js` explain generated markup and `$init` timing. This extends the earlier application snapshots; it does not change their recorded UI versions or claim that all apps use the same frontend shell.
-
----
-
 Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/general/workflow.md
 
 # Writing and correcting Total.js apps
 
-Use this workflow with the [source map](sources.md) and the pages for the affected zone. It is a review method, not an automatic certification.
+Use this workflow with the pages for the affected zone.
 
 ## Before writing
 
 1. Read the target project's instructions, entry point, dependencies and nearest working feature. Identify the backend version, browser UI major, storage model and route registration pattern.
-2. Select a concrete reference: for example CMS redirects for a FileStorage feature, or OpenPlatform groups for SQL CRUD. Read its route, action, screen and form together.
+2. Select the nearest existing feature of the target project with the same storage model. Read its route, action, screen and form together.
 3. Record the contracts you must preserve: URL and action ID, body/query/params, response envelope, permission IDs, settings keys and plugin/model paths.
 4. Find the native helper or existing component before creating a wrapper. See [native patterns](native-patterns.md). Read only the component documentation compatible with the app's UI version.
 
@@ -245,7 +177,7 @@ Add this to a consuming project's instructions when adopting this reference:
 
 ```text
 Follow the Total.js conventions at https://github.com/totaljs-es/conventions.
-Read general/sources.md, general/workflow.md and the pages for this change.
+Read general/workflow.md and the pages for this change.
 Use the nearest compatible Total.js example. Use | between parts of action
 and schema names, never / or \. Update registrations and callers together
 when correcting names, checking endpoint compatibility. Preserve URLs,
@@ -262,7 +194,7 @@ Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/general/na
 
 # Prefer direct native patterns
 
-The reference apps put operations directly in actions and plugin methods, with shared behaviour in `FUNC` or a dedicated integration module. They do not require a service/repository/DTO stack for each feature. Sources: CMS redirects and `definitions/func.js`; OpenPlatform `plugins/setup/schemas/groups.js`; Todomator `schemas/tickets.js`.
+Operations go directly in actions and plugin methods, with shared behaviour in `FUNC` or a dedicated integration module. There is no service/repository/DTO stack for each feature.
 
 ## Choose the existing operation
 
@@ -282,7 +214,7 @@ These are selection defaults, not a ban on helpers. A helper earns its place by 
 
 ## Input is already typed; business rules still matter
 
-Adapted from CMS `plugins/redirects/schemas/redirects.js` (the action ID below uses this repo's pipe default):
+Example:
 
 ```js
 NEWACTION('Redirects|read', {
@@ -299,7 +231,7 @@ NEWACTION('Redirects|read', {
 });
 ```
 
-Do not reparse `model.id` or add an alternative success envelope. In a user-owned feature, also constrain the lookup to the owner or tenant using the target app's existing rule. This CMS example is an admin collection, not a complete ownership model for other products.
+Do not reparse `model.id` or add an alternative success envelope. In a user-owned feature, also constrain the lookup to the owner or tenant using the target app's existing rule.
 
 ## Know the execution context
 
@@ -319,7 +251,7 @@ config              settings, one "key : value" per line
 package.json        "total5" is the runtime dependency
 controllers/        routes: exports.install = function() { ROUTE(...) }
 definitions/        auth.js, init.js, func.js, db.js: loaded at start, no exports
-modules/            integrations with other systems (cdn, openplatform, tapi...)
+modules/            integrations with other systems (cdn, tapi...)
 plugins/<name>/     a feature: index.js (server), index.html (UI), schemas/, public/
 schemas/            actions that are not part of a plugin
 views/              layout and pages (HTML with @{...} directives)
@@ -333,9 +265,9 @@ Optional, when the app is shipped: `Dockerfile`, `docker-compose.yaml`, `bundle.
 
 ## Recognizable application folders
 
-**Repository policy:** runtime code and inputs belong in the framework folders above. Classify a file by its consumer, rather than creating a new top-level folder for every concern. `docs/` is for development material; the running application must not read it. Development tools may read evaluation fixtures and reference projects there.
+Runtime code and inputs belong in the framework folders above. Classify a file by its consumer, rather than creating a new top-level folder for every concern. `docs/` is for development material; the running application must not read it. Development tools may read evaluation fixtures and reference projects there.
 
-The Forge reorganization is a concrete application of this policy:
+Where things go:
 
 | Material | Location | Consumer |
 |---|---|---|
@@ -350,9 +282,7 @@ A language catalogue is configuration data, not the interface translation store.
 
 Use `public/` only when a browser or public client is intended to retrieve the file. Use `private/` for files the application needs internally. Exclude credentials, local databases and development documentation from deployment archives; whitelist the specific private paths required by the runtime rather than packaging the entire directory. Generated assets are not hand-edited source.
 
-The root `database.sql` and dated upgrades used by OpenPlatform and Todomator remain valid existing layouts. When grouping internal SQL files, put the group under `private/database/` rather than creating an application-level `database/` folder. This is repository policy, not a restriction of the Total.js loader. The `database/` folder in this conventions repository is a documentation zone, not an application runtime directory.
-
-Source: Forge's `private/languages.json`, `private/database/`, `modules/i18n.js`, `definitions/benchmarks.js`, `tools/make-package.js`, `tools/with-test-app.js` and `docs/examples/taskboard/`. See [sources and scope](sources.md).
+The root `database.sql` and dated upgrades remain valid existing layouts. When grouping internal SQL files, put the group under `private/database/` rather than creating an application-level `database/` folder.
 
 ## index.js
 
@@ -372,8 +302,8 @@ Run it with `node index.js 8000` (add `--release` for release mode).
 
 ## Where things go
 
-- **A route** follows the app's existing pattern: `controllers/*.js` / plugin `index.js`, or the action's `route:` property (Dashboard/IoT/Todomator).
-- **Business logic** belongs in actions: usually `schemas/` or `plugins/<name>/schemas/`; compact plugins may declare actions in `index.js` (Dashboard).
+- **A route** follows the app's existing pattern: `controllers/*.js` / plugin `index.js`, or the action's `route:` property.
+- **Business logic** belongs in actions: usually `schemas/` or `plugins/<name>/schemas/`; compact plugins may declare actions in `index.js`.
 - **Shared helpers** hang from `FUNC` (`FUNC.notify`, `FUNC.save`) and live in `definitions/func.js`.
 - **Shared state in memory** hangs from `MAIN` (the app) or `REPO` (cached lookups, e.g. `REPO.tags`).
 - **Startup work** (config defaults, loading caches, registering UI components) goes in `ON('ready', ...)` in `definitions/init.js`.
@@ -399,9 +329,9 @@ Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/general/ja
 
 # JavaScript style
 
-Source: the [official guidelines](https://github.com/totaljs-es/guidelines) plus what the Total.js 5 apps do. Three rules come first, because they decide most of the code you write:
+Three rules come first, because they decide most of the code you write:
 
-1. **ES5 over ES6.** This repository chooses the ES5 form for new examples; it is a policy, not a claim that all reference apps use ES5.
+1. **ES5 over ES6.** New code uses the ES5 form.
 2. **Total.js first.** Use the framework's prototypes (backend) and Tangular (frontend) before any other function.
 3. **No imports from Node.js.** Use the modules Total.js already exposes.
 
@@ -433,7 +363,7 @@ const item = db.redirects.find(m => m.id === model.id);
 Notes:
 
 - `async` / `await` stays where the framework's own code uses it (`await DATA.find(...).promise($)`): there the ES5 alternative is a callback chain (`.callback($)`), which is also valid when it reads better.
-- The apps also use `let`, arrows, `for...of` and `async` functions. The ES5 preference here is a repository default. Do not rewrite unrelated working code merely to make an existing app look uniformly ES5.
+- Existing code may use `let`, arrows, `for...of` and `async` functions. Do not rewrite unrelated working code merely to make an existing app look uniformly ES5.
 - `const` is for module-level constants only: `const ADMIN = { id: 'admin', sa: true };`.
 - **Never `for...in` over an array**: it enumerates property names, including enumerable extensions, rather than just indexed values. Use a classic `for` loop.
 
@@ -488,7 +418,7 @@ Do not `require()` Node.js modules. Total.js exposes them:
 | `require('zlib')` | `Total.Zlib` |
 | `require('url')`, `require('util')`, `require('stream')` | `Total.Url`, `Total.Util`, `Total.Stream` |
 
-Also available: `Total.Cluster`, `Total.Dns`, `Total.Net`, `Total.Tls`, `Total.Worker` and `Total.isBundle`. Check availability in the installed version. `Total.Os` is case-sensitive; `Total.OS` is not the exported property. Third-party packages are the last resort: the framework usually covers the need.
+Also available: `Total.Cluster`, `Total.Dns`, `Total.Net`, `Total.Tls`, `Total.Worker` and `Total.isBundle`. `Total.Os` is case-sensitive; `Total.OS` is not the exported property. Third-party packages are the last resort: the framework usually covers the need.
 
 ```js
 // good
@@ -498,7 +428,7 @@ var file = PATH.temp('data.json');
 const Path = require('path');
 ```
 
-(The official guide shows `const Path = require('path')`. That was for Total.js 4; in Total.js 5 use `Total.Path`.)
+In Total.js 5 use `Total.Path`, not `const Path = require('path')`.
 
 Application files run after Total.js has initialized these globals. Bootstrap files still load `total5`, database adapters may need `require('querybuilderpg')`, and standalone Node.js tools (such as this repo's generator) use Node imports. Do not apply app-global rules to a process that has not loaded the framework.
 
@@ -554,8 +484,6 @@ Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/ac
 
 # Actions
 
-Source: CMS `plugins/redirects/schemas/redirects.js`, OpenPlatform `plugins/setup/schemas/groups.js`, Todomator `schemas/tickets.js` and framework `builders.js`. Examples adapt IDs to this repo's pipe default and retain only the relevant fields.
-
 An action is one unit of server logic: a name, the input it accepts, who may call it, and a function. Define it with `NEWACTION` in a `schemas/` file.
 
 ```js
@@ -591,11 +519,11 @@ NEWACTION('Redirects|save', {
 
 `Collection|verb`, collection in plural and capitalized: `Tickets|list`, `Groups|create`, `Users|remove`. Separate the two parts with a pipe `|`.
 
-Use `|` between parts of action and schema names, never `/` or `\`: `Tickets|list`, `Reports|Categories|list`, `@Reports|Categories`. A simple name such as `Tickets` or `@Group` needs no separator. This is the Total.js convention adopted by this repository, including grouped and nested names.
+Use `|` between parts of action and schema names, never `/` or `\`: `Tickets|list`, `Reports|Categories|list`, `@Reports|Categories`. A simple name such as `Tickets` or `@Group` needs no separator. This applies to grouped and nested names too.
 
-Some reference snapshots contain slash names; they are historical observations, not the naming rule to reproduce. When correcting them, update registrations, route targets, `ACTION` / `$.action` calls and direct action-name `tapi()` calls together. Check automatically generated endpoint names and existing external callers; preserve public URLs with explicit routes or compatibility mappings where needed. Do not change URL path separators or plugin method paths such as `?/refresh`: this rule applies to action/schema names.
+Existing code may contain slash names; they are not the naming rule to reproduce. When correcting them, update registrations, route targets, `ACTION` / `$.action` calls and direct action-name `tapi()` calls together. Check automatically generated endpoint names and existing external callers; preserve public URLs with explicit routes or compatibility mappings where needed. Do not change URL path separators or plugin method paths such as `?/refresh`: this rule applies to action/schema names.
 
-The framework's MCP sanitizer maps both `/` and `|` to `_`; the pipe convention is our naming choice, not an MCP requirement. See [sources](../general/sources.md).
+The framework's MCP sanitizer maps both `/` and `|` to `_`; the pipe convention is our naming choice, not an MCP requirement.
 
 The usual verbs:
 
@@ -646,6 +574,10 @@ Complete each response path once. Use an early `return` when code would otherwis
 
 For a protected action that may also be called internally, declare the appropriate action-level check; the `+` on an HTTP route alone does not protect other invocation paths. `public: true` in reference code is not proof that an endpoint is anonymous; inspect the route and action checks. See `builders.js` action execution in the framework source.
 
+## Options and calling
+
+Beyond `input`, an action can declare `summary` (the description of the tool when it is exposed), `config` (defaults read as `$.config`), `output` (a filter: only the declared keys leave the action), `timeout`, `cache` and `mcp: true`. Callers override per call: `ACTION('Name', payload).config({}).env('test').user(user).promise()`. `.promise()` resolves with the answer and rejects with the error list. Standalone actions with tests: see [action kits](action-kits.md).
+
 ## Async and data
 
 Actions are `async` when they await `DATA` calls. Pass `$` to `.promise($)` so errors answer the request for you:
@@ -666,11 +598,128 @@ See [queries](../database/queries.md) for `DATA`.
 
 ## Grouped schemas are also Total.js 5
 
-Todomator uses `NEWSCHEMA('Tickets', function(schema) { schema.action('list', { ... }); });`. Do not classify every `NEWSCHEMA` as Total.js 4: reusable input definitions and grouped actions exist in the inspected v5 framework. Keep the target project's established form and verify any API before migrating it.
+`NEWSCHEMA('Tickets', function(schema) { schema.action('list', { ... }); });`. Reusable input definitions and grouped actions are Total.js 5. Keep the target project's established form.
 
 ## Keep an action small
 
 Split a repeated operation or a distinct responsibility when it improves readability. Length alone is not a reason to add a helper or an action chain. Large filter builders (e.g. a `makefilter($, builder)` function inside the schema) stay next to the actions that use them.
+
+---
+
+Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/action-kits.md
+
+# Standalone actions with tests
+
+A kit is a repository of reusable actions that are not part of one application: one folder per action, each with its own test that needs no network and no credentials. An application copies the action, or loads it, and supplies the configuration.
+
+## Layout
+
+```
+actions/<name>/
+  action.js        one or more NEWACTION(), the folder is named after the provider or the topic (lower case)
+  test.js          runs the actions with assertions
+  fixtures/        sample data for the tests (only if needed)
+example/           the template: action.js and test.js
+tools/check.js     checks structure and style, then runs test.js
+```
+
+Single files from an older layout (`actions/*.js`) stay as they are; a new action always has its folder and its test.
+
+## Contract first
+
+Name the action `Collection|verb` (see [actions](actions.md)) and write the contract before the code: `input`, `output`, `config` and the errors it returns. Split by responsibility:
+
+- a `parse` action only transforms data it receives, no network;
+- a `search` (or `read`, `send`, `ask`) action calls the provider and delegates the transformation to `parse` with `$.action('Shipments|parse', { data: response.body }).callback($)`.
+
+The parser is tested with a fixture, the caller with a local server.
+
+## action.js
+
+```js
+NEWACTION('Shipments|search', {
+	name: 'Search shipments',
+	summary: 'Searches shipments between two cities',
+	input: '*from,*to,limit:Number',
+	output: 'success:Boolean, items:[{ id:String, from:String, to:String, delay:Number }]',
+	config: { url: 'https://api.example.com', token: '' },
+	action: function($, model) {
+
+		var opt = {};
+		opt.method = 'GET';
+		opt.url = $.config.url + '/shipments?from=' + encodeURIComponent(model.from) + '&to=' + encodeURIComponent(model.to);
+		opt.headers = { Authorization: 'Bearer ' + $.config.token };
+		opt.callback = function(err, response) {
+
+			if (err || response.status !== 200) {
+				$.invalid(err || response.status);
+				return;
+			}
+
+			$.action('Shipments|parse', { data: response.body }).callback($);
+		};
+
+		REQUEST(opt);
+	}
+});
+
+/*
+	EXAMPLE:
+	ACTION('Shipments|search', { from: 'Berlin', to: 'Vienna' }).config({ token: 'YOUR_TOKEN' }).callback(console.log);
+*/
+```
+
+- Always give `name`, `summary`, `input` and `output`. `summary` is the description an AI client sees when the action is exposed with `mcp: true`. `output` is also a filter: only the declared keys leave the action.
+- Everything configurable (base URL, token, limits) is in `config` and read as `$.config.<key>`. The default of a secret is an empty string or `YOUR_TOKEN`, never a real value. A caller overrides it with `.config({ ... })`. The base URL belongs in `config` because it lets a test point the action at a local server. Do not read `process.env` inside an action.
+- Whatever the provider returns is not trusted: check that the keys you read exist and answer `$.invalid('@(Unknown format)')` instead of crashing. A non-2xx status is not an `err` of `REQUEST`: check `response.status`.
+- Reuse other actions with `$.action(...)`: `.callback($)` passes its answer or error on; `await ... .promise($)` gives the value inside an `async` action.
+- `route: true`, `user: true`, `permissions`, `timeout` and `mcp: true` only when the task asks for them. Add an `EXAMPLE:` comment at the end showing a call.
+
+## Test
+
+`test.js` runs the action the way an application does, with `ACTION(...)` and the Total.js test library, and asserts the result. A test that only prints is not a test.
+
+```js
+require('total5');
+require('total5/test');
+require('./action');
+
+const USER = new User({ id: 'test', name: 'Test', sa: true, permissions: [] });
+const FIXTURE = Total.Fs.readFileSync(PATH.root('fixtures/shipments.json'), 'utf8');
+
+function call(name, input, config) {
+	return ACTION(name, input).env('test').user(USER).config(config || {}).promise();
+}
+
+Test.push('Shipments|parse', async function(next) {
+
+	var out = await call('Shipments|parse', { data: FIXTURE });
+	Test.print('returns 2 items', out.items.length === 2 ? null : 'got ' + out.items.length);
+
+	try {
+		await call('Shipments|parse', { data: '{}' });
+		Test.print('rejects an unknown format', 'did not fail');
+	} catch (e) {
+		Test.print('rejects an unknown format');
+	}
+
+	next();
+});
+
+Test.run();
+```
+
+- `Test.push(name, fn)` registers a step and `fn` calls `next()` when it ends. `Test.print(message)` records `[OK]`; `Test.print(message, error)` with a value records `[FAIL]` and the process exits with code 1. `Test.run()` runs the steps in order and ends the process.
+- `.promise()` resolves with the answer and rejects with the error list, for example when a required field is missing.
+- Cover for every action: a valid call, a missing required field, an empty or unknown answer of the provider and the edge cases of the data.
+- The provider is never called. Its answers come from `fixtures/` (trimmed, anonymized, without tokens or personal data): passed directly to a `parse` action, or served by a local `Total.Http.createServer` on port `0` and given to the caller through `.config({ url: url })`. Close the server so the test ends by itself.
+- Call actions by their explicit name, not `Object.keys(Total.actions)[0]`: the order of files on disk is not a contract.
+- `PATH.root(file)` is relative to the folder where `node test.js` runs: run the test from the action's folder.
+- An npm dependency of the test is installed with `NPM.wait(NPMINSTALL, function() { ... })`; add one only when it is needed. A live test against the real provider is a separate file, skipped unless asked for.
+
+## Checker
+
+`tools/check.js` is a plain Node tool (a standalone tool may use `require`, see [definitions and modules](definitions-and-modules.md)). For a folder it checks `node --check`, the `Collection|verb` name, `name`, `summary`, `input`, `output`, that every action answers, that `config` holds no real secret, the ES5 style and `require()` / `process.env` in the action, that the test asserts and uses a local URL, and then runs `test.js`. Run `node tools/check.js actions/<name>` or without arguments for every folder; it ends with the number of errors and the exit code. A passing check does not prove the real provider works: say which part was verified only against a fixture.
 
 ---
 
@@ -726,9 +775,9 @@ A handler function is `function($)`. Prefer an API route plus an action; use a p
 
 ## A route declared in the action
 
-`NEWACTION` also accepts `route: '+API ?'` (or `route: true`) and registers the endpoint itself. This is used throughout Dashboard and IoT, and by standalone Todomator actions. It is not restricted to small apps. CMS/OpenPlatform also use explicit controller or plugin routes. Follow one registration style for the feature; do not add a duplicate explicit route for an action that already registers its own.
+`NEWACTION` also accepts `route: '+API ?'` (or `route: true`) and registers the endpoint itself. It is not restricted to small apps; explicit controller or plugin routes are equally valid. Follow one registration style for the feature; do not add a duplicate explicit route for an action that already registers its own.
 
-In the inspected framework `route: true` builds an API route, adding authentication when `user` or `permissions` requires it. An explicit route string controls its own prefix; inspect it rather than assuming all `route:` forms imply authentication. Automatic endpoint names come from action IDs. Preserve their spelling in `tapi()` calls.
+`route: true` builds an API route, adding authentication when `user` or `permissions` requires it. An explicit route string controls its own prefix; inspect it rather than assuming all `route:` forms imply authentication. Automatic endpoint names come from action IDs. Preserve their spelling in `tapi()` calls.
 
 ## Authentication
 
@@ -803,24 +852,22 @@ A plain file, one `key : value` per line. Read it with `CONF.key`. Settings the 
 
 ## modules/
 
-A module is an integration with another system or a self-contained service (`cdn.js`, `openplatform.js`, `visitors.js`). Total.js loads `modules/*.js` automatically and registers the exports under `MODS`, using `exports.id` or the filename without its extension. The loader calls `exports.install()` when that method exists; a module exposing reusable methods does not need an empty installer.
+A module is an integration with another system or a self-contained service (`cdn.js`, `visitors.js`). Total.js loads `modules/*.js` automatically and registers the exports under `MODS`, using `exports.id` or the filename without its extension. The loader calls `exports.install()` when that method exists; a module exposing reusable methods does not need an empty installer.
 
-Use that registry from initialized application code. Adapted from CMS `plugins/dashboard/schemas/dashboard.js`:
+Use that registry from initialized application code. Example:
 
 ```js
 var data = MODS.visitors.today();
 var visitors = MODS.visitors.instance.visitors;
 ```
 
-Hyphenated IDs use bracket access, for example `MODS['knowledge-source']`. Do not repeatedly import an application module with `require(PATH.root('modules/...'))`. Name application modules `.js`; in the inspected loader, a `.cjs` helper is not automatically registered by the `modules` scan.
+Hyphenated IDs use bracket access, for example `MODS['knowledge-source']`. Do not repeatedly import an application module with `require(PATH.root('modules/...'))`. Name application modules `.js`; a `.cjs` helper is not automatically registered by the `modules` scan.
 
 `MODS` exists after framework initialization, but an entry exists only after its module loads. Read another module from an exported method or an appropriate lifecycle callback; do not depend on sibling filename order or introduce circular initialization. Work needing application state or a database belongs in the existing ready/configure lifecycle. An automatically called `install()` must not require arguments supplied only by a later controller.
 
 A standalone Node tool does not acquire loaded application modules merely by requiring `total5`. It may import a shared CommonJS helper directly. Preserve that execution boundary when code is shared with validators or maintenance tools; do not replace valid CLI imports with an unpopulated `MODS` entry. The `total5` bootstrap and third-party database adapters also retain their required imports.
 
-Keep a module independent: it reads `CONF`, not another integration's private internals. Some existing integrations expose a dedicated global such as `OpenPlatform`; preserve that public contract when present. New application module consumers use `MODS`.
-
-Sources: framework5 `index.js` (module loading and optional installer), `global.js` (`MODS = F.modules`), CMS dashboard actions, and Forge controllers/definitions after its module reorganization.
+Keep a module independent: it reads `CONF`, not another integration's private internals. Some integrations expose a dedicated global; preserve that public contract when present. New application module consumers use `MODS`.
 
 ## Shared state
 
@@ -833,7 +880,7 @@ Do not create new globals. Hang things from these three.
 
 ## Config in the database
 
-When settings live in a table (`cl_config`), load them with `LOADCONFIG(rows)` and emit `configure`, as `FUNC.reconfigure` does in Todomator.
+When settings live in a table (`cl_config`), load them with `LOADCONFIG(rows)` and emit `configure`, as a `FUNC.reconfigure` does.
 
 ---
 
@@ -841,24 +888,24 @@ Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/st
 
 # Storage and integrations
 
-Choose the model already used by the feature. The apps do not all store data in SQL.
+Choose the model already used by the feature. Not every app stores data in SQL.
 
 ## Persistence and cache ownership
 
-| Model | Source | How to extend it |
-|---|---|---|
-| CMS metadata in memory, serialized to FileStorage | CMS `definitions/db.js`, `definitions/func.js`, redirects actions | Mutate the existing collection, call `FUNC.save()`, refresh affected rendering caches when necessary |
-| SQL through `DATA` and `querybuilderpg` | OpenPlatform groups; Todomator `definitions/init.js`, `schemas/tickets.js` | Keep projections, filters, identifiers, response shapes and adapter initialization |
-| Named persisted memory object | Dashboard `modules/openplatform.js`, `plugins/views/index.js` | Keep `MEMORIZE` object ownership and existing save hooks |
-| Flow state | FlowOS `definitions/init.js` | Keep flow load/save lifecycle and websocket permissions together |
+| Model | How to extend it |
+|---|---|
+| Metadata in memory, serialized to FileStorage | Mutate the existing collection, call `FUNC.save()`, refresh affected rendering caches when necessary |
+| SQL through `DATA` and `querybuilderpg` | Keep projections, filters, identifiers, response shapes and adapter initialization |
+| Named persisted memory object | Keep `MEMORIZE` object ownership and existing save hooks |
+| Flow state | Keep flow load/save lifecycle and websocket permissions together |
 
-The last two are observations, with no Enterprise code reproduced here. Do not switch models during a conventions cleanup.
+Do not switch models during a cleanup.
 
-CMS `FUNC.load` reads `meta`, initializes defaults, compiles widgets and emits reload. `FUNC.save` excludes compiled references before serialization. Changing a page/widget can therefore require cache refresh as well as saving metadata. Follow the feature's actual invalidation path rather than inventing a second cache.
+A `FUNC.load` typically reads the metadata, initializes defaults, compiles derived objects and emits reload; `FUNC.save` excludes compiled references before serialization. Changing a record can therefore require cache refresh as well as saving. Follow the feature's actual invalidation path rather than inventing a second cache.
 
 ## Outgoing requests
 
-Use `RESTBuilder` and the existing integration configuration. The MIT Todomator source ends `schemas/tickets.js` with a small `TicketCallback` integration using `RESTBuilder.POST(...).callback(NOOP)`. Its notification is intentionally independent; use explicit error handling when an action's result depends on the remote call.
+Use `RESTBuilder` and the existing integration configuration. A notification that is intentionally independent can use `RESTBuilder.POST(...).callback(NOOP)`; use explicit error handling when an action's result depends on the remote call.
 
 Illustrative request-dependent pattern (adapted to the request style in the framework's `builders.js`, `RESTP.promise`):
 
@@ -870,14 +917,14 @@ Check the remote status and response shape required by the integration before re
 
 ## Configuration and lifecycle
 
-Read configuration through `CONF` and follow the target app's settings loader. CMS and Todomator use `LOADCONFIG` and `configure` hooks; their service listeners refresh or reload state periodically. Do not add a parallel environment/config system to a feature that already has settings.
+Read configuration through `CONF` and follow the target app's settings loader. Use `LOADCONFIG` and `configure` hooks; service listeners refresh or reload state periodically. Do not add a parallel environment/config system to a feature that already has settings.
 
 - Startup work belongs in the existing ready/init path.
 - React to configuration changes through the existing `ON('configure', ...)` / `EMIT('configure')` flow.
 - Repeated maintenance uses the app's `ON('service', function(counter) { ... })` convention where available, rather than one timer per action call.
 - Keep request-dependent errors observable. Use `ERROR('context')` where the surrounding app expects a logging callback; use `NOOP` only for deliberately ignored results.
 
-Sources: CMS `definitions/init.js`, `definitions/func.js`; Todomator `definitions/init.js`, `definitions/func.js`, `definitions/auth.js`. Do not copy development credentials or permissive demo auth from a reference app into a new deployment.
+Do not copy development credentials or permissive demo auth into a new deployment.
 
 ---
 
@@ -890,7 +937,7 @@ Things that behave differently from what you would guess. Each one is a rule.
 ## Answers
 
 - In an **action**, `$.callback(data)` returns data. In a plain **route handler** (`function($)`), `$.callback(err, value)` takes the error first: answer with `$.json(data)` instead.
-- `$.invalid(404)`: a number above 399 sets the HTTP status (an omitted error becomes 401 in the inspected `ErrorBuilder.push`; use an explicit code for clarity). `$.invalid('@(text)')` answers with the message; its second argument is the `path` of the field the error belongs to, not a status code.
+- `$.invalid(404)`: a number above 399 sets the HTTP status (an omitted error becomes 401 in `ErrorBuilder.push`; use an explicit code for clarity). `$.invalid('@(text)')` answers with the message; its second argument is the `path` of the field the error belongs to, not a status code.
 - On a handler you can also set the status yourself: `$.response.status = 401; $.json(...)`.
 
 ## Request data
@@ -898,7 +945,7 @@ Things that behave differently from what you would guess. Each one is a rule.
 - Route parameters (`{id}`) are in `$.params`.
 - In a controller, `$.body` is parsed and `$.payload` holds the buffered raw body for the supported body-parsing path. In an action, `$.payload` / `model` is the action input, not that raw HTTP buffer. For webhook signatures use the controller context and verify the route flags/content type preserve the bytes you sign.
 - `$.ip` is the first `X-Forwarded-For` value: forgeable. Use `$.req.socket.remoteAddress` for security limits.
-- When changing CSRF handling, check the installed framework's `Controller.prototype.csrf` and view directive support; verify token generation and validation together. Do not introduce an alternative transport solely because a past app needed one.
+- When changing CSRF handling, check `Controller.prototype.csrf` and view directive support; verify token generation and validation together. Do not introduce an alternative transport solely because a past app needed one.
 - Session checks depend on the app's authentication module. Inspect its cookie, token and user-agent checks before assuming a session is portable between clients.
 
 ## Schemas and input
@@ -910,7 +957,7 @@ Things that behave differently from what you would guess. Each one is a rule.
 
 ## Served JavaScript and static files
 
-- `node --check` does not validate the release minifier or browser execution. Check the served asset in the installed version when changing regular expressions or template syntax. Diagnose a reproducible failure before disabling `$minifyjs`; do not make a global configuration change as a style fix.
+- `node --check` does not validate the release minifier or browser execution. Check the served asset when changing regular expressions or template syntax. Diagnose a reproducible failure before disabling `$minifyjs`; do not make a global configuration change as a style fix.
 - In release, static files are served from memory: restart the app after changing them. Browsers also cache: force a reload while testing.
 
 ## Data
@@ -921,7 +968,7 @@ Things that behave differently from what you would guess. Each one is a rule.
 ## Tests
 
 - `opt.config` passed to `Total.run` is overridden by `(env)` entries of the config: set `process.env` first.
-- Before running a translation extractor, check its scan scope in the installed version and keep generated/vendor directories out of the input. Verify the resulting `.resource` files.
+- Before running a translation extractor, check its scan scope and keep generated/vendor directories out of the input. Verify the resulting `.resource` files.
 
 ---
 
@@ -929,16 +976,14 @@ Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/database/s
 
 # SQL scripts (PostgreSQL)
 
-Source: the [official guidelines](https://github.com/totaljs-es/guidelines) and the `database.sql` files of Todomator and OpenPlatform.
-
 ## Files
 
 - `database.sql` holds the whole current schema, so a new installation needs one file.
 - Preserve the existing root SQL-file layout in apps that use it. When grouping SQL and maintenance files in a directory, use `private/database/`; update application readers, migration tools and package allowlists together. This layout policy does not change the SQL contract. See [project structure](../general/project-structure.md).
-- A change to an existing installation goes in a separate script next to it, named with a date: `database-2024-10-30.sql`. OpenPlatform does this; Todomator also has `database_1-5.sql` by version. Prefer the dated name with dashes, as the file rule requires.
+- A change to an existing installation goes in a separate script next to it, named with a date: `database-2024-10-30.sql`. Prefer the dated name with dashes, as the file rule requires.
 - The first lines of an upgrade script say which version it upgrades from and that it must run before the app starts.
 - Inside a script, order the objects: **tables, views, functions and stored procedures, indexes**, each part under a banner comment (`-- TABLES`, `-- VIEWS`, `-- INDEXES`).
-- Todomator wraps its script in `BEGIN; ... COMMIT;` so that it applies completely or not at all.
+- Wrap the script in `BEGIN; ... COMMIT;` so that it applies completely or not at all.
 
 ## Names
 
@@ -1045,7 +1090,7 @@ NEWACTION('Groups|list', {
 });
 ```
 
-A reusable joined list often reads from a `view_`. IoT also uses `DATA.list(...)` for paginated output; OpenPlatform uses `DATA.find(...)`. Preserve the response shape expected by the UI rather than swapping these because their query chains look similar.
+A reusable joined list often reads from a `view_`. `DATA.list(...)` is used for paginated output and `DATA.find(...)` for plain lists. Preserve the response shape expected by the UI rather than swapping them because their query chains look similar.
 
 ## Write
 
@@ -1067,13 +1112,13 @@ await DATA.remove('tbl_notification').where('ticketid', params.id).where('typeid
 
 ## Success after a write
 
-When a write should return the app's success envelope rather than its raw database result, the reference apps use:
+When a write should return the app's success envelope rather than its raw database result, use:
 
 ```js
 DATA.remove('tbl_tag').id($.params.id).error(404).callback($.done($.params.id));
 ```
 
-Adapted from Todomator's `schemas/tickets.js` (`reset`). Keep the established response contract. A raw `.callback($)` and `$.done(id)` are not interchangeable responses.
+Keep the established response contract. A raw `.callback($)` and `$.done(id)` are not interchangeable responses.
 
 ## Conditions
 
@@ -1106,7 +1151,7 @@ For widgets, forms, lists, inputs and every other piece of UI, **use a component
 
 ## 1. Look for the component first
 
-The catalogue of jComponent components, with the options and examples of each, is in Forge: <https://forge.totaljs.es/es/components/> (also in `/en/components/`).
+The catalogue of jComponent components, with the options and examples of each, is in the Forge catalogue: <https://forge.totaljs.es/es/components/> (also in `/en/components/`).
 
 Before writing UI:
 
@@ -1127,7 +1172,7 @@ Each page carries its framework version (`jcomponent@20`) and a content hash, so
 
 ## Match the UI version first
 
-The inspected CMS admin loads `spa.min@19`, while Dashboard, IoT and FlowOS use `@20`; Todomator also mixes shells. A catalogue entry for jComponent 20 does not prove its markup or options work in 19. Check the actual layout, bundle and nearby screen before using a component or copying `PLUGIN`/binding syntax. A backend Total.js 5 dependency does not select the browser UI major version.
+Apps load `spa.min@19` or `@20`. A catalogue entry for jComponent 20 does not prove its markup or options work in 19. Check the actual layout, bundle and nearby screen before using a component or copying `PLUGIN`/binding syntax. A backend Total.js 5 dependency does not select the browser UI major version.
 
 ## Preferred components
 
@@ -1166,7 +1211,7 @@ When several components could do the job, use these:
 - messages and badges: `.message`, `.message-success`, `.message-error`, `.message-alert`, `.badge` (with colors and sizes)
 - sizes: `.small`, `.medium`, `.large`
 
-Use these classes before writing new CSS (see [css](css.md)). The component is not in the Forge catalogue; its source (version 5) is served by the component download service.
+Use these classes before writing new CSS (see [css](css.md)). Its source (version 5) is served by the component download service.
 
 ## 2. If it does not exist, create a component
 
@@ -1218,17 +1263,15 @@ Rules:
 
 Reuse the official component and its configuration first. A different visual design usually needs a scoped CSS skin, not a copied component implementation or a file that embeds jComponent itself.
 
-Forge at commit `827311e` uses the official `backtotop` through `COMPONENTATOR('webui', 'backtotop', true)` and declares:
+The official `backtotop` is loaded through `COMPONENTATOR('webui', 'backtotop', true)` and declared as:
 
 ```html
-<ui-component name="backtotop" class="forge-backtotop" config="icon:ti ti-arrow-up;$init:FUNC.backtotop" data-label="@(Back to top)"></ui-component>
+<ui-component name="backtotop" class="app-backtotop" config="icon:ti ti-arrow-up;$init:FUNC.backtotop" data-label="@(Back to top)"></ui-component>
 ```
 
-Its `public/css/components.css` changes the appearance. Its `public/js/func.js` adds button semantics, a translated accessible name and keyboard focus handling through the native `$init` hook. The official component retains its scrolling and visibility behavior. The hook is needed because the inspected official component renders a span; CSS cannot provide button semantics.
+A stylesheet changes the appearance; a `FUNC` function adds button semantics, a translated accessible name and keyboard focus handling through the native `$init` hook. The official component retains its scrolling and visibility behavior. The hook is needed because the official component renders a span; CSS cannot provide button semantics.
 
-Verify hook timing against the installed runtime and component: the inspected `jComponent/library.js` calls `make` before applying `$init`, so the hook can adapt the generated markup. Keep such hooks small and idempotent, and check Enter, Space, pointer interaction, focus and reduced motion. If a component supplies the required semantics already, use them directly.
-
-Sources: Forge `definitions/ui.js`, `views/layout.html`, `public/js/func.js` and `public/css/components.css` at `827311e`; upstream `j-BackToTop/component.js` in Forge's pinned `vendor/components-master/`; [jComponent source](https://github.com/totaljs/jComponent), `library.js`, component creation and reconfiguration. This is a maintained-app example, not a claim that every Total.js app needs an initialization hook.
+Verify hook timing against the installed runtime and component: jComponent's `library.js` calls `make` before applying `$init`, so the hook can adapt the generated markup. Keep such hooks small and idempotent, and check Enter, Space, pointer interaction, focus and reduced motion. If a component supplies the required semantics already, use them directly.
 
 ## 4. Quick check
 
@@ -1245,7 +1288,7 @@ Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/frontend/p
 
 # Plugins with UI
 
-A feature of an app is a **plugin**: a folder with a server part and a UI part that the framework loads and the app shell mounts. The CMS admin (pages, layouts, redirects, settings...) and the Todomator users screen are made this way.
+A feature of an app is a **plugin**: a folder with a server part and a UI part that the framework loads and the app shell mounts.
 
 ```
 plugins/redirects/
@@ -1415,7 +1458,7 @@ The shell of an app is one HTML file in `views/` (`admin.html`, `index.html`). I
 
 ## Runtime, bundles and application assets
 
-The example above is adapted from the CMS shell, using this repository's jComponent 20 CDN default for new layouts. The inspected CMS itself uses 19; an existing app requires a deliberate version migration. Forge's public and admin layouts at commit `827311e` demonstrate the 20 setup.
+New layouts load jComponent 20 from the CDN. An existing app on another major version requires a deliberate migration.
 
 - Load `https://cdn.componentator.com/spa.min@20.css` and `https://cdn.componentator.com/spa.min@20.js` once per document. The runtime must precede component bundles and scripts that use its APIs.
 - `COMPONENTATOR()` downloads the selected components; it does not replace the core runtime. Load the matching `@{REPO.ui}` or `@{REPO.webui}` after the runtime.
@@ -1432,7 +1475,7 @@ Every text a person reads is wrapped in `@(...)`, in views, in plugin HTML and i
 ## Two kinds of pages
 
 - **App screens** (admin, tools): plugin HTML mounted in the layout, driven by `PLUGIN`.
-- **Public pages**: server-rendered views returned by a controller (`$.view('index')`) or compiled from the CMS. They carry no `PLUGIN` logic.
+- **Public pages**: server-rendered views returned by a controller (`$.view('index')`). They carry no `PLUGIN` logic.
 
 ## Naming
 
@@ -1444,7 +1487,7 @@ Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/frontend/b
 
 # Binding and forms as one flow
 
-Source: CMS `plugins/redirects/public/index.html` and `public/form.html`. The following connected example is adapted to the repo's ES5 preference and includes only the fields needed to show the lifecycle. It assumes the CMS shell, jComponent version, importer and `*form` alias setup; it is not a standalone page.
+The following connected example includes only the fields needed to show the lifecycle. It assumes the app shell, jComponent version, importer and `*form` alias setup; it is not a standalone page.
 
 ## Screen → model → importer
 
@@ -1512,7 +1555,7 @@ The form component owns the submit/cancel buttons. Ordinary screen buttons use `
 
 ## Binding and templates
 
-CMS screens bind `?.items` through `ui-bind` and render a `script type="text/html"` with Tangular. Update the model (`exports.set('items', response)`) so the binding owns rendering, rather than keeping a parallel list in the DOM. Use `CLASS` for screen CSS, `?` for local paths and `data-exec="?/method"` for handlers. Preserve the shell's global model paths.
+Screens bind `?.items` through `ui-bind` and render a `script type="text/html"` with Tangular. Update the model (`exports.set('items', response)`) so the binding owns rendering, rather than keeping a parallel list in the DOM. Use `CLASS` for screen CSS, `?` for local paths and `data-exec="?/method"` for handlers. Preserve the shell's global model paths.
 
 Treat user text as text in templates; do not add raw HTML rendering or string-built event attributes. Backend view directives (`@{...}`), translation markers (`@(...)`) and client Tangular (`{{ ... }}`) are distinct stages. Use the syntax supported by that app's library and compiler; check a working template for block terminators and escaping.
 
@@ -1529,8 +1572,6 @@ Look for an existing component first. If new behaviour is reusable, use `COMPONE
 Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/frontend/css.md
 
 # CSS
-
-Source: the [official guidelines](https://github.com/totaljs-es/guidelines).
 
 - File names lowercase, words separated by `-`.
 - **One rule per line**: keep all declarations of a selector on the same line.
@@ -1572,6 +1613,6 @@ The `intranetcss` component provides the common design (panels, toolbars, badges
 
 ## Component skins
 
-Scope overrides to an app class combined with the official component class, for example `.forge-backtotop.ui-backtotop`. Keep the official component's selectors and behavior intact. Component CSS can be injected after the app stylesheet; use deliberate specificity instead of depending only on load order or broad global overrides.
+Scope overrides to an app class combined with the official component class, for example `.app-backtotop.ui-backtotop`. Keep the official component's selectors and behavior intact. Component CSS can be injected after the app stylesheet; use deliberate specificity instead of depending only on load order or broad global overrides.
 
-Forge's `public/css/components.css` at commit `827311e` skins the official BackToTop this way. Preserve visible keyboard focus, sufficient contrast, mobile positioning and `prefers-reduced-motion` when adapting its appearance. Semantic or focus changes belong in a small native initialization hook, as described in [components](components.md), rather than in CSS.
+Skinning the official BackToTop works this way. Preserve visible keyboard focus, sufficient contrast, mobile positioning and `prefers-reduced-motion` when adapting its appearance. Semantic or focus changes belong in a small native initialization hook, as described in [components](components.md), rather than in CSS.
