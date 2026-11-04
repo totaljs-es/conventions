@@ -6,6 +6,9 @@
 	"license": "MIT",
 	"scripts": {
 		"llms": "node scripts/llms.js --write",
-		"test": "node --test"
+		"test": "node tests/kit.test.js"
+	},
+	"dependencies": {
+		"total5": "beta"
 	}
 }
