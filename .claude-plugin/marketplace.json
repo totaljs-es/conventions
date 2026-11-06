@@ -1,0 +1,14 @@
+{
+	"name": "totaljs-es",
+	"owner": {
+		"name": "Total.js"
+	},
+	"plugins": [
+		{
+			"name": "totaljs-conventions",
+			"source": "./",
+			"description": "Total.js 5 conventions: skills to write and review code, and a check after each edit."
+		}
+	],
+	"description": "Total.js 5 conventions for AI agents."
+}

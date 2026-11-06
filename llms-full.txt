@@ -33,7 +33,8 @@ Each zone is a folder. Read the general rules, then the pages relevant to your c
 
 - [`AGENTS.md`](AGENTS.md): how to use these pages and the rules for every change (also `CLAUDE.md`, `GEMINI.md` and `.github/copilot-instructions.md`, which point to it).
 - [`llms.txt`](llms.txt): an index with a link to every page; [`llms-full.txt`](llms-full.txt): every page in one file.
-- Skills to write and to review code with these conventions: `.claude/skills/` and `.agents/skills/`.
+- Skills to write and to review code with these conventions: [`skills/`](skills). Claude Code plugin: `/plugin marketplace add totaljs-es/conventions`.
+- [`tools/check.js`](tools/check.js): `node tools/check.js <path>` checks files against the rules a script can decide; the plugin runs it after each edit.
 
 ## Principles
 
@@ -96,8 +97,9 @@ This repository is a reference of conventions for Total.js 5 applications. Read 
 - `general/`, `backend/`, `database/`, `frontend/`: the pages, one folder per zone.
 - `llms.txt` (index) and `llms-full.txt` (every page in one file): for models. They are generated, do not edit them by hand.
 - `scripts/llms.js`: builds the two files above and lists the pages in order.
-- `.claude/skills/` and `.agents/skills/`: the skills to write and to review Total.js 5 code with these conventions.
-- `tests/`: tests of the files for agents and of the links of the pages.
+- `skills/`: the skills to write and to review Total.js 5 code with these conventions (`.claude/skills/` and `.agents/skills/` point to them).
+- `tools/check.js`: checks application files against the rules a script can decide; `hooks/hooks.json` runs it after each edit. `.claude-plugin/` makes the repository a Claude Code plugin.
+- `tests/`: tests of the files for agents, of the check and of the links of the pages.
 
 ## Using these conventions from another project
 
@@ -107,6 +109,12 @@ Point your agent at `llms.txt` (an index with a link to every page) or at `llms-
 - https://raw.githubusercontent.com/totaljs-es/conventions/main/llms-full.txt
 
 A project can add a line to its own `AGENTS.md`: "Follow the Total.js 5 conventions of https://github.com/totaljs-es/conventions".
+
+## Plugin and check
+
+Install in Claude Code: `/plugin marketplace add totaljs-es/conventions`, then `/plugin install totaljs-conventions@totaljs-es`. It adds the two skills and the hook.
+
+Check files by hand: `node tools/check.js <file|directory>` (`--strict` makes style findings fail, `--json` prints JSON). It only checks files inside a project that depends on `total5`, in the Total.js folders (`schemas/`, `controllers/`, `definitions/`, `modules/`, `plugins/`, `actions/`, `views/`).
 
 ## Checking this repository
 

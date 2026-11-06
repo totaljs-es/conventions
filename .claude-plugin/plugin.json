@@ -1,0 +1,11 @@
+{
+	"name": "totaljs-conventions",
+	"version": "0.2.0",
+	"description": "Total.js 5 conventions for agents: skills to write and review code, and a check that runs after each edit.",
+	"license": "MIT",
+	"homepage": "https://github.com/totaljs-es/conventions",
+	"repository": "https://github.com/totaljs-es/conventions",
+	"author": {
+		"name": "Total.js"
+	}
+}

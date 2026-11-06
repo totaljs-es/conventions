@@ -6,7 +6,7 @@ require('total5/test');
 
 var llms = require('../scripts/llms');
 var ROOT = Total.Path.join(__dirname, '..');
-var SKIP = ['.git', '.claude', '.agents', '.github', 'node_modules', 'scripts', 'tests'];
+var SKIP = ['.git', '.claude', '.agents', '.github', '.claude-plugin', 'node_modules', 'scripts', 'tests', 'skills', 'hooks', 'tools'];
 
 function check(message, ok) {
 	Test.print(message, ok ? null : 'failed');
@@ -51,9 +51,23 @@ Test.push('files for agents', function(next) {
 		});
 	});
 
-	Total.Fs.readdirSync(Total.Path.join(ROOT, '.agents/skills')).forEach(function(name) {
-		var text = read('.agents/skills/' + name + '/SKILL.md');
-		check(name + ' points to the shared checklist', new RegExp('\\.claude/skills/' + name + '/SKILL\\.md').test(text) && exists('.claude/skills/' + name + '/SKILL.md'));
+	['.claude/skills', '.agents/skills'].forEach(function(base) {
+		Total.Fs.readdirSync(Total.Path.join(ROOT, base)).forEach(function(name) {
+			var text = read(base + '/' + name + '/SKILL.md');
+			check(base + '/' + name + ' points to the maintained skill', new RegExp('skills/' + name + '/SKILL\\.md').test(text) && exists('skills/' + name + '/SKILL.md'));
+		});
+	});
+
+	// The plugin: manifest, the maintained skills and the hook that runs the check
+	var plugin = JSON.parse(read('.claude-plugin/plugin.json'));
+	var market = JSON.parse(read('.claude-plugin/marketplace.json'));
+	var hooks = JSON.parse(read('hooks/hooks.json'));
+	check('plugin has a name and a version', plugin.name && /^\d+\.\d+\.\d+$/.test(plugin.version));
+	check('marketplace lists the plugin', market.plugins.length === 1 && market.plugins[0].name === plugin.name);
+	check('hook runs tools/check.js after an edit', (/Edit/).test(hooks.hooks.PostToolUse[0].matcher) && (/tools\/check\.js/).test(hooks.hooks.PostToolUse[0].hooks[0].command) && exists('tools/check.js'));
+	Total.Fs.readdirSync(Total.Path.join(ROOT, 'skills')).forEach(function(name) {
+		var text = read('skills/' + name + '/SKILL.md');
+		check('skills/' + name + ' has a name equal to its folder and a description', new RegExp('^---\\nname: ' + name + '\\ndescription: .{20,}\\n---\\n').test(text));
 	});
 
 	next();
@@ -84,7 +98,7 @@ Test.push('the pages', function(next) {
 
 	var all = pages('').concat(['CLAUDE.md', 'GEMINI.md']);
 
-	['.agents/skills', '.claude/skills'].forEach(function(base) {
+	['.agents/skills', '.claude/skills', 'skills'].forEach(function(base) {
 		Total.Fs.readdirSync(Total.Path.join(ROOT, base)).forEach(function(name) {
 			all.push(base + '/' + name + '/SKILL.md');
 		});

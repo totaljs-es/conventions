@@ -25,7 +25,8 @@ Each zone is a folder. Read the general rules, then the pages relevant to your c
 
 - [`AGENTS.md`](AGENTS.md): how to use these pages and the rules for every change (also `CLAUDE.md`, `GEMINI.md` and `.github/copilot-instructions.md`, which point to it).
 - [`llms.txt`](llms.txt): an index with a link to every page; [`llms-full.txt`](llms-full.txt): every page in one file.
-- Skills to write and to review code with these conventions: `.claude/skills/` and `.agents/skills/`.
+- Skills to write and to review code with these conventions: [`skills/`](skills). Claude Code plugin: `/plugin marketplace add totaljs-es/conventions`.
+- [`tools/check.js`](tools/check.js): `node tools/check.js <path>` checks files against the rules a script can decide; the plugin runs it after each edit.
 
 ## Principles
 
