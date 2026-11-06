@@ -33,8 +33,24 @@ Each zone is a folder. Read the general rules, then the pages relevant to your c
 
 - [`AGENTS.md`](AGENTS.md): how to use these pages and the rules for every change (also `CLAUDE.md`, `GEMINI.md` and `.github/copilot-instructions.md`, which point to it).
 - [`llms.txt`](llms.txt): an index with a link to every page; [`llms-full.txt`](llms-full.txt): every page in one file.
-- Skills to write and to review code with these conventions: [`skills/`](skills). Claude Code plugin: `/plugin marketplace add totaljs-es/conventions`.
-- [`tools/check.js`](tools/check.js): `node tools/check.js <path>` checks files against the rules a script can decide; the plugin runs it after each edit.
+- Skills to write and to review code with these conventions: [`skills/`](skills).
+- [`tools/check.js`](tools/check.js): `node tools/check.js <path>` checks files against the rules a script can decide.
+
+## Claude Code plugin
+
+The plugin `totaljs-conventions` adds two skills (write and review Total.js 5 code) and a hook that runs the check after each edit, so Claude gets told when it writes a rule-breaking line. Install it once and it works in every Total.js project:
+
+```bash
+/plugin marketplace add totaljs-es/conventions
+```
+
+```bash
+/plugin install totaljs-conventions@totaljs-es
+```
+
+Update it later with `/plugin marketplace update totaljs-es`. The hook only acts on projects that depend on `total5`, inside the Total.js folders (`schemas/`, `controllers/`, `definitions/`, `modules/`, `plugins/`, `actions/`, `views/`). It reports what it finds in the file you edited and changes nothing by itself.
+
+Other agents: point them at [`AGENTS.md`](AGENTS.md) or [`llms.txt`](llms.txt). To run the check without Claude Code: `node tools/check.js <file|directory>`.
 
 ## Principles
 
