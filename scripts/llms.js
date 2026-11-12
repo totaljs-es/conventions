@@ -37,6 +37,7 @@ var PAGES = [
 	['Frontend', 'frontend/components.md', 'Components', 'Use the existing jComponent components, preferred ones, exec, intranetcss, COMPONENTATOR()'],
 	['Frontend', 'frontend/plugins-ui.md', 'Plugins with UI', 'Server part, screens, forms, PLUGIN() and tapi'],
 	['Frontend', 'frontend/views-and-layout.md', 'Views and layout', 'The layout, directives, translations, public pages'],
+	['Frontend', 'frontend/tangular.md', 'Tangular templates', 'Values and encoding, conditions, loops, the helpers and your own helper; every example run'],
 	['Frontend', 'frontend/binding-and-forms.md', 'Binding and forms', 'Connected screen/importer/form flow, binding, translations and lifecycle'],
 	['Frontend', 'frontend/cms-widgets.md', 'CMS widgets', 'Native single-file format, metadata, settings, scoped CSS, rendering and previews'],
 	['Frontend', 'frontend/css.md', 'CSS', 'Formatting, CLASS scoping, predefined classes']
