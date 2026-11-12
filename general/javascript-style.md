@@ -12,7 +12,7 @@ Write `var`, `function`, classic loops and string helpers. Use an ES6 feature on
 
 | Prefer | Instead of |
 |---|---|
-| `var item = ...;` | `let` / `const` in a function |
+| `var item = ...;` | `let` / `const` in a function (at the top of a file they are fine when needed) |
 | `function(item) { ... }` | `item => ...` |
 | `for (var i = 0; i < arr.length; i++)` | long transformation chains or `for...of` in new examples |
 | `'Hello {0}'.format(name)` | template literal `` `Hello ${name}` `` |
@@ -35,7 +35,7 @@ Notes:
 
 - `async` / `await` stays where the framework's own code uses it (`await DATA.find(...).promise($)`): there the ES5 alternative is a callback chain (`.callback($)`), which is also valid when it reads better.
 - Existing code may use `let`, arrows, `for...of` and `async` functions. Do not rewrite unrelated working code merely to make an existing app look uniformly ES5.
-- `const` is for module-level constants only: `const ADMIN = { id: 'admin', sa: true };`.
+- ES5 is the preference, not a prohibition. `const` and `let` are used when the project needs them, typically a constant at the top of a file (a definition, a module): `const ADMIN = { id: 'admin', sa: true };`. Inside a function write `var`.
 - **Never `for...in` over an array**: it enumerates property names, including enumerable extensions, rather than just indexed values. Use a classic `for` loop.
 
 ## 2. Total.js first

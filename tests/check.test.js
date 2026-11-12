@@ -31,7 +31,8 @@ Test.push('check: server code', function(next) {
 	check('accepts a status and a single word', rules("$.invalid(404); $.invalid('token');", 'js').length === 0);
 	check('ignores comments', rules("// require('fs')\n/*\nrequire('os')\n*/", 'js').length === 0);
 	check('flags indentation with spaces once', rules('function a() {\n    return 1;\n    }', 'js').filter(function(rule) { return rule === 'spaces-indent'; }).length === 1);
-	check('flags let and const as style', checker.text('let a = 1;', { file: 'x', type: 'js' })[0].severity === 'style');
+	check('flags let and const inside a function as style', checker.text('function a() {\n\tlet b = 1;\n}', { file: 'x', type: 'js' })[0].severity === 'style');
+	check('accepts const and let at the top of a file', rules('const A = 1;\nlet b = 2;', 'js').length === 0);
 	next();
 });
 
