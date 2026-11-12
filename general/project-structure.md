@@ -3,7 +3,7 @@
 A Total.js 5 app is a folder that the framework loads by convention. Put each kind of file where the framework (and the next reader) expects it.
 
 ```
-index.js            starts the app: require('total5'); F.run(options)
+index.js            starts the app: the official start script, whole (see below)
 config              settings, one "key : value" per line
 package.json        "total5" is the runtime dependency
 controllers/        routes: exports.install = function() { ROUTE(...) }
@@ -43,16 +43,43 @@ The root `database.sql` and dated upgrades remain valid existing layouts. When g
 
 ## index.js
 
-The start script is the same in every app and has almost no logic:
+The start script is the same in every app: the official one of Total.js 5 ([`helpers/index.js`](https://github.com/totaljs/framework5/blob/master/helpers/index.js) of the framework), whole and unchanged. Do not write a shorter one by hand and do not restyle it: it is the one file that keeps its own style (`const`, `includes`). Its commented lines are the options that a project turns on later.
 
 ```js
+// ===================================================
+// Total.js v5 start script
+// https://www.totaljs.com
+// ===================================================
+
 require('total5');
 
-var options = {};
-options.release = process.argv.indexOf('--release') !== -1;
-options.servicemode = process.argv.indexOf('--service') !== -1 || process.argv.indexOf('--servicemode') !== -1;
+const options = {};
 
-F.run(options);
+// options.ip = '127.0.0.1';
+// options.port = parseInt(process.argv[2]);
+// options.unixsocket = PATH.join(F.tmpdir, 'app_name.socket');
+// options.unixsocket777 = true;
+// options.config = { name: 'Total.js' };
+// options.sleep = 3000;
+// options.inspector = 9229;
+// options.watch = ['private'];
+// options.livereload = 'https://yourhostname';
+// options.watcher = false; // disables watcher
+// options.edit = 'wss://www.yourcodeinstance.com/?id=projectname'
+// options.editmcp = 'https://yourtotalmcpserverinstance.com/?id=admin'
+
+options.release = process.argv.includes('--release');
+
+// Service mode:
+options.servicemode = process.argv.includes('--service') || process.argv.includes('--servicemode');
+// options.servicemode = 'definitions,modules,config';
+
+// Cluster:
+// options.tz = 'utc';
+// options.cluster = 'auto';
+// options.limit = 10; // max 10. threads (works only with "auto" scaling)
+
+Total.run(options);
 ```
 
 Run it with `node index.js 8000` (add `--release` for release mode).
