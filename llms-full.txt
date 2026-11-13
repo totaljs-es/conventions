@@ -48,7 +48,7 @@ The plugin `totaljs-conventions` adds two skills (write and review Total.js 5 co
 /plugin install totaljs-conventions@totaljs-es
 ```
 
-Update it later with `/plugin marketplace update totaljs-es`. The hook only acts on projects that depend on `total5`, inside the Total.js folders (`schemas/`, `controllers/`, `definitions/`, `modules/`, `plugins/`, `actions/`, `views/`). It reports what it finds in the file you edited and changes nothing by itself.
+Update it later with `/plugin marketplace update totaljs-es`. The hook only acts on projects that depend on `total5`, inside the Total.js folders (`actions/`, `controllers/`, `definitions/`, `modules/`, `plugins/`, `actions/`, `views/`). It reports what it finds in the file you edited and changes nothing by itself.
 
 Other agents: point them at [`AGENTS.md`](AGENTS.md) or [`llms.txt`](llms.txt). To run the check without Claude Code: `node tools/check.js <file|directory>`.
 
@@ -130,7 +130,7 @@ A project can add a line to its own `AGENTS.md`: "Follow the Total.js 5 conventi
 
 Install in Claude Code: `/plugin marketplace add totaljs-es/conventions`, then `/plugin install totaljs-conventions@totaljs-es`. It adds the two skills and the hook.
 
-Check files by hand: `node tools/check.js <file|directory>` (`--strict` makes style findings fail, `--json` prints JSON). It only checks files inside a project that depends on `total5`, in the Total.js folders (`schemas/`, `controllers/`, `definitions/`, `modules/`, `plugins/`, `actions/`, `views/`).
+Check files by hand: `node tools/check.js <file|directory>` (`--strict` makes style findings fail, `--json` prints JSON). It only checks files inside a project that depends on `total5`, in the Total.js folders (`actions/`, `controllers/`, `definitions/`, `modules/`, `plugins/`, `actions/`, `views/`).
 
 ## Checking this repository
 
@@ -283,8 +283,8 @@ package.json        "total5" is the runtime dependency
 controllers/        routes: exports.install = function() { ROUTE(...) }
 definitions/        auth.js, init.js, func.js, db.js: loaded at start, no exports
 modules/            integrations with other systems (cdn, tapi...)
-plugins/<name>/     a feature: index.js (server), index.html (UI), schemas/, public/
-schemas/            actions that are not part of a plugin (actions/ is loaded in the same way)
+plugins/<name>/     a feature: index.js (server), index.html (UI), actions/, public/
+actions/            actions that are not part of a plugin (an older application has them in schemas/)
 views/              layout and pages (HTML with @{...} directives)
 public/             browser-accessible static files
 private/            internal runtime files and grouped SQL/maintenance assets
@@ -361,7 +361,7 @@ Run it with `node index.js 8000` (add `--release` for release mode).
 ## Where things go
 
 - **A route** follows the app's existing pattern: `controllers/*.js` / plugin `index.js`, or the action's `route:` property.
-- **Business logic** belongs in actions: usually `schemas/` or `plugins/<name>/schemas/` (Total.js 5 also loads `actions/`, which some applications use instead of `schemas/`); compact plugins may declare actions in `index.js`.
+- **Business logic** belongs in actions: `actions/` or `plugins/<name>/actions/` (an application written before Total.js 5 added that folder has them in `schemas/`, which is loaded in the same way: leave them there); compact plugins may declare actions in `index.js`.
 - **Shared helpers** hang from `FUNC` (`FUNC.notify`, `FUNC.save`) and live in `definitions/func.js`.
 - **Shared state in memory** hangs from `MAIN` (the app) or `REPO` (cached lookups, e.g. `REPO.tags`).
 - **Startup work** (config defaults, loading caches, registering UI components) goes in `ON('ready', ...)` in `definitions/init.js`.
@@ -605,7 +605,7 @@ Source: https://raw.githubusercontent.com/totaljs-es/conventions/main/backend/ac
 
 # Actions
 
-An action is one unit of server logic: a name, the input it accepts, who may call it, and a function. Define it with `NEWACTION` in a `schemas/` file, or in an `actions/` file: Total.js 5 loads both folders in the same way, so keep the one that the application already uses.
+An action is one unit of server logic: a name, the input it accepts, who may call it, and a function. Define it with `NEWACTION` in an `actions/` file. An application written before Total.js 5 added that folder has its actions in `schemas/`, which is loaded in the same way: leave them there.
 
 ```js
 NEWACTION('Redirects|save', {
@@ -1483,7 +1483,7 @@ A feature of an app is a **plugin**: a folder with a server part and a UI part t
 ```
 plugins/redirects/
 	index.js              server: metadata + routes
-	schemas/redirects.js  actions (see backend/actions.md)
+	actions/redirects.js  actions (see backend/actions.md)
 	public/index.html     the screen: markup + <script>PLUGIN(...)</script>
 	public/form.html      the form that opens over the screen
 ```

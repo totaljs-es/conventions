@@ -40,7 +40,7 @@ The plugin `totaljs-conventions` adds two skills (write and review Total.js 5 co
 /plugin install totaljs-conventions@totaljs-es
 ```
 
-Update it later with `/plugin marketplace update totaljs-es`. The hook only acts on projects that depend on `total5`, inside the Total.js folders (`schemas/`, `controllers/`, `definitions/`, `modules/`, `plugins/`, `actions/`, `views/`). It reports what it finds in the file you edited and changes nothing by itself.
+Update it later with `/plugin marketplace update totaljs-es`. The hook only acts on projects that depend on `total5`, inside the Total.js folders (`actions/`, `controllers/`, `definitions/`, `modules/`, `plugins/`, `actions/`, `views/`). It reports what it finds in the file you edited and changes nothing by itself.
 
 Other agents: point them at [`AGENTS.md`](AGENTS.md) or [`llms.txt`](llms.txt). To run the check without Claude Code: `node tools/check.js <file|directory>`.
 

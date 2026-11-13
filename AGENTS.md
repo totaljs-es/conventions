@@ -48,7 +48,7 @@ A project can add a line to its own `AGENTS.md`: "Follow the Total.js 5 conventi
 
 Install in Claude Code: `/plugin marketplace add totaljs-es/conventions`, then `/plugin install totaljs-conventions@totaljs-es`. It adds the two skills and the hook.
 
-Check files by hand: `node tools/check.js <file|directory>` (`--strict` makes style findings fail, `--json` prints JSON). It only checks files inside a project that depends on `total5`, in the Total.js folders (`schemas/`, `controllers/`, `definitions/`, `modules/`, `plugins/`, `actions/`, `views/`).
+Check files by hand: `node tools/check.js <file|directory>` (`--strict` makes style findings fail, `--json` prints JSON). It only checks files inside a project that depends on `total5`, in the Total.js folders (`actions/`, `controllers/`, `definitions/`, `modules/`, `plugins/`, `actions/`, `views/`).
 
 ## Checking this repository
 
